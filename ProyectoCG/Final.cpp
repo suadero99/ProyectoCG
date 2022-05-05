@@ -380,10 +380,10 @@ int main()
 
 	// load models
 	// -----------
-	Model casaBrujas("resources/objects/CasaBrujas/CasaBrujas.obj"); //Casa agregada
-	Model miCubo("resources/objects/MiCubo/cubo.obj"); //Cubo agregado
+	/*Model casaBrujas("resources/objects/CasaBrujas/CasaBrujas.obj"); //Casa agregada
+	Model miCubo("resources/objects/MiCubo/cubo.obj"); //Cubo agregado*/
 	Model piso("resources/objects/piso/piso.obj");
-	Model botaDer("resources/objects/Personaje/bota.obj");
+	/*Model botaDer("resources/objects/Personaje/bota.obj");
 	Model piernaDer("resources/objects/Personaje/piernader.obj");
 	Model piernaIzq("resources/objects/Personaje/piernader.obj");
 	Model torso("resources/objects/Personaje/torso.obj");
@@ -394,10 +394,10 @@ int main()
 	Model llanta("resources/objects/lambo/Wheel.obj");
 	Model casaVieja("resources/objects/casa/OldHouse.obj");
 	//Model cubo("resources/objects/cubo/cube02.obj");
-	Model casaDoll("resources/objects/casa/DollHouse.obj");
+	Model casaDoll("resources/objects/casa/DollHouse.obj");*/
 
-	ModelAnim pitufo("resources/objects/Moonwalk/Moonwalk.dae");
-	pitufo.initShaders(animShader.ID);
+	//ModelAnim pitufo("resources/objects/Moonwalk/Moonwalk.dae");
+	//pitufo.initShaders(animShader.ID);
 
 	/*ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
 	animacionPersonaje.initShaders(animShader.ID);
