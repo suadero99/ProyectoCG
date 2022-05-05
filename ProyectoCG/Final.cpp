@@ -522,10 +522,10 @@ int main()
 		//ninja.Draw(animShader);
 
 		/*Pitufo Moonwalk*/
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(120.0f, 0.0f, 0.0f));
+		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(120.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.05f));
 		animShader.setMat4("model", model);
-		pitufo.Draw(animShader);
+		pitufo.Draw(animShader);*/
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Escenario (Objetos estáticos)
@@ -534,7 +534,7 @@ int main()
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(250.0f, 0.0f, -10.0f));
+		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(250.0f, 0.0f, -10.0f));
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		casaDoll.Draw(staticShader);
@@ -549,7 +549,7 @@ int main()
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f));
 		staticShader.setMat4("model", model);
-		miCubo.Draw(staticShader);
+		miCubo.Draw(staticShader);*/
 
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
@@ -557,24 +557,24 @@ int main()
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
+		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
 		//staticShader.setVec3("dirLight.specular", glm::vec3(0.8f, 0.0f, 0.0f));
-		casaVieja.Draw(staticShader);
+		casaVieja.Draw(staticShader);*/
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Carro
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		/*model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(15.0f + movAuto_x, movAuto_y, movAuto_z));
 		tmp = model = glm::rotate(model, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setMat4("model", model);
 		staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		carro.Draw(staticShader);
+		carro.Draw(staticShader);*/
 
-		model = glm::translate(tmp, glm::vec3(8.5f, 2.5f, 12.9f));
+		/*model = glm::translate(tmp, glm::vec3(8.5f, 2.5f, 12.9f));
 		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f,0.0f,0.0f));
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setMat4("model", model);
@@ -598,11 +598,11 @@ int main()
 		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setMat4("model", model);
-		llanta.Draw(staticShader);	//Izq trasera
+		llanta.Draw(staticShader);	//Izq trasera*/
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Personaje
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 		model = glm::translate(model, glm::vec3(posX, posY, posZ));
 		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
 		staticShader.setMat4("model", model);
@@ -650,7 +650,7 @@ int main()
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::translate(model, glm::vec3(0.0f, 2.5f, 0));
 		staticShader.setMat4("model", model);
-		cabeza.Draw(staticShader);
+		cabeza.Draw(staticShader);*/
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Caja Transparente --- Siguiente Práctica
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -706,15 +706,15 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 	//To Configure Model
-	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+	/*if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
 		posZ++;
 	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
 		posZ--;
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
 		posX--;
 	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-		posX++;
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+		posX++;*/
+	/*if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
 		rotRodIzq--;
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		rotRodIzq++;
@@ -725,15 +725,15 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
 		lightPosition.x++;
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
-		lightPosition.x--;
+		lightPosition.x--;*/
 
 	//Car animation
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+	/*if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 		animacion ^= true;
 		movAuto_z = 0.0f; //Para reseteo con barra espaciadora
 		movAuto_y = 0.0f;
 		estadoAuto = 0;
-	}
+	}*/
 		
 
 	//To play KeyFrame animation 
