@@ -117,8 +117,8 @@ typedef struct _frame
 	float posX;		//Variable para PosicionX
 	float posY;		//Variable para PosicionY
 	float posZ;		//Variable para PosicionZ
-	float rotRodIzq;
-	float giroMonito;
+	//float rotRodIzq;
+	//float giroMonito;
 
 }FRAME;
 
