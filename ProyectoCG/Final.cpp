@@ -16,7 +16,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <time.h>
 
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>	//Texture
 
@@ -29,6 +28,14 @@
 #include <model.h>
 #include <Skybox.h>
 #include <iostream>
+
+//Librería de audio:
+#if defined(WIN32)
+#include <conio.h>
+#endif
+#include <irrKlang/irrKlang.h>
+
+#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 
 //#pragma comment(lib, "winmm.lib")
 
@@ -48,7 +55,7 @@ void getResolution(void);
 
 // camera
 Camera camera(glm::vec3(0.0f, 10.0f, 100.0f));
-float MovementSpeed = 0.1f;
+float MovementSpeed = 0.5f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -117,8 +124,8 @@ typedef struct _frame
 	float posX;		//Variable para PosicionX
 	float posY;		//Variable para PosicionY
 	float posZ;		//Variable para PosicionZ
-	//float rotRodIzq;
-	//float giroMonito;
+	float rotRodIzq;
+	float giroMonito;
 
 }FRAME;
 
@@ -326,6 +333,12 @@ int main()
 	monitors = glfwGetPrimaryMonitor();
 	getResolution();
 
+	//Inicio de sound engine
+	irrklang::ISoundEngine* bg_music = irrklang::createIrrKlangDevice();
+
+	if (!bg_music)
+		return 0; //Error con la música de fondo
+
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "CGeIHC", NULL, NULL);
 	if (window == NULL)
 	{
@@ -373,6 +386,9 @@ int main()
 
 	Skybox skybox = Skybox(faces);
 
+	//Reproducir música de fondo
+	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
+
 	// Shader configuration
 	// --------------------
 	skyboxShader.use();
@@ -383,6 +399,7 @@ int main()
 	/*Model casaBrujas("resources/objects/CasaBrujas/CasaBrujas.obj"); //Casa agregada
 	Model miCubo("resources/objects/MiCubo/cubo.obj"); //Cubo agregado*/
 	Model piso("resources/objects/piso/piso.obj");
+	Model arbol("resources/objects/arbol/green_tree.obj");
 	/*Model botaDer("resources/objects/Personaje/bota.obj");
 	Model piernaDer("resources/objects/Personaje/piernader.obj");
 	Model piernaIzq("resources/objects/Personaje/piernader.obj");
@@ -557,6 +574,11 @@ int main()
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
 
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f));
+		staticShader.setMat4("model", model);
+		arbol.Draw(staticShader);
+
 		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
@@ -684,6 +706,8 @@ int main()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	bg_music->drop(); //Borrar música de fondo
 
 	skybox.Terminate();
 
