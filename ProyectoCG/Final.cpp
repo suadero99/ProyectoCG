@@ -461,8 +461,8 @@ int main()
 		staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
 		staticShader.setVec3("dirLight.ambient", glm::vec3(1.0f, 1.0f, 1.0f));
-		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.2f, 0.2f, 0.2f));
+		staticShader.setVec3("dirLight.specular", glm::vec3(0.2f, 0.2f, 0.2f));
 
 		//Sol
 		staticShader.setVec3("pointLight[0].position", lightPosition);
@@ -574,8 +574,9 @@ int main()
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
 
+		//Dibujo de árbol de prueba
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f));
+		model = glm::scale(model, glm::vec3(10.0f));
 		staticShader.setMat4("model", model);
 		arbol.Draw(staticShader);
 
