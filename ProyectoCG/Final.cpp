@@ -68,7 +68,6 @@ double	deltaTime = 0.0f,
 
 //Lighting
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
-
 glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
 
 // posiciones
@@ -92,6 +91,8 @@ int estadoAuto = 0;
 //3 para avance después de elevación
 //4 para descenso
 //5 para detenido al final?
+
+
 
 float giroLlanta = 0.0f;
 
@@ -399,44 +400,8 @@ int main()
 	// -----------
 	/*Model casaBrujas("resources/objects/CasaBrujas/CasaBrujas.obj"); //Casa agregada
 	Model miCubo("resources/objects/MiCubo/cubo.obj"); //Cubo agregado*/
-	Model piso1("resources/objects/piso/piso1.obj");
-	/*Model piso2("resources/objects/piso/piso2.obj");
-	Model piso3("resources/objects/piso/piso3.obj");
-	Model piso4("resources/objects/piso/piso4.obj");
-	Model piso5("resources/objects/piso/piso5.obj");
-	Model piso6("resources/objects/piso/piso6.obj");
-	Model piso7("resources/objects/piso/piso7.obj");
-	Model piso8("resources/objects/piso/piso8.obj");
-	Model piso9("resources/objects/piso/piso9.obj");
-	Model piso10("resources/objects/piso/piso10.obj");
-	Model piso11("resources/objects/piso/piso11.obj");
-	Model piso12("resources/objects/piso/piso12.obj");
-	Model piso13("resources/objects/piso/piso13.obj");
-	Model piso14("resources/objects/piso/piso14.obj");
-	Model piso15("resources/objects/piso/piso15.obj");
-	Model piso16("resources/objects/piso/piso16.obj");*/
+	Model piso("resources/objects/piso/piso.obj");
 	Model arbol("resources/objects/arbol/green_tree.obj");
-	/*Model botaDer("resources/objects/Personaje/bota.obj");
-	Model piernaDer("resources/objects/Personaje/piernader.obj");
-	Model piernaIzq("resources/objects/Personaje/piernader.obj");
-	Model torso("resources/objects/Personaje/torso.obj");
-	Model brazoDer("resources/objects/Personaje/brazoder.obj");
-	Model brazoIzq("resources/objects/Personaje/brazoizq.obj");
-	Model cabeza("resources/objects/Personaje/cabeza.obj");
-	Model carro("resources/objects/lambo/carroceria.obj");
-	Model llanta("resources/objects/lambo/Wheel.obj");
-	Model casaVieja("resources/objects/casa/OldHouse.obj");
-	//Model cubo("resources/objects/cubo/cube02.obj");
-	Model casaDoll("resources/objects/casa/DollHouse.obj");*/
-
-	//ModelAnim pitufo("resources/objects/Moonwalk/Moonwalk.dae");
-	//pitufo.initShaders(animShader.ID);
-
-	/*ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
-	animacionPersonaje.initShaders(animShader.ID);
-
-	ModelAnim ninja("resources/objects/ZombieWalk/ZombieWalk.dae");
-	ninja.initShaders(animShader.ID);*/
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -588,8 +553,9 @@ int main()
 		//Construcción de las 16 partes del piso
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.1f));
 		staticShader.setMat4("model", model);
-		piso1.Draw(staticShader);
+		piso.Draw(staticShader);
 
 		/*model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
 		staticShader.setMat4("model", model);
