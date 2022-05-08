@@ -387,7 +387,8 @@ int main()
 	Skybox skybox = Skybox(faces);
 
 	//Reproducir música de fondo
-	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
+	//La apago porque sino vamos a enloquecer xD
+	//bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
 
 	// Shader configuration
 	// --------------------
@@ -398,7 +399,22 @@ int main()
 	// -----------
 	/*Model casaBrujas("resources/objects/CasaBrujas/CasaBrujas.obj"); //Casa agregada
 	Model miCubo("resources/objects/MiCubo/cubo.obj"); //Cubo agregado*/
-	Model piso("resources/objects/piso/piso.obj");
+	Model piso1("resources/objects/piso/piso1.obj");
+	/*Model piso2("resources/objects/piso/piso2.obj");
+	Model piso3("resources/objects/piso/piso3.obj");
+	Model piso4("resources/objects/piso/piso4.obj");
+	Model piso5("resources/objects/piso/piso5.obj");
+	Model piso6("resources/objects/piso/piso6.obj");
+	Model piso7("resources/objects/piso/piso7.obj");
+	Model piso8("resources/objects/piso/piso8.obj");
+	Model piso9("resources/objects/piso/piso9.obj");
+	Model piso10("resources/objects/piso/piso10.obj");
+	Model piso11("resources/objects/piso/piso11.obj");
+	Model piso12("resources/objects/piso/piso12.obj");
+	Model piso13("resources/objects/piso/piso13.obj");
+	Model piso14("resources/objects/piso/piso14.obj");
+	Model piso15("resources/objects/piso/piso15.obj");
+	Model piso16("resources/objects/piso/piso16.obj");*/
 	Model arbol("resources/objects/arbol/green_tree.obj");
 	/*Model botaDer("resources/objects/Personaje/bota.obj");
 	Model piernaDer("resources/objects/Personaje/piernader.obj");
@@ -568,15 +584,75 @@ int main()
 		staticShader.setMat4("model", model);
 		miCubo.Draw(staticShader);*/
 
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.2f));
-		staticShader.setMat4("model", model);
-		piso.Draw(staticShader);
 
+		//Construcción de las 16 partes del piso
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso1.Draw(staticShader);
+
+		/*model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso2.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso3.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso4.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(-75.0f, -0.0f, 25.0f));
+		staticShader.setMat4("model", model);
+		piso5.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso6.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso7.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso8.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(-75.0f, -0.0f, 25.0f));
+		staticShader.setMat4("model", model);
+		piso9.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso10.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso11.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso12.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(-75.0f, -0.0f, 25.0f));
+		staticShader.setMat4("model", model);
+		piso13.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso14.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso15.Draw(staticShader);
+
+		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		piso16.Draw(staticShader);
+		*/
 		//Dibujo de árbol de prueba
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(10.0f));
 		staticShader.setMat4("model", model);
 		arbol.Draw(staticShader);
 
