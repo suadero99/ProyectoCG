@@ -401,7 +401,7 @@ int main()
 	/*Model casaBrujas("resources/objects/CasaBrujas/CasaBrujas.obj"); //Casa agregada
 	Model miCubo("resources/objects/MiCubo/cubo.obj"); //Cubo agregado*/
 	Model piso("resources/objects/piso/piso.obj");
-	Model arbol("resources/objects/arbol/green_tree.obj");
+	Model arbol("resources/objects/fauna/green_tree.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
