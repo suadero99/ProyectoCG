@@ -376,7 +376,6 @@ int main()
 	// load models
 	// -----------
 	Model piso("resources/objects/piso/piso.obj");
-	Model arbol("resources/objects/fauna/green_tree.obj");
 	Model qfront("resources/objects/qfront/q_front.obj");
 	Model magnet("resources/objects/magnet/magnet.obj");
 	Model torniquetes("resources/objects/estacion/torniquetes.obj");
@@ -384,8 +383,47 @@ int main()
 	Model espera("resources/objects/estacion/espera_trenes.obj");
 	Model piramide("resources/objects/piramide/piramide.obj");
 	Model hachiko("resources/objects/hachiko/buchiko_estatua.obj");
-	Model camion("resources/objects/camion_gato/magiccatbus.obj");
-	Model rueda("resources/objects/camion_gato/llantita_no_lonja.obj");
+
+	//Vehiculos
+	Model ovni("resources/objects/ovni/ovni.obj");
+	Model tren("resources/objects/tren/tren.obj");
+	Model camion("resources/objects/camion_gato/magiccatbus.obj"); //Camión gato
+	Model rueda("resources/objects/camion_gato/llantita_no_lonja.obj"); //ruedas de camión gato
+
+	//Flora
+	Model arbol("resources/objects/flora/green_tree.obj");
+	Model arbusto("resources/objects/flora/arbusto.obj");
+	Model circulo("resources/objects/flora/circulo_para_arbol-2.obj");
+	Model planta("resources/objects/flora/planta_amarilla.obj");
+
+	//Para reloj
+	Model minutos("resources/objects/reloj/manecilla_minutos.obj"); //Manecilla de minutos
+	Model horas("resources/objects/reloj/manecilla_horas.obj"); //Manecilla de horas
+
+	//Morgana
+	Model cabezaMorgana("resources/objects/morgana/cabeza.obj");
+	Model torsoMorgana("resources/objects/morgana/torso.obj");
+	Model brazoMorgana("resources/objects/morgana/brazo_completo.obj");
+	Model piernaMorgana("resources/objects/morgana/pierna.obj");
+	Model patasCorriendoMorgana("resources/objects/morgana/patas_correr.obj");
+
+	//Joker
+	Model cabezaJoker("resources/objects/joker/cabeza.obj");
+	Model torsoJoker("resources/objects/joker/torso.obj");
+	Model brazoJoker("resources/objects/joker/brazo.obj");
+	Model piernaJoker("resources/objects/joker/pierna.obj");
+
+	//Novio Joker
+	Model cabezaAkechi("resources/objects/novio_joker/cabeza.obj");
+	Model torsoAkechi("resources/objects/novio_joker/torso.obj");
+	Model brazoAkechi("resources/objects/novio_joker/brazo.obj");
+	Model piernaAkechi("resources/objects/novio_joker/pierna.obj");
+
+	//Ann
+	Model cabezaAnn("resources/objects/ann/cabeza.obj");
+	Model torsoAnn("resources/objects/ann/torso.obj");
+	Model brazoAnn("resources/objects/ann/brazo.obj");
+	Model piernaAnn("resources/objects/ann/pierna.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -579,14 +617,14 @@ int main()
 
 		//Dibujo estacion
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(55.0f, 0.0f, -37.0f));
+		model = glm::translate(model, glm::vec3(55.0f, -0.1f, -37.0f));
 		model = glm::scale(model, glm::vec3(2.35f));
 		staticShader.setMat4("model", model);
 		estacion.Draw(staticShader);
 
 		//Dibujo espera
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(55.0f, 0.0f, -72.0f));
+		model = glm::translate(model, glm::vec3(55.0f, -0.1f, -72.0f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.35f));
 		staticShader.setMat4("model", model);
@@ -602,15 +640,23 @@ int main()
 		//Hachiko
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(20.0f, -1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model", model);
 		hachiko.Draw(staticShader);
+
+		//Tren
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(87.0f, 3.2f, 0.0f));
+		//model = glm::scale(model, glm::vec3(2.5f));
+		staticShader.setMat4("model", model);
+		tren.Draw(staticShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Camión gato
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(10.0f + movAuto_x, -0.6f + movAuto_y, 80.0f + movAuto_z));
+		model = glm::translate(model, glm::vec3(-10.0f + movAuto_x, -0.6f + movAuto_y, 80.0f + movAuto_z));
 		tmp = model = glm::rotate(model, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model", model);
@@ -646,6 +692,10 @@ int main()
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		rueda.Draw(staticShader);	//trasera izq
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Morgana
+		// -------------------------------------------------------------------------------------------------------------------------
 
 
 		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
