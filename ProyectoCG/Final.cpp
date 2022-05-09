@@ -69,6 +69,9 @@ double	deltaTime = 0.0f,
 //Lighting
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
 glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
+glm::vec3 lightPositionSun(0.0f, 550.0f, 0.0f);
+glm::vec3 luzColor(0.0f, 0.0f, 0.0f);
+float cont = 0.0f;
 
 // posiciones
 //float x = 0.0f;
@@ -173,15 +176,13 @@ void interpolation(void)
 
 void animate(void)
 {
-	//Para posición del Sol
-	if (cos(miVariable) >= -0.955) {
-		lightPosition.x = 460.0f * cos(miVariable);
-		lightPosition.y = 225.0f * sin(miVariable);
-		miVariable += 0.005f;
-	}
-	else {
-		miVariable = 0;
-	}
+	//Código de la animación del sol
+	lightPositionSun.x = 500.0f * cos(miVariable);
+	lightPositionSun.y = 500.0f * sin(miVariable);
+	miVariable += 0.0005f;
+	luzColor.x = 0.5f * cos(cont);
+	luzColor.y = 0.5f * sin(cont);
+	cont += 0.001;
 
 	//------------------Para luz que cambia de color
 	if (colorR <= 1.0f) {
@@ -270,36 +271,6 @@ void animate(void)
 			if (movAuto_z >= 70.5f)
 				estadoAuto = 5;
 		}
-
-		/*if (movAuto_z <= 200.0f && !reversaAuto) {
-			movAuto_z += 2.0f;
-			giroLlanta += 2.0f;
-		}
-		else {
-			reversaAuto = true;
-		}
-
-		if (movAuto_z >= 0.0f && reversaAuto) {
-			movAuto_z -= 2.0f;
-			giroLlanta -= 2.0f;
-		}
-		else {
-			reversaAuto = false;
-		}*/
-
-		/*else {
-			animacion = false;
-		}*/
-		
-
-		//Otra forma de hacerlo
-		/*if (movAuto_z >= 200) {
-			animacion = false;
-		}
-		else {
-			movAuto_z += 2.0f;
-			giroLlanta += 2.0f;
-		}*/
 	}
 	else {
 		movAuto_z = 0.0f;
@@ -377,12 +348,12 @@ int main()
 
 	vector<std::string> faces
 	{
-		"resources/skybox/right.jpg",
-		"resources/skybox/left.jpg",
-		"resources/skybox/top.jpg",
-		"resources/skybox/bottom.jpg",
-		"resources/skybox/front.jpg",
-		"resources/skybox/back.jpg"
+		"resources/skybox/right.png",
+		"resources/skybox/left.png",
+		"resources/skybox/top.png",
+		"resources/skybox/bottom.png",
+		"resources/skybox/front.png",
+		"resources/skybox/back.png"
 	};
 
 	Skybox skybox = Skybox(faces);
@@ -439,20 +410,27 @@ int main()
 		// don't forget to enable shader before setting uniforms
 		staticShader.use();
 		//Setup Advanced Lights
+		// Iluminación
 		staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
-		staticShader.setVec3("dirLight.ambient", glm::vec3(1.0f, 1.0f, 1.0f));
-		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.2f, 0.2f, 0.2f));
-		staticShader.setVec3("dirLight.specular", glm::vec3(0.2f, 0.2f, 0.2f));
+		staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		//Sin iluminación notoria
+		/*staticShader.setVec3("viewPos", camera.Position);
+		staticShader.setVec3("dirLight.direction", lightDirection);
+		staticShader.setVec3("dirLight.ambient", glm::vec3(0.5f, 0.5f, 0.5f));
+		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));*/
 
 		//Sol
-		staticShader.setVec3("pointLight[0].position", lightPosition);
+		staticShader.setVec3("pointLight[0].position", lightPositionSun);
 		staticShader.setVec3("pointLight[0].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[0].specular", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setFloat("pointLight[0].constant", 0.0008f);
-		staticShader.setFloat("pointLight[0].linear", 0.0045f);
-		staticShader.setFloat("pointLight[0].quadratic", 0.00000032f);
+		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[0].specular", glm::vec3(0.3f, 0.3f, 0.3f));
+		staticShader.setFloat("pointLight[0].constant", 0.08f);
+		staticShader.setFloat("pointLight[0].linear", 0.0009f);
+		staticShader.setFloat("pointLight[0].quadratic", 0.000004f);
 
 		staticShader.setVec3("pointLight[1].position", glm::vec3(150.0f, 5.0f, 0.0f));
 		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -553,70 +531,10 @@ int main()
 		//Construcción de las 16 partes del piso
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.1f));
+		model = glm::scale(model, glm::vec3(0.05f));
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
 
-		/*model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso2.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso3.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso4.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(-75.0f, -0.0f, 25.0f));
-		staticShader.setMat4("model", model);
-		piso5.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso6.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso7.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso8.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(-75.0f, -0.0f, 25.0f));
-		staticShader.setMat4("model", model);
-		piso9.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso10.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso11.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso12.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(-75.0f, -0.0f, 25.0f));
-		staticShader.setMat4("model", model);
-		piso13.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso14.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso15.Draw(staticShader);
-
-		model = glm::translate(model, glm::vec3(25.0f, -0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piso16.Draw(staticShader);
-		*/
 		//Dibujo de árbol de prueba
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setMat4("model", model);
