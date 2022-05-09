@@ -55,7 +55,7 @@ void getResolution(void);
 
 // camera
 Camera camera(glm::vec3(0.0f, 10.0f, 100.0f));
-float MovementSpeed = 0.5f;
+float MovementSpeed = 5.0f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
