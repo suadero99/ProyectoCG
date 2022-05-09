@@ -179,7 +179,13 @@ void animate(void)
 	//Código de la animación del sol
 	lightPositionSun.x = 500.0f * cos(miVariable);
 	lightPositionSun.y = 500.0f * sin(miVariable);
-	miVariable += 0.0025f;
+	
+	if (lightPositionSun.y<0 || lightPositionSun.x<0) {
+		miVariable += 0.005f;
+	}
+	else {
+		miVariable += 0.0025f;
+	}
 	luzColor.x = 0.5f * cos(cont);
 	luzColor.y = 0.5f * sin(cont);
 	cont += 0.001;
@@ -369,12 +375,13 @@ int main()
 
 	// load models
 	// -----------
-	/*Model casaBrujas("resources/objects/CasaBrujas/CasaBrujas.obj"); //Casa agregada
-	Model miCubo("resources/objects/MiCubo/cubo.obj"); //Cubo agregado*/
 	Model piso("resources/objects/piso/piso.obj");
 	Model arbol("resources/objects/fauna/green_tree.obj");
 	Model qfront("resources/objects/qfront/q_front.obj");
 	Model magnet("resources/objects/magnet/magnet.obj");
+	Model torniquetes("resources/objects/estacion/torniquetes.obj");
+	Model estacion("resources/objects/estacion/estacion.obj");
+	Model espera("resources/objects/estacion/espera_trenes.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -413,17 +420,17 @@ int main()
 		staticShader.use();
 		//Setup Advanced Lights
 		// Iluminación
-		staticShader.setVec3("viewPos", camera.Position);
+		/*staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
 		staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));*/
 		//Sin iluminación notoria
-		/*staticShader.setVec3("viewPos", camera.Position);
+		staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
 		staticShader.setVec3("dirLight.ambient", glm::vec3(0.5f, 0.5f, 0.5f));
 		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
-		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));*/
+		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
 
 		//Sol
 		staticShader.setVec3("pointLight[0].position", lightPositionSun);
@@ -545,17 +552,41 @@ int main()
 
 		//Dibujo edificio QFront
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(-100.0f, 0.0f, 80.0f));
-		model = glm::rotate(model, glm::radians(135.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-70.0f, 0.0f, 43.0f));
+		model = glm::rotate(model, glm::radians(140.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model", model);
 		qfront.Draw(staticShader);
 
 		//Dibujo edificio Magnet
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(-60.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-40.1f, 0.0f, -16.0f));
+		model = glm::rotate(model, glm::radians(91.5f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model", model);
 		magnet.Draw(staticShader);
+
+		//Dibujo torniquetes
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(53.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.5f));
+		staticShader.setMat4("model", model);
+		torniquetes.Draw(staticShader);
+
+		//Dibujo estacion
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(53.0f, 0.0f, -37.75f));
+		model = glm::scale(model, glm::vec3(2.5f));
+		staticShader.setMat4("model", model);
+		estacion.Draw(staticShader);
+
+		//Dibujo espera
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(53.0f, 0.0f, -72.5f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.5f));
+		staticShader.setMat4("model", model);
+		espera.Draw(staticShader);
 
 		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
