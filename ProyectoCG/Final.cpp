@@ -179,7 +179,7 @@ void animate(void)
 	//Código de la animación del sol
 	lightPositionSun.x = 500.0f * cos(miVariable);
 	lightPositionSun.y = 500.0f * sin(miVariable);
-	miVariable += 0.0005f;
+	miVariable += 0.0025f;
 	luzColor.x = 0.5f * cos(cont);
 	luzColor.y = 0.5f * sin(cont);
 	cont += 0.001;
@@ -530,7 +530,7 @@ int main()
 		miCubo.Draw(staticShader);*/
 
 
-		//Construcción de las 16 partes del piso
+		//Piso
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.05f));
