@@ -568,23 +568,23 @@ int main()
 
 		//Dibujo torniquetes
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(53.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(2.5f));
+		model = glm::translate(model, glm::vec3(55.0f, 3.2f, -2.0f));
+		model = glm::scale(model, glm::vec3(2.35f));
 		staticShader.setMat4("model", model);
 		torniquetes.Draw(staticShader);
 
 		//Dibujo estacion
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(53.0f, -3.5f, -37.75f));
-		model = glm::scale(model, glm::vec3(2.5f));
+		model = glm::translate(model, glm::vec3(55.0f, 0.0f, -37.0f));
+		model = glm::scale(model, glm::vec3(2.35f));
 		staticShader.setMat4("model", model);
 		estacion.Draw(staticShader);
 
 		//Dibujo espera
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(53.0f, -3.5f, -72.5f));
+		model = glm::translate(model, glm::vec3(55.0f, 0.0f, -72.0f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(2.5f));
+		model = glm::scale(model, glm::vec3(2.35f));
 		staticShader.setMat4("model", model);
 		espera.Draw(staticShader);
 
