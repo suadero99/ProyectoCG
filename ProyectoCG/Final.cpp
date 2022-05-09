@@ -382,6 +382,10 @@ int main()
 	Model torniquetes("resources/objects/estacion/torniquetes.obj");
 	Model estacion("resources/objects/estacion/estacion.obj");
 	Model espera("resources/objects/estacion/espera_trenes.obj");
+	Model piramide("resources/objects/piramide/piramide.obj");
+	Model hachiko("resources/objects/hachiko/buchiko_estatua.obj");
+	Model camion("resources/objects/camion_gato/magiccatbus.obj");
+	Model rueda("resources/objects/camion_gato/llantita_no_lonja.obj");
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -587,6 +591,62 @@ int main()
 		model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model", model);
 		espera.Draw(staticShader);
+
+		//Dibujo pirámide
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.5f));
+		//model = glm::scale(model, glm::vec3(2.5f));
+		staticShader.setMat4("model", model);
+		piramide.Draw(staticShader);
+
+		//Hachiko
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-20.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(2.5f));
+		staticShader.setMat4("model", model);
+		hachiko.Draw(staticShader);
+
+		// -------------------------------------------------------------------------------------------------------------------------
+		// Camión gato
+		// -------------------------------------------------------------------------------------------------------------------------
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(10.0f + movAuto_x, movAuto_y, 100.0f + movAuto_z));
+		tmp = model = glm::rotate(model, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(2.5f));
+		staticShader.setMat4("model", model);
+		//staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		camion.Draw(staticShader);
+
+		model = glm::translate(tmp, glm::vec3(0.002f, -0.4f, 2.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		staticShader.setMat4("model", model);
+		rueda.Draw(staticShader);	//delantera der
+
+		model = glm::translate(tmp, glm::vec3(-0.002f, -0.4f, 2.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		rueda.Draw(staticShader);	//delantera izq
+
+		model = glm::translate(tmp, glm::vec3(0.002f, -0.4f, -2.4f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		staticShader.setMat4("model", model);
+		rueda.Draw(staticShader);	//trasera der
+
+		model = glm::translate(tmp, glm::vec3(-0.002f, -0.4f, -2.4f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		rueda.Draw(staticShader);	//trasera izq
+
 
 		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
