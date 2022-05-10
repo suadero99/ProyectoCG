@@ -459,7 +459,7 @@ int main()
 	Model cabezaAnn("resources/objects/ann/cabeza.obj");
 	Model torsoAnn("resources/objects/ann/torso.obj");
 	Model brazoAnn("resources/objects/ann/brazo.obj");
-	Model piernaAnn("resources/objects/ann/pierna.obj");
+	Model piernaAnn("resources/objects/ann/pierna1.obj");
 	Model pierna2Ann("resources/objects/ann/pierna2.obj");
 
 	//Inicialización de KeyFrames
@@ -676,7 +676,7 @@ int main()
 
 		//Hachiko
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(20.0f, -0.7f, 0.0f));
+		model = glm::translate(model, glm::vec3(20.0f, -0.9f, 0.0f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.2f));
 		staticShader.setMat4("model", model);
@@ -770,7 +770,7 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 
 		//Torso
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(13.0f, -1.0f, 0.0f));
 		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.3f));
@@ -778,23 +778,24 @@ int main()
 		torsoMorgana.Draw(staticShader);
 
 		//Brazo derecho
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(-0.2f, 0.2f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		brazoMorgana.Draw(staticShader);
 
 		//Brazo izquierdo
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(0.2f, 0.2f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		brazoMorgana.Draw(staticShader);
 
 		//Cabeza
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(0.0f, 0.35f, -0.05f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0));
 		model = glm::scale(model, glm::vec3(0.3f));
@@ -802,7 +803,7 @@ int main()
 		cabezaMorgana.Draw(staticShader);
 
 		//Pierna Izq
-		model = glm::translate(tmp, glm::vec3(0.26f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(0.15f, -0.35f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.3f));
@@ -810,7 +811,7 @@ int main()
 		piernaMorgana.Draw(staticShader);
 
 		//Pierna Der
-		model = glm::translate(tmp, glm::vec3(-0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(-0.15f, -0.35f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.3f));
@@ -820,48 +821,49 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Joker
 		// -------------------------------------------------------------------------------------------------------------------------
-
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f, -1.0f, 3.0f));
+		//Torso
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(15.0f, 0.0f, 3.0f));
 		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		torsoJoker.Draw(staticShader);
 
 		//Brazo derecho
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(-0.51f, 0.5f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoJoker.Draw(staticShader);
 
 		//Brazo izquierdo
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(0.51f, 0.5f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoJoker.Draw(staticShader);
 
 		//Cabeza
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(0.0f, 0.70f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		cabezaJoker.Draw(staticShader);
 
-		//Pierna Izq
-		model = glm::translate(tmp, glm::vec3(0.6f, 0.0f, 0.0f));
+		//Pierna Der
+		model = glm::translate(tmp, glm::vec3(-0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaJoker.Draw(staticShader);
 
-		//Pierna Der
-		model = glm::translate(tmp, glm::vec3(0.05f, 0.0f, 0.0f));
+		//Pierna Izq
+		model = glm::translate(tmp, glm::vec3(0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
@@ -872,47 +874,48 @@ int main()
 		// Akechi
 		// -------------------------------------------------------------------------------------------------------------------------
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f, -1.0f, 1.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(15.0f, 0.0f, -3.0f));
 		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		torsoAkechi.Draw(staticShader);
 
 		//Brazo derecho
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(-0.51f, 0.5f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAkechi.Draw(staticShader);
 
 		//Brazo izquierdo
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(0.51f, 0.5f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAkechi.Draw(staticShader);
 
 		//Cabeza
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(0.0f, 0.71f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		cabezaAkechi.Draw(staticShader);
 
-		//Pierna Izq
-		model = glm::translate(tmp, glm::vec3(0.6f, 0.0f, 0.0f));
+		//Pierna Der
+		model = glm::translate(tmp, glm::vec3(-0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaAkechi.Draw(staticShader);
 
-		//Pierna Der
-		model = glm::translate(tmp, glm::vec3(0.05f, 0.0f, 0.0f));
+		//Pierna Izq
+		model = glm::translate(tmp, glm::vec3(0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
@@ -923,31 +926,33 @@ int main()
 		// Ann
 		// -------------------------------------------------------------------------------------------------------------------------
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f, -1.0f, 0.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(15.0f, 0.0f, 0.0f));
 		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		torsoAnn.Draw(staticShader);
 
-		//Brazo derecho
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		//Brazo izquierdo
+		model = glm::translate(tmp, glm::vec3(-0.51f, 0.5f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAnn.Draw(staticShader);
 
-		//Brazo izquierdo
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		//Brazo derecho
+		model = glm::translate(tmp, glm::vec3(0.51f, 0.5f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAnn.Draw(staticShader);
 
 		//Cabeza
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(0.0f, 0.70f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0));
 		model = glm::scale(model, glm::vec3(0.5f));
@@ -955,7 +960,7 @@ int main()
 		cabezaAnn.Draw(staticShader);
 
 		//Pierna Izq
-		model = glm::translate(tmp, glm::vec3(0.55f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(0.27f, -0.71f, 0.02f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
@@ -963,7 +968,7 @@ int main()
 		pierna2Ann.Draw(staticShader);
 
 		//Pierna Der
-		model = glm::translate(tmp, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(tmp, glm::vec3(-0.27f, -0.71f, 0.07f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
