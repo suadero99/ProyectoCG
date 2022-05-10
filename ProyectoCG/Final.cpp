@@ -376,7 +376,7 @@ int main()
 	// load models
 	// -----------
 	Model piso("resources/objects/piso/piso.obj");
-	Model qfront("resources/objects/qfront/q_front.obj");
+	Model qfront("resources/objects/qfront/qfront_chido.obj");
 	Model magnet("resources/objects/magnet/magnet.obj");
 	Model torniquetes("resources/objects/estacion/torniquetes.obj");
 	Model estacion("resources/objects/estacion/estacion.obj");
@@ -595,9 +595,9 @@ int main()
 
 		//Dibujo edificio QFront
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(-70.0f, -1.0f, 43.0f));
-		model = glm::rotate(model, glm::radians(140.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(2.5f));
+		model = glm::translate(model, glm::vec3(-92.0f, -1.0f, 40.0f));
+		model = glm::rotate(model, glm::radians(138.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.5f,2.5f,3.1f));
 		staticShader.setMat4("model", model);
 		qfront.Draw(staticShader);
 
