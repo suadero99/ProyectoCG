@@ -101,6 +101,10 @@ float giroLlanta = 0.0f;
 
 float	miVariable = 0.0f;
 
+//Para animación de reloj
+float	giroMins = 0.0f,
+		giroHoras = 0.0f;
+
 //Para color de iluminación
 float	colorR = 0.0f,
 		colorG = 1.0f,
@@ -189,6 +193,14 @@ void animate(void)
 	luzColor.x = 0.5f * cos(cont);
 	luzColor.y = 0.5f * sin(cont);
 	cont += 0.001;
+
+	//Para reloj:
+	giroMins += 0.1f;
+	giroHoras += 0.1f;
+
+	//Para gato camion
+	giroLlanta += 0.2f;
+	orienta += 0.2f;
 
 	//------------------Para luz que cambia de color
 	if (colorR <= 1.0f) {
@@ -663,6 +675,22 @@ int main()
 		staticShader.setMat4("model", model);
 		tren.Draw(staticShader);
 
+		//Reloj
+		//Manecilla minutos
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(55.0f, 33.7f, -59.4f));
+		model = glm::rotate(model, glm::radians(-giroMins), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(2.35f));
+		staticShader.setMat4("model", model);
+		minutos.Draw(staticShader);
+		//Manecilla horas
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(55.0f, 33.7f, -59.2f));
+		model = glm::rotate(model, glm::radians(-giroHoras), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(2.35f,1.55f,2.35f));
+		staticShader.setMat4("model", model);
+		horas.Draw(staticShader);
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Camión gato
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -674,31 +702,31 @@ int main()
 		//staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 		camion.Draw(staticShader);
 
-		model = glm::translate(tmp, glm::vec3(0.002f, -0.4f, 2.0f));
+		model = glm::translate(tmp, glm::vec3(1.7f, 0.0f, 2.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(0.0f, 0.0f, 1.0f));
 		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setMat4("model", model);
 		rueda.Draw(staticShader);	//delantera der
 
-		model = glm::translate(tmp, glm::vec3(-0.002f, -0.4f, 2.0f));
+		model = glm::translate(tmp, glm::vec3(-1.7f, 0.0f, 2.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(0.0f, 0.0f, 1.0f));
 		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		rueda.Draw(staticShader);	//delantera izq
 
-		model = glm::translate(tmp, glm::vec3(0.002f, -0.4f, -2.4f));
+		model = glm::translate(tmp, glm::vec3(1.7f, 0.0f, -2.4f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(0.0f, 0.0f, 1.0f));
 		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setMat4("model", model);
 		rueda.Draw(staticShader);	//trasera der
 
-		model = glm::translate(tmp, glm::vec3(-0.002f, -0.4f, -2.4f));
+		model = glm::translate(tmp, glm::vec3(-1.7f, 0.0f, -2.4f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(0.0f, 0.0f, 1.0f));
 		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
