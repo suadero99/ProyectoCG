@@ -663,6 +663,7 @@ int main()
 		staticShader.setMat4("model", model);
 		tren.Draw(staticShader);
 
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Camión gato
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -910,6 +911,8 @@ int main()
 		piernaAnn.Draw(staticShader);
 
 
+
+
 		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
@@ -1062,9 +1065,9 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 	//To Configure Model
 	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
-		posZ++;
+		posY++;
 	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-		posZ--;
+		posY--;
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
 		posX--;
 	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
