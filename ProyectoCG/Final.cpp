@@ -604,9 +604,9 @@ int main()
 
 		//Dibujo edificio Magnet
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(-40.1f, -0.7f, -16.0f));
-		model = glm::rotate(model, glm::radians(91.5f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(2.5f));
+		model = glm::translate(model, glm::vec3(-65.0f, -0.7f, -38.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.7f));
 		staticShader.setMat4("model", model);
 		magnet.Draw(staticShader);
 
@@ -634,7 +634,7 @@ int main()
 
 		//Dibujo pirámide
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(25.0f, -0.73f, 50.0f));
+		model = glm::translate(model, glm::vec3(25.0f, -0.7f, 50.0f));
 		model = glm::scale(model, glm::vec3(2.35f));
 		staticShader.setMat4("model", model);
 		piramide.Draw(staticShader);
