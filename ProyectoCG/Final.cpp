@@ -76,10 +76,6 @@ float cont = 0.0f;
 // posiciones
 //float x = 0.0f;
 //float y = 0.0f;
-float	movAuto_x = 0.0f,
-		movAuto_y = 0.0f,
-		movAuto_z = 0.0f,
-		orienta = 0.0f;
 bool	animacion = false,
 		recorrido1 = true,
 		recorrido2 = false,
@@ -96,8 +92,28 @@ int estadoAuto = 0;
 //5 para detenido al final?
 
 
-
+//Para Gato camion
 float giroLlanta = 0.0f;
+float	movAuto_x = 0.0f,
+		movAuto_y = 0.0f,
+		movAuto_z = 0.0f,
+		orientaAuto = 0.0f;
+
+//Para ovni
+float	orientaOvni = 0.0f,
+		movOvni_x = 0.0f,
+		movOvni_y = 0.0f,
+		movOvni_z = 0.0f;
+
+//Para tren
+float	orientaCabina = 0.0f,
+		movCabina_x = 0.0f,
+		movCabina_y = 0.0f,
+		movCabina_z = 0.0f,
+		orientaVagon = 0.0f,
+		movVagon_x = 0.0f,
+		movVagon_y = 0.0f,
+		movVagon_z = 0.0f;
 
 float	miVariable = 0.0f;
 
@@ -200,7 +216,14 @@ void animate(void)
 
 	//Para gato camion
 	giroLlanta += 0.2f;
-	orienta += 0.2f;
+	orientaAuto += 0.2f;
+
+	//Para ovni
+	orientaOvni += 0.2f;
+
+	//Para tren
+	orientaCabina += 0.3f;
+	orientaVagon += 0.3f;
 
 	//------------------Para luz que cambia de color
 	if (colorR <= 1.0f) {
@@ -398,7 +421,7 @@ int main()
 
 	//Vehiculos
 	Model ovni("resources/objects/ovni/ovni.obj");
-	Model tren("resources/objects/tren/tren.obj");
+	Model vagon("resources/objects/tren/tren.obj");
 	Model cabina("resources/objects/tren/cabina.obj");
 	Model camion("resources/objects/camion_gato/magiccatbus.obj"); //Camión gato
 	Model rueda("resources/objects/camion_gato/llantita_no_lonja.obj"); //ruedas de camión gato
@@ -638,7 +661,7 @@ int main()
 
 		//Dibujo espera
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(55.0f, -0.8f, -72.0f));
+		model = glm::translate(model, glm::vec3(55.0f, -1.0f, -72.0f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.35f));
 		staticShader.setMat4("model", model);
@@ -662,18 +685,18 @@ int main()
 		//Cabina
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(51.0f, -0.5f, -90.0f));
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f + orientaCabina), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f));
 		staticShader.setMat4("model", model);
 		cabina.Draw(staticShader);
 
-		//Tren
+		//Vagon
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(70.0f, 0.2f, -90.0f));
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f + orientaVagon), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f));
 		staticShader.setMat4("model", model);
-		tren.Draw(staticShader);
+		vagon.Draw(staticShader);
 
 		//Reloj
 		//Manecilla minutos
@@ -691,12 +714,22 @@ int main()
 		staticShader.setMat4("model", model);
 		horas.Draw(staticShader);
 
+		//Ovni
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f + movOvni_x, 60.0f + movOvni_y, 0.0f + movOvni_z));
+		model = glm::rotate(model, glm::radians(orientaOvni), glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::rotate(model, glm::radians(orientaOvni), glm::vec3(1.0f, 1.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(2.5f));
+		staticShader.setMat4("model", model);
+		//staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		ovni.Draw(staticShader);
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Camión gato
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f + movAuto_x, -0.6f + movAuto_y, 0.0f + movAuto_z));
-		tmp = model = glm::rotate(model, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
+		tmp = model = glm::rotate(model, glm::radians(orientaAuto), glm::vec3(0.0f, 1.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model", model);
 		//staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
