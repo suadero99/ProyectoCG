@@ -84,7 +84,7 @@ bool	animacion = false,
 		reversaAuto = false; //para "pingpong" en auto
 
 int estadoAuto = 0;
-//0 para detenido
+//0 para detenidomovCamion
 //1 para primera reversa
 //2 para primera elevación
 //3 para avance después de elevación
@@ -93,11 +93,13 @@ int estadoAuto = 0;
 
 
 //Para Gato camion
-float	giroLlanta = 0.0f;
-float	movAuto_x = 0.0f,
-		movAuto_y = 0.0f,
-		movAuto_z = 0.0f,
-		orientaAuto = 0.0f;
+float giroLlanta = 0.0f;
+float	movCamion_x = 118.0f,
+		movCamion_y = 0.0f,
+		movCamion_z = 115.0f,
+		orientaCamion = 180.0f;
+bool	animacion_camion;
+int		estado_camion=0;
 
 //Para ovni
 float	orientaOvni = 0.0f,
@@ -338,8 +340,21 @@ void animate(void)
 	}
 
 	//Para gato camion
-	giroLlanta += 0.2f;
-	orientaAuto += 0.2f;
+	
+	if (animacion_camion) {
+		//giroLlanta += 0.2f;
+		//orientaCamion += 0.2f;
+		switch (estado_camion) {
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+		}
+	}
 
 	//Para ovni
 	orientaOvni += 0.2f;
@@ -806,8 +821,8 @@ int main()
 		// Camión gato
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f + movAuto_x, -0.6f + movAuto_y, 0.0f + movAuto_z));
-		tmp = model = glm::rotate(model, glm::radians(orientaAuto), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(movCamion_x, movCamion_y, movCamion_z));
+		tmp = model = glm::rotate(model, glm::radians(orientaCamion), glm::vec3(0.0f, 1.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model", model);
 		//staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
@@ -1066,7 +1081,7 @@ int main()
 		// Carro
 		// -------------------------------------------------------------------------------------------------------------------------
 		/*model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f + movAuto_x, movAuto_y, movAuto_z));
+		model = glm::translate(model, glm::vec3(15.0f + movCamion_x, movCamion_y, movCamion_z));
 		tmp = model = glm::rotate(model, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setMat4("model", model);
