@@ -167,11 +167,6 @@ int i_curr_steps = 0;
 typedef struct _frame
 {
 	//Variables para GUARDAR Key Frames
-	float posX;		//Variable para PosicionX
-	float posY;		//Variable para PosicionY
-	float posZ;		//Variable para PosicionZ
-	float rotRodIzq;
-	float giroMonito;
 
 	//Para cachetadas
 	//Joker
@@ -189,44 +184,27 @@ int FrameIndex = 0;			//introducir datos
 bool play = false;
 int playIndex = 0;
 
+void saveFrame(void)
+{
+	//printf("frameindex %d\n", FrameIndex);
+	std::cout << "Frame Index = " << FrameIndex << std::endl;
+
+	KeyFrame[FrameIndex].giroCabezaJoker_y = giroCabezaJoker_y;
+	KeyFrame[FrameIndex].giroBrazoAkechi_x = giroBrazoAkechi_x;
+	KeyFrame[FrameIndex].giroBrazoDerechoAnn_x = giroBrazoDerechoAnn_x;
+	KeyFrame[FrameIndex].giroBrazoDerechoAnn_y = giroBrazoDerechoAnn_y;
+	/*
+	std::cout << "giroCabezaJoker_y = " << giroCabezaJoker_y << std::endl;
+	std::cout << "giroBrazoAkechi_x = " << giroBrazoAkechi_x << std::endl;
+	std::cout << "giroBrazoDerechoAnn_x = " << giroBrazoDerechoAnn_x << std::endl;
+	std::cout << "giroBrazoDerechoAnn_y = " << giroBrazoDerechoAnn_y << std::endl;
+	*/
+
+	FrameIndex++;
+}
+
 //Para nuestra animación por KeyFrames
-/*void insertarFrames(void) {
-	giroCabezaJoker_y = 0
-giroBrazoAkechi_x = 0
-giroBrazoDerechoAnn_x = 0
-giroBrazoDerechoAnn_y = 0
-Frame Index = 1
-giroCabezaJoker_y = 0
-giroBrazoAkechi_x = 0
-giroBrazoDerechoAnn_x = -18.6
-giroBrazoDerechoAnn_y = -107.7
-Frame Index = 2
-giroCabezaJoker_y = -24.6
-giroBrazoAkechi_x = 0
-giroBrazoDerechoAnn_x = 17.1
-giroBrazoDerechoAnn_y = -115.2
-Frame Index = 3
-giroCabezaJoker_y = 0.600001
-giroBrazoAkechi_x = 0
-giroBrazoDerechoAnn_x = 59.6999
-giroBrazoDerechoAnn_y = -115.2
-Frame Index = 4
-giroCabezaJoker_y = 44.9999
-giroBrazoAkechi_x = 0
-giroBrazoDerechoAnn_x = 26.1
-giroBrazoDerechoAnn_y = -115.2
-Frame Index = 5
-giroCabezaJoker_y = 4.5
-giroBrazoAkechi_x = 0
-giroBrazoDerechoAnn_x = -68.6999
-giroBrazoDerechoAnn_y = -47.0999
-Frame 6
-giroCabezaJoker_y = 4.49999
-giroBrazoAkechi_x = 172.801
-giroBrazoDerechoAnn_x = -68.6998
-giroBrazoDerechoAnn_y = -5.99983
-
-
+void insertarFrames(void) {
 	//Frame 0:
 	giroCabezaJoker_y = 0.0f;
 	giroBrazoAkechi_x = 0.0f;
@@ -239,31 +217,66 @@ giroBrazoDerechoAnn_y = -5.99983
 	//Frame 1
 	giroCabezaJoker_y = 0.0f;
 	giroBrazoAkechi_x = 0.0f;
-	giroBrazoDerechoAnn_x = -120.0f;
+	giroBrazoDerechoAnn_x = -18.6f;
+	giroBrazoDerechoAnn_y = -107.7f;
+	if (FrameIndex < MAX_FRAMES)
+	{
+		saveFrame();
+	}
+	//Frame 2
+	giroCabezaJoker_y = -24.6f;
+	giroBrazoAkechi_x = 0.0f;
+	giroBrazoDerechoAnn_x = 17.1f;
+	giroBrazoDerechoAnn_y = -115.2f;
+	if (FrameIndex < MAX_FRAMES)
+	{
+		saveFrame();
+	}
+	//Frame 3
+	giroCabezaJoker_y = 0.600001f;
+	giroBrazoAkechi_x = 0.0f;
+	giroBrazoDerechoAnn_x = 59.6999f;
+	giroBrazoDerechoAnn_y = -115.2f;
+	if (FrameIndex < MAX_FRAMES)
+	{
+		saveFrame();
+	}
+	//Frame 4
+	giroCabezaJoker_y = 44.9999f;
+	giroBrazoAkechi_x = 0.0f;
+	giroBrazoDerechoAnn_x = 26.1f;
+	giroBrazoDerechoAnn_y = -115.2f;
+	if (FrameIndex < MAX_FRAMES)
+	{
+		saveFrame();
+	}
+	//Frame 5
+	giroCabezaJoker_y = 4.5f;
+	giroBrazoAkechi_x = 0.0f;
+	giroBrazoDerechoAnn_x = -68.6999f;
+	giroBrazoDerechoAnn_y = -47.0999f;
+	if (FrameIndex < MAX_FRAMES)
+	{
+		saveFrame();
+	}
+	//Frame 6
+	giroCabezaJoker_y = 4.49999f;
+	giroBrazoAkechi_x = 172.801f;
+	giroBrazoDerechoAnn_x = -68.6998f;
+	giroBrazoDerechoAnn_y = -5.99983f;
+	if (FrameIndex < MAX_FRAMES)
+	{
+		saveFrame();
+	}
+	//Frame 7
+	giroCabezaJoker_y = 0.0f;
+	giroBrazoAkechi_x = 0.0f;
+	giroBrazoDerechoAnn_x = 0.0f;
 	giroBrazoDerechoAnn_y = 0.0f;
 	if (FrameIndex < MAX_FRAMES)
 	{
 		saveFrame();
 	}
-}*/
-
-
-void saveFrame(void)
-{
-	//printf("frameindex %d\n", FrameIndex);
-	std::cout << "Frame Index = " << FrameIndex << std::endl;
-
-	KeyFrame[FrameIndex].giroCabezaJoker_y = giroCabezaJoker_y;
-	KeyFrame[FrameIndex].giroBrazoAkechi_x = giroBrazoAkechi_x;
-	KeyFrame[FrameIndex].giroBrazoDerechoAnn_x = giroBrazoDerechoAnn_x;
-	KeyFrame[FrameIndex].giroBrazoDerechoAnn_y = giroBrazoDerechoAnn_y;
-
-	std::cout << "giroCabezaJoker_y = " << giroCabezaJoker_y << std::endl;
-	std::cout << "giroBrazoAkechi_x = " << giroBrazoAkechi_x << std::endl;
-	std::cout << "giroBrazoDerechoAnn_x = " << giroBrazoDerechoAnn_x << std::endl;
-	std::cout << "giroBrazoDerechoAnn_y = " << giroBrazoDerechoAnn_y << std::endl;
-
-	FrameIndex++;
 }
 
 void resetElements(void)
@@ -665,7 +678,7 @@ void animate(void)
 		colorB = 1.0f;
 	}
 
-
+	//Animación por keyframes
 	if (play)
 	{
 		if (i_curr_steps >= i_max_steps) //end of animation between frames?
@@ -809,7 +822,7 @@ int main()
 	//Flora
 	Model arbol("resources/objects/flora/green_tree.obj");
 	Model arbusto("resources/objects/flora/arbusto.obj");
-	Model circulo("resources/objects/flora/circulo_para_arbol-2.obj");
+	Model circulo("resources/objects/flora/circulo-para-arbol.obj");
 	Model planta("resources/objects/flora/planta_amarilla.obj");
 
 	//Para reloj
@@ -854,12 +867,13 @@ int main()
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
 	{
-		KeyFrame[i].posX = 0;
-		KeyFrame[i].posY = 0;
-		KeyFrame[i].posZ = 0;
-		KeyFrame[i].rotRodIzq = 0;
-		KeyFrame[i].giroMonito = 0;
+		KeyFrame[i].giroCabezaJoker_y = 0.0f;
+		KeyFrame[i].giroBrazoAkechi_x = 0.0f;
+		KeyFrame[i].giroBrazoDerechoAnn_x = 0.0f;
+		KeyFrame[i].giroBrazoDerechoAnn_y = 0.0f;
 	}
+
+	insertarFrames();
 
 	// draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -1030,6 +1044,49 @@ int main()
 		model = glm::scale(model, glm::vec3(1.2f));
 		staticShader.setMat4("model", model);
 		hachiko.Draw(staticShader);
+
+		//Circulos cerca de Hachiko
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(15.0f, -0.9f, -5.0f));
+		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.2f));
+		staticShader.setMat4("model", model);
+		circulo.Draw(staticShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(25.0f, -0.9f, -5.0f));
+		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.2f));
+		staticShader.setMat4("model", model);
+		circulo.Draw(staticShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(15.0f, -0.9f, -35.0f));
+		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.2f));
+		staticShader.setMat4("model", model);
+		circulo.Draw(staticShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(25.0f, -0.9f, -5.0f));
+		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.2f));
+		staticShader.setMat4("model", model);
+		circulo.Draw(staticShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(15.0f, -0.9f, -65.0f));
+		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.2f));
+		staticShader.setMat4("model", model);
+		circulo.Draw(staticShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(25.0f, -0.9f, -65.0f));
+		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.2f));
+		staticShader.setMat4("model", model);
+		circulo.Draw(staticShader);
 
 		//Cabina
 		model = glm::mat4(1.0f);
@@ -1382,7 +1439,8 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 	//To Configure Model
-	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+	//Para keyframes
+	/*if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
 		giroCabezaJoker_y += 0.3;
 	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
 		giroCabezaJoker_y -= 0.3;
@@ -1397,7 +1455,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
 		giroBrazoDerechoAnn_x += 0.3;
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
-		giroBrazoDerechoAnn_x -= 0.3;
+		giroBrazoDerechoAnn_x -= 0.3;*/
 	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
 		lightPosition.x++;
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
@@ -1482,13 +1540,13 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	}
 
 	//To Save a KeyFrame
-	if (key == GLFW_KEY_L && action == GLFW_PRESS)
+	/*if (key == GLFW_KEY_L && action == GLFW_PRESS)
 	{
 		if (FrameIndex < MAX_FRAMES)
 		{
 			saveFrame();
 		}
-	}
+	}*/
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
