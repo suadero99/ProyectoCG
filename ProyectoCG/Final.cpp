@@ -850,6 +850,9 @@ int main()
 	ModelAnim Futaba2("resources/objects/Futaba/Yelling/Yelling.dae");
 	Futaba2.initShaders(animShader.ID);
 
+	//Globo de dialogo
+	Model globo("resources/objects/globo_dialogo/globo_dialogo.obj");
+
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -1334,6 +1337,36 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaAnn.Draw(staticShader);
+
+		//Globos de dialogo
+		//Globo Akechi
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(15.0f, 3.0f, -30.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::scale(model, glm::vec3(1.5f));
+		staticShader.setMat4("model", model);
+		globo.Draw(staticShader);
+		//Globo Joker
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(10.0f, 3.0f, -23.8f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::scale(model, glm::vec3(1.5f));
+		staticShader.setMat4("model", model);
+		globo.Draw(staticShader);
+		//Globo Ann
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(15.0f, 3.0f, -22.0f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::scale(model, glm::vec3(1.5f));
+		staticShader.setMat4("model", model);
+		globo.Draw(staticShader);
+		//Globo Morgana
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(14.0f, 3.0f, -30.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::scale(model, glm::vec3(1.5f));
+		staticShader.setMat4("model", model);
+		globo.Draw(staticShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Termina Escenario
