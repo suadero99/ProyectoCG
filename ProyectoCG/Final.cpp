@@ -111,9 +111,9 @@ float	orientaCabina = 0.0f,
 		movCabina_y = -0.5f,
 		movCabina_z = -90.0f,
 		orientaVagon = 0.0f,
-		movVagon_x = 0.0f,
-		movVagon_y = 0.0f,
-		movVagon_z = 0.0f;
+		movVagon_x = 70.0f,
+		movVagon_y = 0.2f,
+		movVagon_z = -90.0f;
 int		estadoCabina = 0,
 		estadoVagon = 0;
 bool	animacion_tren;
@@ -270,6 +270,54 @@ void animate(void)
 			}
 			else {
 				estadoCabina = 0;
+			}
+			break;
+		}
+		switch (estadoVagon) {
+		case 0:
+			orientaVagon = 0.0f;
+			if (movVagon_x >= -115.0f) {
+				movVagon_x -= 1.0f;
+			}
+			else {
+				estadoVagon = 1;
+			}
+			break;
+		case 1:
+			orientaVagon = 90.0f;
+			if (movVagon_z <= 115.0f) {
+				movVagon_z += 1.0f;
+			}
+			else {
+				estadoVagon = 2;
+			}
+			break;
+		case 2:
+			orientaVagon = 180.0f;
+			if (movVagon_x <= -15.0f) {
+				movVagon_x += 1.0f;
+			}
+			else {
+				estadoVagon = 3;
+			}
+			break;
+		case 3:
+			orientaVagon = 210.0f;
+			if (movVagon_x <= 90.0f) {
+				movVagon_x += 1.0f;
+				movVagon_z -= 1.0f;
+			}
+			else {
+				estadoVagon = 4;
+			}
+			break;
+		case 4:
+			orientaVagon = 270.0f;
+			if (movVagon_z >= -90.0f) {
+				movVagon_z -= 1.0f;
+			}
+			else {
+				estadoVagon = 0;
 			}
 			break;
 		}
@@ -749,7 +797,7 @@ int main()
 
 		//Vagon
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(70.0f, 0.2f, -90.0f));
+		model = glm::translate(model, glm::vec3(movVagon_x, movVagon_y, movVagon_z));
 		model = glm::rotate(model, glm::radians(90.0f + orientaVagon), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f));
 		staticShader.setMat4("model", model);
@@ -1226,8 +1274,15 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	//Animación 2: Movimiento del tren
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
 		animacion_tren ^= true;
+		estadoCabina = 0;
+		estadoVagon = 0;
+		orientaCabina = 0.0f;
 		movCabina_x = 51.0f;
 		movCabina_z = -90.0f;
+		orientaVagon = 0.0f;
+		movVagon_x = 70.0f;
+		movVagon_y = 0.2f;
+		movVagon_z = -90.0f;
 	}
 
 	//To play KeyFrame animation 
