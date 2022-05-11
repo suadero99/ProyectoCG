@@ -93,13 +93,13 @@ int estadoAuto = 0;
 
 
 //Para Gato camion
-float giroLlanta = 0.0f;
+float	giroLlanta = 0.0f;
 float	movCamion_x = 118.0f,
 		movCamion_y = 0.0f,
 		movCamion_z = 115.0f,
 		orientaCamion = 180.0f;
 bool	animacion_camion;
-int		estado_camion=0;
+int		estado_camion=1;
 
 //Para ovni (secuestro de Futaba)
 float	orientaOvni = 0.0f,
@@ -235,6 +235,7 @@ void animate(void)
 		}
 	}
 
+	//--------------------Animación de tren
 	if (animacion_tren) {
 		switch (estadoCabina) {
 		case 0:
@@ -264,12 +265,15 @@ void animate(void)
 			}
 			break;
 		case 3:
-			orientaCabina = 210.0f;
+			orientaCabina = 205.23f;
 			if (movCabina_x <= 90.0f) {
-				movCabina_x += 1.0f;
-				movCabina_z -= 1.0f;
+				movCabina_x += 1.0;
+				movCabina_z -= 0.47116f;
 			}
 			else {
+				//cout << "Z final: " << movVagon_z << endl;
+				//cout << "X final: " << movVagon_x << endl;
+				movCabina_z = 65.0f;
 				estadoCabina = 4;
 			}
 			break;
@@ -304,20 +308,29 @@ void animate(void)
 			break;
 		case 2:
 			orientaVagon = 180.0f;
+			//cout << "Z inicial: " << movVagon_z << endl;
 			if (movVagon_x <= -15.0f) {
 				movVagon_x += 1.0f;
 			}
 			else {
 				estadoVagon = 3;
+				//cout << "X inicial: " << movVagon_x << endl;
 			}
 			break;
 		case 3:
-			orientaVagon = 210.0f;
+			//cout << "Z: " << movVagon_z << endl;
+			//cout << "X: " << movVagon_x << endl;
+			//m = xf-xi / zf - zi = (90 + 14) / (65 - 116) = 104/-49 = -2.1224f
+			//theta = -64.77f; 270 - theta = angulo
+			orientaVagon = 205.23f; 
 			if (movVagon_x <= 90.0f) {
-				movVagon_x += 1.0f;
-				movVagon_z -= 1.0f;
+				movVagon_x += 1.0;
+				movVagon_z -= 0.47116f;
 			}
 			else {
+				//cout << "Z final: " << movVagon_z << endl;
+				//cout << "X final: " << movVagon_x << endl;
+				movVagon_z = 65.0f;
 				estadoVagon = 4;
 			}
 			break;
@@ -334,18 +347,148 @@ void animate(void)
 	}
 
 	//Para gato camion
-	
 	if (animacion_camion) {
 		//giroLlanta += 0.2f;
 		//orientaCamion += 0.2f;
 		switch (estado_camion) {
 			case 1:
+				if (movCamion_z >= 70.0f) {
+					giroLlanta += 1.0f;
+					movCamion_z -= 1.0f;
+				}
+				else {
+					estado_camion++;
+				}
 				break;
-			case 2:
+			case 2: //Salto 1
+				if (movCamion_z >= 60.0f) {
+					giroLlanta += 0.1f;
+					movCamion_z -= 1.3;
+					movCamion_y += 0.3f;
+				}
+				else {
+					estado_camion++;
+				}
 				break;
 			case 3:
+				if (movCamion_z >= -60.0f) {
+					giroLlanta += 1.0f;
+					movCamion_z -= 1.0f;
+					if (movCamion_y > 0.0f)
+						movCamion_y -= 0.3f;
+					else
+						movCamion_y = 0.0f;
+				}
+				else {
+					estado_camion++;
+					movCamion_y = 0.0f;
+				}
 				break;
-			case 4:
+			case 4: //Salto 2
+				if (movCamion_z >= -70.0f) {
+					giroLlanta += 0.1f;
+					movCamion_z -= 1.3;
+					movCamion_y += 0.3f;
+				}
+				else {
+					estado_camion++;
+				}
+				break;
+			case 5:
+				if (movCamion_z >= -107.0f) {
+					giroLlanta += 1.0f;
+					movCamion_z -= 1.0f;
+					if (movCamion_y > 0.0f)
+						movCamion_y -= 0.3f;
+					else
+						movCamion_y = 0.0f;
+				}
+				else {
+					estado_camion++;
+					movCamion_y = 0.0f;
+					orientaCamion = -90.0f;
+					movCamion_z = -107.0f;
+				}
+				break;
+			case 6:
+				if (movCamion_x >= -7.0f) {
+					giroLlanta += 1.0f;
+					movCamion_x -= 1.0f;
+				}
+				else {
+					estado_camion++;
+					orientaCamion = 0.0f;
+					movCamion_x = -7.0f;
+				}
+				break;
+			case 7:
+				if (movCamion_z <= -70.0f) {
+					giroLlanta += 1.0f;
+					movCamion_z += 1.0f;
+				}
+				else {
+					estado_camion++;
+				}
+				break;
+			case 8: //Salto 3
+				if (movCamion_z <= -60.0f) {
+					giroLlanta += 0.1f;
+					movCamion_z += 1.3;
+					movCamion_y += 0.3f;
+				}
+				else {
+					estado_camion++;
+				}
+				break;
+			case 9:
+				if (movCamion_z <= 60.0f) {
+					giroLlanta += 1.0f;
+					movCamion_z += 1.0f;
+					if (movCamion_y > 0.0f)
+						movCamion_y -= 0.3f;
+					else
+						movCamion_y = 0.0f;
+				}
+				else {
+					estado_camion++;
+					movCamion_y = 0.0f;
+				}
+				break;
+			case 10: //Salto 4
+				if (movCamion_z <= 70.0f) {
+					giroLlanta += 0.1f;
+					movCamion_z += 1.3;
+					movCamion_y += 0.3f;
+				}
+				else {
+					estado_camion++;
+				}
+				break;
+			case 11:
+				if (movCamion_z <= 115.0f) {
+					giroLlanta += 1.0f;
+					movCamion_z += 1.0f;
+					if (movCamion_y > 0.0f)
+						movCamion_y -= 0.3f;
+					else
+						movCamion_y = 0.0f;
+				}
+				else {
+					estado_camion++;
+					movCamion_y = 0.0f;
+					orientaCamion = 90.0f;
+				}
+				break;
+			case 12:
+				if (movCamion_x <= 118.0f) {
+					giroLlanta += 1.0f;
+					movCamion_x += 1.0f;
+				}
+				else {
+					estado_camion = 1;
+					orientaCamion = 180.0f;
+					movCamion_x = 118.0f;
+				}
 				break;
 		}
 	}
@@ -1199,6 +1342,17 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		movVagon_x = 70.0f;
 		movVagon_y = 0.2f;
 		movVagon_z = -90.0f;
+	}
+
+	//Animación 3: Camión
+	if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+		animacion_camion ^= true;
+		giroLlanta = 0.0f;
+		movCamion_x = 118.0f,
+		movCamion_y = 0.0f,
+		movCamion_z = 115.0f,
+		orientaCamion = 180.0f;
+		estado_camion = 1;
 	}
 
 

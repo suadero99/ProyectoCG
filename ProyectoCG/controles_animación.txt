@@ -1,10 +1,10 @@
 Controles para animaciones:
-1 Manecillas de reloj
+1-Manecillas de reloj
 2 Ovni moviéndose
 3 Ovni secuestrando
 4 Morgana corriendo
 5 Peaton caminando
 6 Personas hablando
-7 Camión moviéndose
-8 Tren moviéndose
-9 cachetadas al perro
+7-Camión moviéndose
+8-Tren moviéndose
+9 cachetadas a Joker
