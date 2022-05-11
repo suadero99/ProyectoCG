@@ -101,11 +101,18 @@ float	movCamion_x = 118.0f,
 bool	animacion_camion;
 int		estado_camion=1;
 
-//Para ovni
+//Para ovni (secuestro de Futaba)
 float	orientaOvni = 0.0f,
-		movOvni_x = 0.0f,
-		movOvni_y = 0.0f,
-		movOvni_z = 0.0f;
+		movOvni_x = 10.0f,
+		movOvni_y = 30.0f,
+		movOvni_z = 60.0f;
+bool    animacion_ovni;
+int     estado_Ovni=0;
+float	escalaFutaba1 = 0.0f,
+		escalaFutaba2 = 0.35f,
+		movFutaba_y=-0.1;
+int		contOvni = 0;
+
 
 //Para tren
 float	orientaCabina = 0.0f,
@@ -561,8 +568,80 @@ void animate(void)
 		}
 	}
 
-	//Para ovni
-	orientaOvni += 0.2f;
+	//Animacion 4: Secuestro de Futaba
+	if (animacion_ovni) {
+		orientaOvni -= 1.0f;
+		switch (estado_Ovni) {
+			case 0:
+				if (movOvni_z>=85) {
+					estado_Ovni = 1;
+				}
+				else {
+					movOvni_x += 0.02;
+					movOvni_z += 0.1;
+				}
+				break;
+			case 1:
+				//Desaparece Futaba 2 y aparece Futaba 1
+				escalaFutaba2 = 0.0f;
+				escalaFutaba1 = 0.35f;
+				estado_Ovni = 2;
+				break;
+			case 2:
+				//Futaba 1 viaja hacia arriba con escala, rotación y traslación en Y
+				if (escalaFutaba1>=0) {
+					//Movimiento y decremeneto
+					escalaFutaba1 -= 0.001;
+					movFutaba_y += 0.1;
+				}
+				else {
+					estado_Ovni = 3;
+				}
+				break;
+			case 3:
+				//Pequeño delay xD
+				if (contOvni<=120) {
+					contOvni++;
+				}
+				else {
+					estado_Ovni = 4;
+					contOvni = 0;
+				}
+				break;
+			case 4:
+				//Futaba hacia abajo con escala, rotación y traslación en Y 
+				if (escalaFutaba1 < 0.35) {
+					//Movimiento y decremeneto
+					escalaFutaba1 += 0.001;
+					movFutaba_y -= 0.1;
+				}
+				else {
+					estado_Ovni = 5;
+				}
+				break;
+			case 5:
+				//Futaba 1 desaparece y aparece Futaba 1
+				escalaFutaba2 = 0.35f;
+				escalaFutaba1 = 0.0f;
+				estado_Ovni = 6;
+				break;
+			case 6:
+				//Ovni regresa a posición de inicio
+				if (movOvni_z <= 60) {
+					estado_Ovni = 7;
+				}
+				else {
+					movOvni_x -= 0.02;
+					movOvni_z -= 0.1;
+				}
+				break;
+
+		}
+	}
+	else {
+		orientaOvni -= 0.2f; //Garantiza que el ovni siempre esté en movimiento
+	}
+
 
 	//------------------Para luz que cambia de color
 	if (colorR <= 1.0f) {
@@ -763,6 +842,15 @@ int main()
 	Model piernaAnn("resources/objects/ann/pierna1.obj");
 	Model pierna2Ann("resources/objects/ann/pierna2.obj");
 
+	//Futaba 1 (Flotando)
+	ModelAnim Futaba1("resources/objects/Futaba/Floating/Floating.dae");
+	Futaba1.initShaders(animShader.ID);
+
+	//Futaba 2 (Gritando)
+	ModelAnim Futaba2("resources/objects/Futaba/Yelling/Yelling.dae");
+	Futaba2.initShaders(animShader.ID);
+
+
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
 	{
@@ -864,27 +952,17 @@ int main()
 		animShader.setVec3("light.direction", lightDirection);
 		animShader.setVec3("viewPos", camera.Position);
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-40.3f, 1.75f, 0.3f)); // translate it down so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(1.2f));	// it's a bit too big for our scene, so scale it down
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//Dibujo Futaba 1
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, movFutaba_y, 85.0f));
+		model = glm::scale(model, glm::vec3(escalaFutaba1));
 		animShader.setMat4("model", model);
-		//animacionPersonaje.Draw(animShader);
+		Futaba1.Draw(animShader);
 
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Segundo Personaje Animacion
-		// -------------------------------------------------------------------------------------------------------------------------
-
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(40.3f, 1.75f, 0.3f)); // translate it down so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(0.5f));	// it's a bit too big for our scene, so scale it down
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//Dibujo Futaba 2
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.0f, 85.0f));
+		model = glm::scale(model, glm::vec3(escalaFutaba2));
 		animShader.setMat4("model", model);
-		//ninja.Draw(animShader);
-
-		/*Pitufo Moonwalk*/
-		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(120.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.05f));
-		animShader.setMat4("model", model);
-		pitufo.Draw(animShader);*/
+		Futaba2.Draw(animShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Escenario (Objetos estáticos)
@@ -893,36 +971,12 @@ int main()
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
 
-		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(250.0f, 0.0f, -10.0f));
-		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		casaDoll.Draw(staticShader);
-
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-200.0f, 0.0f, 30.0f));
-		model = glm::rotate(model, glm::radians(-90.0f),glm::vec3(0.0f,1.0f,0.0f));
-		model = glm::scale(model, glm::vec3(2.0f));
-		staticShader.setMat4("model", model);
-		casaBrujas.Draw(staticShader);
-
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f, 0.0f, 20.0f));
-		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f));
-		staticShader.setMat4("model", model);
-		miCubo.Draw(staticShader);*/
-
-
 		//Piso
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.05f));
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
-
-		//Dibujo de árbol de prueba
-		/*model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		arbol.Draw(staticShader);*/
 
 		//Dibujo edificio QFront
 		model = glm::mat4(1.0f);
@@ -964,8 +1018,8 @@ int main()
 
 		//Dibujo pirámide
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(25.0f, -0.7f, 50.0f));
-		model = glm::scale(model, glm::vec3(2.35f));
+		model = glm::translate(model, glm::vec3(25.0f, -0.7f, 60.0f));
+		model = glm::scale(model, glm::vec3(3.5f));
 		staticShader.setMat4("model", model);
 		piramide.Draw(staticShader);
 
@@ -1011,10 +1065,8 @@ int main()
 
 		//Ovni
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f + movOvni_x, 60.0f + movOvni_y, 0.0f + movOvni_z));
+		model = glm::translate(model, glm::vec3(movOvni_x, movOvni_y, movOvni_z));
 		model = glm::rotate(model, glm::radians(orientaOvni), glm::vec3(0.0f, 1.0f, 0.0f));
-		//model = glm::rotate(model, glm::radians(orientaOvni), glm::vec3(1.0f, 1.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model", model);
 		//staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 		ovni.Draw(staticShader);
@@ -1283,113 +1335,6 @@ int main()
 		staticShader.setMat4("model", model);
 		piernaAnn.Draw(staticShader);
 
-
-
-
-		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
-		model = glm::scale(model, glm::vec3(5.0f));
-		staticShader.setMat4("model", model);
-		//staticShader.setVec3("dirLight.specular", glm::vec3(0.8f, 0.0f, 0.0f));
-		casaVieja.Draw(staticShader);*/
-
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Carro
-		// -------------------------------------------------------------------------------------------------------------------------
-		/*model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f + movCamion_x, movCamion_y, movCamion_z));
-		tmp = model = glm::rotate(model, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		staticShader.setMat4("model", model);
-		staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		carro.Draw(staticShader);*/
-
-		/*model = glm::translate(tmp, glm::vec3(8.5f, 2.5f, 12.9f));
-		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f,0.0f,0.0f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		staticShader.setMat4("model", model);
-		llanta.Draw(staticShader);	//Izq delantera
-
-		model = glm::translate(tmp, glm::vec3(-8.5f, 2.5f, 12.9f));
-		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		llanta.Draw(staticShader);	//Der delantera
-
-		model = glm::translate(tmp, glm::vec3(-8.5f, 2.5f, -14.5f));
-		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		llanta.Draw(staticShader);	//Der trasera
-
-		model = glm::translate(tmp, glm::vec3(8.5f, 2.5f, -14.5f));
-		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		staticShader.setMat4("model", model);
-		llanta.Draw(staticShader);	//Izq trasera*/
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Personaje
-		// -------------------------------------------------------------------------------------------------------------------------
-		/*model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-		model = glm::translate(model, glm::vec3(posX, posY, posZ));
-		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
-		staticShader.setMat4("model", model);
-		torso.Draw(staticShader);
-
-		//Pierna Der
-		model = glm::translate(tmp, glm::vec3(-0.5f, 0.0f, -0.1f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piernaDer.Draw(staticShader);
-
-		//Pie Der
-		model = glm::translate(model, glm::vec3(0, -0.9f, -0.2f));
-		staticShader.setMat4("model", model);
-		botaDer.Draw(staticShader);
-
-		//Pierna Izq
-		model = glm::translate(tmp, glm::vec3(0.5f, 0.0f, -0.1f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		piernaIzq.Draw(staticShader);
-
-		//Pie Iz
-		model = glm::translate(model, glm::vec3(0, -0.9f, -0.2f));
-		staticShader.setMat4("model", model);
-		botaDer.Draw(staticShader);	//Izq trase
-
-		//Brazo derecho
-		model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(-0.75f, 2.5f, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		brazoDer.Draw(staticShader);
-
-		//Brazo izquierdo
-		model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		staticShader.setMat4("model", model);
-		brazoIzq.Draw(staticShader);
-
-		//Cabeza
-		model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::translate(model, glm::vec3(0.0f, 2.5f, 0));
-		staticShader.setMat4("model", model);
-		cabeza.Draw(staticShader);*/
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Caja Transparente --- Siguiente Práctica
-		// -------------------------------------------------------------------------------------------------------------------------
-		/*glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -70.0f));
-		model = glm::scale(model, glm::vec3(5.0f));
-		staticShader.setMat4("model", model);
-		cubo.Draw(staticShader);
-		glEnable(GL_BLEND);*/
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Termina Escenario
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -1493,6 +1438,26 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		movCamion_z = 115.0f,
 		orientaCamion = 180.0f;
 		estado_camion = 1;
+	}
+
+
+
+	//Animación 4: Secuestro de Futaba
+	if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
+		animacion_ovni ^= true;	
+	}
+	//Uso una tecla diferente para reiniciarlo
+	if (key == GLFW_KEY_O && action == GLFW_PRESS) {
+			animacion_ovni = false;
+			orientaOvni = 0.0f;
+			movOvni_x = 10.0f;
+			movOvni_y = 30.0f; 
+			movOvni_z = 60.0f;
+			estado_Ovni = 0;
+			escalaFutaba1 = 0.0f;
+			escalaFutaba2 = 0.35f;
+			movFutaba_y = -0.1;
+			contOvni = 0;
 	}
 
 	//To play KeyFrame animation 

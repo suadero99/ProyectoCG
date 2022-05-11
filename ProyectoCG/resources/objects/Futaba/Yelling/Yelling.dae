@@ -4,12 +4,15 @@
     <contributor>
       <author>Mixamo</author>
       <authoring_tool>COLLADA Mixamo exporter</authoring_tool>
-      <comments/>
+      <comments>
+      </comments>
     </contributor>
     <created>2022-05-11T13:18:46Z</created>
     <modified>2022-05-11T13:18:46Z</modified>
-    <revision/>
-    <title/>
+    <revision>
+    </revision>
+    <title>
+    </title>
     <unit meter="0.010000"/>
     <up_axis>Y_UP</up_axis>
   </asset>
