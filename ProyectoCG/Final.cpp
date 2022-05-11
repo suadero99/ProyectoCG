@@ -137,16 +137,22 @@ float	colorR = 0.0f,
 bool	animacion_sol;
 
 //Keyframes (Manipulación y dibujo)
-float	posX = 0.0f,
-		posY = 0.0f,
-		posZ = 0.0f,
-		rotRodIzq = 0.0f,
-		giroMonito = 0.0f;
-float	incX = 0.0f,
-		incY = 0.0f,
-		incZ = 0.0f,
-		rotInc = 0.0f,
-		giroMonitoInc = 0.0f;
+//Para cachetadas
+//Joker
+float giroCabezaJoker_y = 0.0f;
+//Akechi
+float giroBrazoAkechi_x = 0.0f; //o 90.0f?
+//Ann
+float giroBrazoDerechoAnn_x = 0.0f;
+float giroBrazoDerechoAnn_y = 0.0f;
+
+//Incrementos
+float incGiroCabezaJoker_y = 0.0f;
+//Akechi
+float incGiroBrazoAkechi_x = 0.0f;
+//Ann
+float incGiroBrazoDerechoAnn_x = 0.0f;
+float incGiroBrazoDerechoAnn_y = 0.0f;
 
 #define MAX_FRAMES 9
 int i_max_steps = 60;
@@ -160,6 +166,15 @@ typedef struct _frame
 	float rotRodIzq;
 	float giroMonito;
 
+	//Para cachetadas
+	//Joker
+	float giroCabezaJoker_y;
+	//Akechi
+	float giroBrazoAkechi_x;
+	//Ann
+	float giroBrazoDerechoAnn_x;
+	float giroBrazoDerechoAnn_y;
+
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
@@ -167,40 +182,97 @@ int FrameIndex = 0;			//introducir datos
 bool play = false;
 int playIndex = 0;
 
+//Para nuestra animación por KeyFrames
+/*void insertarFrames(void) {
+	giroCabezaJoker_y = 0
+giroBrazoAkechi_x = 0
+giroBrazoDerechoAnn_x = 0
+giroBrazoDerechoAnn_y = 0
+Frame Index = 1
+giroCabezaJoker_y = 0
+giroBrazoAkechi_x = 0
+giroBrazoDerechoAnn_x = -18.6
+giroBrazoDerechoAnn_y = -107.7
+Frame Index = 2
+giroCabezaJoker_y = -24.6
+giroBrazoAkechi_x = 0
+giroBrazoDerechoAnn_x = 17.1
+giroBrazoDerechoAnn_y = -115.2
+Frame Index = 3
+giroCabezaJoker_y = 0.600001
+giroBrazoAkechi_x = 0
+giroBrazoDerechoAnn_x = 59.6999
+giroBrazoDerechoAnn_y = -115.2
+Frame Index = 4
+giroCabezaJoker_y = 44.9999
+giroBrazoAkechi_x = 0
+giroBrazoDerechoAnn_x = 26.1
+giroBrazoDerechoAnn_y = -115.2
+Frame Index = 5
+giroCabezaJoker_y = 4.5
+giroBrazoAkechi_x = 0
+giroBrazoDerechoAnn_x = -68.6999
+giroBrazoDerechoAnn_y = -47.0999
+Frame 6
+giroCabezaJoker_y = 4.49999
+giroBrazoAkechi_x = 172.801
+giroBrazoDerechoAnn_x = -68.6998
+giroBrazoDerechoAnn_y = -5.99983
+
+
+	//Frame 0:
+	giroCabezaJoker_y = 0.0f;
+	giroBrazoAkechi_x = 0.0f;
+	giroBrazoDerechoAnn_x = 0.0f;
+	giroBrazoDerechoAnn_y = 0.0f;
+	if (FrameIndex < MAX_FRAMES)
+	{
+		saveFrame();
+	}
+	//Frame 1
+	giroCabezaJoker_y = 0.0f;
+	giroBrazoAkechi_x = 0.0f;
+	giroBrazoDerechoAnn_x = -120.0f;
+	giroBrazoDerechoAnn_y = 0.0f;
+	if (FrameIndex < MAX_FRAMES)
+	{
+		saveFrame();
+	}
+}*/
+
+
 void saveFrame(void)
 {
 	//printf("frameindex %d\n", FrameIndex);
 	std::cout << "Frame Index = " << FrameIndex << std::endl;
 
-	KeyFrame[FrameIndex].posX = posX;
-	KeyFrame[FrameIndex].posY = posY;
-	KeyFrame[FrameIndex].posZ = posZ;
+	KeyFrame[FrameIndex].giroCabezaJoker_y = giroCabezaJoker_y;
+	KeyFrame[FrameIndex].giroBrazoAkechi_x = giroBrazoAkechi_x;
+	KeyFrame[FrameIndex].giroBrazoDerechoAnn_x = giroBrazoDerechoAnn_x;
+	KeyFrame[FrameIndex].giroBrazoDerechoAnn_y = giroBrazoDerechoAnn_y;
 
-	KeyFrame[FrameIndex].rotRodIzq = rotRodIzq;
-	KeyFrame[FrameIndex].giroMonito = giroMonito;
+	std::cout << "giroCabezaJoker_y = " << giroCabezaJoker_y << std::endl;
+	std::cout << "giroBrazoAkechi_x = " << giroBrazoAkechi_x << std::endl;
+	std::cout << "giroBrazoDerechoAnn_x = " << giroBrazoDerechoAnn_x << std::endl;
+	std::cout << "giroBrazoDerechoAnn_y = " << giroBrazoDerechoAnn_y << std::endl;
 
 	FrameIndex++;
 }
 
 void resetElements(void)
 {
-	posX = KeyFrame[0].posX;
-	posY = KeyFrame[0].posY;
-	posZ = KeyFrame[0].posZ;
-
-	rotRodIzq = KeyFrame[0].rotRodIzq;
-	giroMonito = KeyFrame[0].giroMonito;
+	giroCabezaJoker_y = KeyFrame[0].giroCabezaJoker_y;
+	giroBrazoAkechi_x = KeyFrame[0].giroBrazoAkechi_x;
+	giroBrazoDerechoAnn_x = KeyFrame[0].giroBrazoDerechoAnn_x;
+	giroBrazoDerechoAnn_y = KeyFrame[0].giroBrazoDerechoAnn_y;
 }
 
 void interpolation(void)
 {
-	incX = (KeyFrame[playIndex + 1].posX - KeyFrame[playIndex].posX) / i_max_steps;
-	incY = (KeyFrame[playIndex + 1].posY - KeyFrame[playIndex].posY) / i_max_steps;
-	incZ = (KeyFrame[playIndex + 1].posZ - KeyFrame[playIndex].posZ) / i_max_steps;
-
-	rotInc = (KeyFrame[playIndex + 1].rotRodIzq - KeyFrame[playIndex].rotRodIzq) / i_max_steps;
-	giroMonitoInc = (KeyFrame[playIndex + 1].giroMonito - KeyFrame[playIndex].giroMonito) / i_max_steps;
-
+	incGiroCabezaJoker_y = (KeyFrame[playIndex + 1].giroCabezaJoker_y - KeyFrame[playIndex].giroCabezaJoker_y) / i_max_steps;
+	incGiroBrazoAkechi_x = (KeyFrame[playIndex + 1].giroBrazoAkechi_x - KeyFrame[playIndex].giroBrazoAkechi_x) / i_max_steps;
+	incGiroBrazoDerechoAnn_x = (KeyFrame[playIndex + 1].giroBrazoDerechoAnn_x - KeyFrame[playIndex].giroBrazoDerechoAnn_x) / i_max_steps;
+	incGiroBrazoDerechoAnn_y = (KeyFrame[playIndex + 1].giroBrazoDerechoAnn_y - KeyFrame[playIndex].giroBrazoDerechoAnn_y) / i_max_steps;
 }
 
 void animate(void)
@@ -227,6 +299,9 @@ void animate(void)
 			
 		}
 	}
+
+	//Para cachetadas a Joker
+
 
 	//--------------------Animación de tren
 	if (animacion_tren) {
@@ -534,12 +609,10 @@ void animate(void)
 		else
 		{
 			//Draw animation
-			posX += incX;
-			posY += incY;
-			posZ += incZ;
-
-			rotRodIzq += rotInc;
-			giroMonito += giroMonitoInc;
+			giroCabezaJoker_y += incGiroCabezaJoker_y;
+			giroBrazoAkechi_x += incGiroBrazoAkechi_x;
+			giroBrazoDerechoAnn_x += incGiroBrazoDerechoAnn_x;
+			giroBrazoDerechoAnn_y += incGiroBrazoDerechoAnn_y;
 
 			i_curr_steps++;
 		}
@@ -994,8 +1067,8 @@ int main()
 
 		//Torso
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(13.0f, -1.0f, 0.0f));
-		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::translate(model, glm::vec3(13.0f, -1.0f, -30.0f));
+		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		torsoMorgana.Draw(staticShader);
@@ -1028,7 +1101,7 @@ int main()
 		//Pierna Izq
 		model = glm::translate(tmp, glm::vec3(0.15f, -0.35f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		piernaMorgana.Draw(staticShader);
@@ -1036,18 +1109,26 @@ int main()
 		//Pierna Der
 		model = glm::translate(tmp, glm::vec3(-0.15f, -0.35f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		piernaMorgana.Draw(staticShader);
+
+		//Patas corriendo
+		model = glm::translate(tmp, glm::vec3(0.0f, -0.35f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.3f));
+		staticShader.setMat4("model", model);
+		patasCorriendoMorgana.Draw(staticShader);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Joker
 		// -------------------------------------------------------------------------------------------------------------------------
 		//Torso
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f, 0.0f, 3.0f));
-		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::translate(model, glm::vec3(15.0f, 0.0f, -29.8f));
+		tmp = model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		torsoJoker.Draw(staticShader);
@@ -1071,7 +1152,7 @@ int main()
 
 		//Cabeza
 		model = glm::translate(tmp, glm::vec3(0.0f, 0.70f, 0.0f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::rotate(model, glm::radians(giroCabezaJoker_y), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
@@ -1080,7 +1161,7 @@ int main()
 		//Pierna Der
 		model = glm::translate(tmp, glm::vec3(-0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaJoker.Draw(staticShader);
@@ -1088,7 +1169,7 @@ int main()
 		//Pierna Izq
 		model = glm::translate(tmp, glm::vec3(0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaJoker.Draw(staticShader);
@@ -1098,8 +1179,8 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f, 0.0f, -3.0f));
-		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::translate(model, glm::vec3(20.0f, 0.0f, -30.0f));
+		tmp = model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		torsoAkechi.Draw(staticShader);
@@ -1108,6 +1189,7 @@ int main()
 		model = glm::translate(tmp, glm::vec3(-0.51f, 0.5f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(giroBrazoAkechi_x), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAkechi.Draw(staticShader);
@@ -1117,6 +1199,7 @@ int main()
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(-giroBrazoAkechi_x), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAkechi.Draw(staticShader);
@@ -1132,7 +1215,7 @@ int main()
 		//Pierna Der
 		model = glm::translate(tmp, glm::vec3(-0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaAkechi.Draw(staticShader);
@@ -1140,7 +1223,7 @@ int main()
 		//Pierna Izq
 		model = glm::translate(tmp, glm::vec3(0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaAkechi.Draw(staticShader);
@@ -1150,22 +1233,24 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f, 0.0f, 0.0f));
-		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::translate(model, glm::vec3(15.0f, 0.0f, -29.0f));
+		tmp = model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		torsoAnn.Draw(staticShader);
 
-		//Brazo izquierdo
+		//Brazo derecho
 		model = glm::translate(tmp, glm::vec3(-0.51f, 0.5f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(giroBrazoDerechoAnn_x), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroBrazoDerechoAnn_y), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAnn.Draw(staticShader);
 
-		//Brazo derecho
+		//Brazo izquierdo
 		model = glm::translate(tmp, glm::vec3(0.51f, 0.5f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1185,7 +1270,7 @@ int main()
 		//Pierna Izq
 		model = glm::translate(tmp, glm::vec3(0.27f, -0.71f, 0.02f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		pierna2Ann.Draw(staticShader);
@@ -1193,7 +1278,7 @@ int main()
 		//Pierna Der
 		model = glm::translate(tmp, glm::vec3(-0.27f, -0.71f, 0.07f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(-rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaAnn.Draw(staticShader);
@@ -1353,21 +1438,21 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 	//To Configure Model
 	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
-		posY++;
+		giroCabezaJoker_y += 0.3;
 	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-		posY--;
+		giroCabezaJoker_y -= 0.3;
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-		posX--;
+		giroBrazoAkechi_x += 0.3;
 	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-		posX++;
+		giroBrazoAkechi_x -= 0.3;
 	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-		rotRodIzq--;
+		giroBrazoDerechoAnn_y += 0.3;
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
-		rotRodIzq++;
+		giroBrazoDerechoAnn_y -= 0.3;
 	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
-		giroMonito--;
+		giroBrazoDerechoAnn_x += 0.3;
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
-		giroMonito++;
+		giroBrazoDerechoAnn_x -= 0.3;
 	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
 		lightPosition.x++;
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
