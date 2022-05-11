@@ -93,7 +93,7 @@ int estadoAuto = 0;
 
 
 //Para Gato camion
-float giroLlanta = 0.0f;
+float	giroLlanta = 0.0f;
 float	movAuto_x = 0.0f,
 		movAuto_y = 0.0f,
 		movAuto_z = 0.0f,
@@ -225,6 +225,7 @@ void animate(void)
 		}
 	}
 
+	//--------------------Animación de tren
 	if (animacion_tren) {
 		switch (estadoCabina) {
 		case 0:
@@ -254,12 +255,15 @@ void animate(void)
 			}
 			break;
 		case 3:
-			orientaCabina = 210.0f;
+			orientaCabina = 205.23f;
 			if (movCabina_x <= 90.0f) {
-				movCabina_x += 1.0f;
-				movCabina_z -= 1.0f;
+				movCabina_x += 1.0;
+				movCabina_z -= 0.47116f;
 			}
 			else {
+				//cout << "Z final: " << movVagon_z << endl;
+				//cout << "X final: " << movVagon_x << endl;
+				movCabina_z = 65.0f;
 				estadoCabina = 4;
 			}
 			break;
@@ -294,20 +298,29 @@ void animate(void)
 			break;
 		case 2:
 			orientaVagon = 180.0f;
+			//cout << "Z inicial: " << movVagon_z << endl;
 			if (movVagon_x <= -15.0f) {
 				movVagon_x += 1.0f;
 			}
 			else {
 				estadoVagon = 3;
+				//cout << "X inicial: " << movVagon_x << endl;
 			}
 			break;
 		case 3:
-			orientaVagon = 210.0f;
+			//cout << "Z: " << movVagon_z << endl;
+			//cout << "X: " << movVagon_x << endl;
+			//m = xf-xi / zf - zi = (90 + 14) / (65 - 116) = 104/-49 = -2.1224f
+			//theta = -64.77f; 270 - theta = angulo
+			orientaVagon = 205.23f; 
 			if (movVagon_x <= 90.0f) {
-				movVagon_x += 1.0f;
-				movVagon_z -= 1.0f;
+				movVagon_x += 1.0;
+				movVagon_z -= 0.47116f;
 			}
 			else {
+				//cout << "Z final: " << movVagon_z << endl;
+				//cout << "X final: " << movVagon_x << endl;
+				movVagon_z = 65.0f;
 				estadoVagon = 4;
 			}
 			break;
@@ -384,42 +397,6 @@ void animate(void)
 
 			i_curr_steps++;
 		}
-	}
-
-	//Vehículo
-	if (animacion)
-	{
-		if (estadoAuto == 0) {
-			movAuto_z -= 0.5f;
-			giroLlanta -= 0.5f;
-			if (movAuto_z <= -70.0f) //Avanzamos de estado
-				estadoAuto = 1;
-		}
-		else if (estadoAuto == 1) {
-			movAuto_y += 0.5f;
-			if (movAuto_y >= 50.5f)
-				estadoAuto = 2;
-		}
-		else if (estadoAuto == 2) {
-			movAuto_z += 0.5f;
-			giroLlanta += 0.5f;
-			if (movAuto_z >= 40.5f)
-				estadoAuto = 3;
-		}
-		else if (estadoAuto ==3) {
-			movAuto_y -= 0.5f;
-			if (movAuto_y <= 0.0f)
-				estadoAuto = 4;
-		}
-		else if (estadoAuto == 4) {
-			movAuto_z += 0.5f;
-			giroLlanta += 0.5f;
-			if (movAuto_z >= 70.5f)
-				estadoAuto = 5;
-		}
-	}
-	else {
-		movAuto_z = 0.0f;
 	}
 }
 
