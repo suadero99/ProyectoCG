@@ -114,12 +114,17 @@ float	orientaCabina = 0.0f,
 		movVagon_x = 0.0f,
 		movVagon_y = 0.0f,
 		movVagon_z = 0.0f;
+int		estadoCabina = 0,
+		estadoVagon = 0;
+bool	animacion_tren;
 
 float	miVariable = 0.0f;
 
 //Para animación de reloj
 float	giroMins = 0.0f,
 		giroHoras = 0.0f;
+int		estado_reloj = 0;
+bool	animacion_reloj;
 
 //Para color de iluminación
 float	colorR = 0.0f,
@@ -211,8 +216,64 @@ void animate(void)
 	cont += 0.001;
 
 	//Para reloj:
-	giroMins += 0.1f;
-	giroHoras += 0.1f;
+	if (animacion_reloj) {
+		giroMins += 0.3f;
+		if (giroMins >=360) {
+			giroHoras += 30.0f;
+			giroMins = 0;
+			
+		}
+	}
+
+	if (animacion_tren) {
+		switch (estadoCabina) {
+		case 0:
+			orientaCabina = 180;
+			if (movCabina_x>=-100.0) {
+				movCabina_x -=1 ;
+			} else {
+				estadoCabina = 1;
+			}
+			break;
+		case 1:
+			orientaCabina = 270;
+			if (movCabina_z <= 100.0) {
+				movCabina_z += 1;
+			}
+			else {
+				estadoCabina = 2;
+			}
+			break;
+		case 2:
+			orientaCabina = 90;
+			if (movCabina_x <= 0.0) {
+				movCabina_x += 1;
+			}
+			else {
+				estadoCabina = 3;
+			}
+			break;
+		case 3:
+			orientaCabina = 30;
+			if (movCabina_x <= 80.0) {
+				movCabina_x += 1;
+				movCabina_z -= 1;
+			}
+			else {
+				estadoCabina = 4;
+			}
+			break;
+		case 4:
+			orientaCabina = 0;
+			if (movCabina_z >= -100.0) {
+				movCabina_z -= 1;
+			}
+			else {
+				estadoCabina = 0;
+			}
+			break;
+		}
+	}
 
 	//Para gato camion
 	giroLlanta += 0.2f;
@@ -220,10 +281,6 @@ void animate(void)
 
 	//Para ovni
 	orientaOvni += 0.2f;
-
-	//Para tren
-	orientaCabina += 0.3f;
-	orientaVagon += 0.3f;
 
 	//------------------Para luz que cambia de color
 	if (colorR <= 1.0f) {
@@ -684,7 +741,7 @@ int main()
 
 		//Cabina
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(51.0f, -0.5f, -90.0f));
+		model = glm::translate(model, glm::vec3(51.0+movCabina_x, -0.5f, -90.0+movCabina_z));
 		model = glm::rotate(model, glm::radians(90.0f + orientaCabina), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f));
 		staticShader.setMat4("model", model);
@@ -1158,7 +1215,20 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		movAuto_y = 0.0f;
 		estadoAuto = 0;
 	}*/
-		
+
+	//Animacion 1: Manecillas del reloj
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+		animacion_reloj ^= true;
+		giroHoras = 0;
+		giroMins = 0;
+	}
+
+	//Animación 2: Movimiento del tren
+	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+		animacion_tren ^= true;
+		movCabina_x = 0;
+		movCabina_z = 0;
+	}
 
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
