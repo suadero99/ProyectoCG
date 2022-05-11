@@ -118,7 +118,7 @@ int		estadoCabina = 0,
 		estadoVagon = 0;
 bool	animacion_tren;
 
-float	miVariable = 0.0f;
+float	movSol = 0.0f;
 
 //Para animación de reloj
 float	giroMins = 0.0f,
@@ -131,6 +131,8 @@ float	colorR = 0.0f,
 		colorG = 1.0f,
 		colorB = 1.0f;
 
+//Para animación del sol
+bool	animacion_sol;
 
 //Keyframes (Manipulación y dibujo)
 float	posX = 0.0f,
@@ -201,19 +203,18 @@ void interpolation(void)
 
 void animate(void)
 {
-	//Código de la animación del sol
-	lightPositionSun.x = 500.0f * cos(miVariable);
-	lightPositionSun.y = 500.0f * sin(miVariable);
+	//Animación del sol
+	if (animacion_sol) {
+		lightPositionSun.x = 500.0f * cos(movSol);
+		lightPositionSun.y = 500.0f * sin(movSol);
+		if (lightPositionSun.y < 0 || lightPositionSun.x < 0) {
+			movSol += 0.005f;
+		}
+		else {
+			movSol += 0.0025f;
+		}
+	}
 	
-	if (lightPositionSun.y<0 || lightPositionSun.x<0) {
-		miVariable += 0.005f;
-	}
-	else {
-		miVariable += 0.0025f;
-	}
-	luzColor.x = 0.5f * cos(cont);
-	luzColor.y = 0.5f * sin(cont);
-	cont += 0.001;
 
 	//Para reloj:
 	if (animacion_reloj) {
@@ -581,16 +582,10 @@ int main()
 		staticShader.use();
 		//Setup Advanced Lights
 		// Iluminación
-		/*staticShader.setVec3("viewPos", camera.Position);
-		staticShader.setVec3("dirLight.direction", lightDirection);
-		staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));*/
-		//Sin iluminación notoria
 		staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
-		staticShader.setVec3("dirLight.ambient", glm::vec3(0.5f, 0.5f, 0.5f));
-		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+		staticShader.setVec3("dirLight.ambient", glm::vec3(0.125f, 0.125f, 0.125f));
+		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.125f, 0.125f, 0.125f));
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f));
 
 		//Sol
@@ -1233,13 +1228,10 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
 		lightPosition.x--;
 
-	//Car animation
-	/*if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-		animacion ^= true;
-		movAuto_z = 0.0f; //Para reseteo con barra espaciadora
-		movAuto_y = 0.0f;
-		estadoAuto = 0;
-	}*/
+	//Animación 0: Luz del zol
+	if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
+		animacion_sol ^= true;
+	}
 
 	//Animacion 1: Manecillas del reloj
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
