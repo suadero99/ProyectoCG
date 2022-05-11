@@ -107,9 +107,9 @@ float	orientaOvni = 0.0f,
 
 //Para tren
 float	orientaCabina = 0.0f,
-		movCabina_x = 0.0f,
-		movCabina_y = 0.0f,
-		movCabina_z = 0.0f,
+		movCabina_x = 51.0f,
+		movCabina_y = -0.5f,
+		movCabina_z = -90.0f,
 		orientaVagon = 0.0f,
 		movVagon_x = 0.0f,
 		movVagon_y = 0.0f,
@@ -218,9 +218,9 @@ void animate(void)
 	//Para reloj:
 	if (animacion_reloj) {
 		giroMins += 0.3f;
-		if (giroMins >=360) {
+		if (giroMins >=360.0f) {
 			giroHoras += 30.0f;
-			giroMins = 0;
+			giroMins = 0.0f;
 			
 		}
 	}
@@ -228,45 +228,45 @@ void animate(void)
 	if (animacion_tren) {
 		switch (estadoCabina) {
 		case 0:
-			orientaCabina = 180;
-			if (movCabina_x>=-100.0) {
-				movCabina_x -=1 ;
+			orientaCabina = 0.0f;
+			if (movCabina_x>=-115.0f) {
+				movCabina_x -= 1.0f;
 			} else {
 				estadoCabina = 1;
 			}
 			break;
 		case 1:
-			orientaCabina = 270;
-			if (movCabina_z <= 100.0) {
-				movCabina_z += 1;
+			orientaCabina = 90.0f;
+			if (movCabina_z <= 115.0f) {
+				movCabina_z += 1.0f;
 			}
 			else {
 				estadoCabina = 2;
 			}
 			break;
 		case 2:
-			orientaCabina = 90;
-			if (movCabina_x <= 0.0) {
-				movCabina_x += 1;
+			orientaCabina = 180.0f;
+			if (movCabina_x <= -15.0f) {
+				movCabina_x += 1.0f;
 			}
 			else {
 				estadoCabina = 3;
 			}
 			break;
 		case 3:
-			orientaCabina = 30;
-			if (movCabina_x <= 80.0) {
-				movCabina_x += 1;
-				movCabina_z -= 1;
+			orientaCabina = 210.0f;
+			if (movCabina_x <= 90.0f) {
+				movCabina_x += 1.0f;
+				movCabina_z -= 1.0f;
 			}
 			else {
 				estadoCabina = 4;
 			}
 			break;
 		case 4:
-			orientaCabina = 0;
-			if (movCabina_z >= -100.0) {
-				movCabina_z -= 1;
+			orientaCabina = 270.0f;
+			if (movCabina_z >= -90.0f) {
+				movCabina_z -= 1.0f;
 			}
 			else {
 				estadoCabina = 0;
@@ -741,7 +741,7 @@ int main()
 
 		//Cabina
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(51.0+movCabina_x, -0.5f, -90.0+movCabina_z));
+		model = glm::translate(model, glm::vec3(movCabina_x, movCabina_y, movCabina_z));
 		model = glm::rotate(model, glm::radians(90.0f + orientaCabina), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f));
 		staticShader.setMat4("model", model);
@@ -1226,8 +1226,8 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	//Animación 2: Movimiento del tren
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
 		animacion_tren ^= true;
-		movCabina_x = 0;
-		movCabina_z = 0;
+		movCabina_x = 51.0f;
+		movCabina_z = -90.0f;
 	}
 
 	//To play KeyFrame animation 
