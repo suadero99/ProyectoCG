@@ -1445,6 +1445,35 @@ int main()
 		staticShader.setMat4("model", model);
 		arbusto.Draw(staticShader);
 
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-52.0f, -0.7f, 96.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.2f));
+		staticShader.setMat4("model", model);
+		arbol.Draw(staticShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-32.0f, -0.7f, 90.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.2f));
+		staticShader.setMat4("model", model);
+		arbusto.Draw(staticShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-35.0f, -0.7f, 86.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.2f));
+		staticShader.setMat4("model", model);
+		arbol.Draw(staticShader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-40.0f, -0.7f, 78.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.2f));
+		staticShader.setMat4("model", model);
+		arbusto.Draw(staticShader);
+
+
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Camión gato
 		// -------------------------------------------------------------------------------------------------------------------------
