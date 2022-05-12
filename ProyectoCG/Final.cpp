@@ -9,10 +9,10 @@
 #include <Windows.h>
 
 #include <glad/glad.h>
-#include <glfw3.h>	//main
+#include <glfw3.h>	//Main
 #include <stdlib.h>		
-#include <glm/glm.hpp>	//camera y model
-#include <glm/gtc/matrix_transform.hpp>	//camera y model
+#include <glm/glm.hpp>	//Camara y Model
+#include <glm/gtc/matrix_transform.hpp>	//Camara y Model
 #include <glm/gtc/type_ptr.hpp>
 #include <time.h>
 
@@ -34,65 +34,42 @@
 #include <conio.h>
 #endif
 #include <irrKlang/irrKlang.h>
-
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 
-//#pragma comment(lib, "winmm.lib")
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-//void my_input(GLFWwindow *window);
 void my_input(GLFWwindow* window, int key, int scancode, int action, int mods);
 void animate(void);
 
-// settings
+// Configuración
 unsigned int SCR_WIDTH = 800;
 unsigned int SCR_HEIGHT = 600;
 GLFWmonitor *monitors;
-
 void getResolution(void);
 
-// camera
+// Cámara
 Camera camera(glm::vec3(0.0f, 10.0f, 100.0f));
 float MovementSpeed = 5.0f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
-// timing
+// Timing
 const int FPS = 60;
 const int LOOP_TIME = 1000 / FPS; // = 16 milisec // 1000 millisec == 1 sec
 double	deltaTime = 0.0f,
 		lastFrame = 0.0f;
 
-//Lighting
+// Iluminación
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
 glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
 glm::vec3 lightPositionSun(0.0f, 550.0f, 0.0f);
 glm::vec3 luzColor(0.0f, 0.0f, 0.0f);
 float cont = 0.0f;
 
-// posiciones
-//float x = 0.0f;
-//float y = 0.0f;
-bool	animacion = false,
-		recorrido1 = true,
-		recorrido2 = false,
-		recorrido3 = false,
-		recorrido4 = false,
-		reversaAuto = false; //para "pingpong" en auto
-
-int estadoAuto = 0;
-//0 para detenidomovCamion
-//1 para primera reversa
-//2 para primera elevación
-//3 para avance después de elevación
-//4 para descenso
-//5 para detenido al final?
-
-
-//Para Gato camion
+// Variables para Gato camión (Animación 3)
 float	giroLlanta = 0.0f;
 float	movCamion_x = 118.0f,
 		movCamion_y = 0.0f,
@@ -101,7 +78,7 @@ float	movCamion_x = 118.0f,
 bool	animacion_camion;
 int		estado_camion=1;
 
-//Para ovni (secuestro de Futaba)
+// Variables para ovni (Animación 4)
 float	orientaOvni = 0.0f,
 		movOvni_x = 10.0f,
 		movOvni_y = 30.0f,
@@ -113,8 +90,7 @@ float	escalaFutaba1 = 0.0f,
 		movFutaba_y=-0.1;
 int		contOvni = 0;
 
-
-//Para tren
+// Variables para tren (Animación 2)
 float	orientaCabina = 0.0f,
 		movCabina_x = 51.0f,
 		movCabina_y = -0.5f,
@@ -127,23 +103,18 @@ int		estadoCabina = 0,
 		estadoVagon = 0;
 bool	animacion_tren;
 
-float	movSol = 0.0f;
-
-//Para animación de reloj
+// Variables para animación de reloj (Animación 1)
 float	giroMins = 0.0f,
 		giroHoras = 0.0f;
 int		estado_reloj = 0;
 bool	animacion_reloj;
 
-//Para color de iluminación
-float	colorR = 0.0f,
-		colorG = 1.0f,
-		colorB = 1.0f;
 
-//Para animación del sol
+// Variables para animación del sol (Animación 0)
 bool	animacion_sol;
+float	movSol = 0.0f;
 
-//Para globos de dialogo
+// Variables para globos de dialogo (Animación 6)
 float   eglobo_Joker = 0.0f,
 		eglobo_Ann = 0.0f,
 		eglobo_Akechi = 0.0f,
@@ -153,8 +124,7 @@ int		estado_globos=0;
 float	mov_globoY = 0.0f,
 		mov_globoXZ = 0.0f;
 
-//Keyframes (Manipulación y dibujo)
-//Para cachetadas
+// Keyframes (Manipulación y dibujo) (Animación 5)
 //Joker
 float giroCabezaJoker_y = 0.0f;
 //Akechi
@@ -162,7 +132,6 @@ float giroBrazoAkechi_x = 0.0f; //o 90.0f?
 //Ann
 float giroBrazoDerechoAnn_x = 0.0f;
 float giroBrazoDerechoAnn_y = 0.0f;
-
 //Incrementos
 float incGiroCabezaJoker_y = 0.0f;
 //Akechi
@@ -171,13 +140,12 @@ float incGiroBrazoAkechi_x = 0.0f;
 float incGiroBrazoDerechoAnn_x = 0.0f;
 float incGiroBrazoDerechoAnn_y = 0.0f;
 
+// Definición de frames
 #define MAX_FRAMES 9
 int i_max_steps = 60;
 int i_curr_steps = 0;
 typedef struct _frame
 {
-	//Variables para GUARDAR Key Frames
-
 	//Para cachetadas
 	//Joker
 	float giroCabezaJoker_y;
@@ -189,31 +157,22 @@ typedef struct _frame
 
 }FRAME;
 
+//Arreglo de frames
 FRAME KeyFrame[MAX_FRAMES];
-int FrameIndex = 0;			//introducir datos
+int FrameIndex = 0;
 bool play = false;
 int playIndex = 0;
 
 void saveFrame(void)
 {
-	//printf("frameindex %d\n", FrameIndex);
-	std::cout << "Frame Index = " << FrameIndex << std::endl;
-
 	KeyFrame[FrameIndex].giroCabezaJoker_y = giroCabezaJoker_y;
 	KeyFrame[FrameIndex].giroBrazoAkechi_x = giroBrazoAkechi_x;
 	KeyFrame[FrameIndex].giroBrazoDerechoAnn_x = giroBrazoDerechoAnn_x;
 	KeyFrame[FrameIndex].giroBrazoDerechoAnn_y = giroBrazoDerechoAnn_y;
-	/*
-	std::cout << "giroCabezaJoker_y = " << giroCabezaJoker_y << std::endl;
-	std::cout << "giroBrazoAkechi_x = " << giroBrazoAkechi_x << std::endl;
-	std::cout << "giroBrazoDerechoAnn_x = " << giroBrazoDerechoAnn_x << std::endl;
-	std::cout << "giroBrazoDerechoAnn_y = " << giroBrazoDerechoAnn_y << std::endl;
-	*/
-
 	FrameIndex++;
 }
 
-//Para nuestra animación por KeyFrames
+//Valores para nuestra animación por KeyFrames
 void insertarFrames(void) {
 	//Frame 0:
 	giroCabezaJoker_y = 0.0f;
@@ -307,7 +266,7 @@ void interpolation(void)
 
 void animate(void)
 {
-	//Animación del sol
+	//Animación del sol (Animación 0)
 	if (animacion_sol) {
 		lightPositionSun.x = 500.0f * cos(movSol);
 		lightPositionSun.y = 500.0f * sin(movSol);
@@ -319,8 +278,7 @@ void animate(void)
 		}
 	}
 	
-
-	//Para reloj:
+	//Para reloj: (Animación 1)
 	if (animacion_reloj) {
 		giroMins += 0.3f;
 		if (giroMins >=360.0f) {
@@ -330,10 +288,7 @@ void animate(void)
 		}
 	}
 
-	//Para cachetadas a Joker
-
-
-	//--------------------Animación de tren
+	//Para tren (Animación 2)
 	if (animacion_tren) {
 		switch (estadoCabina) {
 		case 0:
@@ -369,8 +324,6 @@ void animate(void)
 				movCabina_z -= 0.47116f;
 			}
 			else {
-				//cout << "Z final: " << movVagon_z << endl;
-				//cout << "X final: " << movVagon_x << endl;
 				movCabina_z = 65.0f;
 				estadoCabina = 4;
 			}
@@ -406,28 +359,20 @@ void animate(void)
 			break;
 		case 2:
 			orientaVagon = 180.0f;
-			//cout << "Z inicial: " << movVagon_z << endl;
 			if (movVagon_x <= -15.0f) {
 				movVagon_x += 1.0f;
 			}
 			else {
 				estadoVagon = 3;
-				//cout << "X inicial: " << movVagon_x << endl;
 			}
 			break;
 		case 3:
-			//cout << "Z: " << movVagon_z << endl;
-			//cout << "X: " << movVagon_x << endl;
-			//m = xf-xi / zf - zi = (90 + 14) / (65 - 116) = 104/-49 = -2.1224f
-			//theta = -64.77f; 270 - theta = angulo
 			orientaVagon = 205.23f; 
 			if (movVagon_x <= 90.0f) {
 				movVagon_x += 1.0;
 				movVagon_z -= 0.47116f;
 			}
 			else {
-				//cout << "Z final: " << movVagon_z << endl;
-				//cout << "X final: " << movVagon_x << endl;
 				movVagon_z = 65.0f;
 				estadoVagon = 4;
 			}
@@ -444,10 +389,9 @@ void animate(void)
 		}
 	}
 
-	//Para gato camion
+	// Para gato camion (Animación 3)
 	if (animacion_camion) {
-		//giroLlanta += 0.2f;
-		//orientaCamion += 0.2f;
+		giroLlanta += 0.2f;
 		switch (estado_camion) {
 			case 1:
 				if (movCamion_z >= 70.0f) {
@@ -591,7 +535,7 @@ void animate(void)
 		}
 	}
 
-	//Animacion 4: Secuestro de Futaba
+	// Para ovni (Animación 4)
 	if (animacion_ovni) {
 		orientaOvni -= 1.0f;
 		switch (estado_Ovni) {
@@ -665,30 +609,7 @@ void animate(void)
 		orientaOvni -= 0.2f; //Garantiza que el ovni siempre esté en movimiento
 	}
 
-
-	//------------------Para luz que cambia de color
-	if (colorR <= 1.0f) {
-		colorR += 0.01;
-	}
-	else {
-		colorR = 0.0f;
-	}
-
-	if (colorG >= 0.0f) {
-		colorG -= 0.01;
-	}
-	else {
-		colorG = 1.0f;
-	}
-
-	if (colorB >= 0.0f) {
-		colorB -= 0.02;
-	}
-	else {
-		colorB = 1.0f;
-	}
-
-	//Animación 6: Globos de dialogo
+	// Para globos de dialogo (Animación 6)
 	if (animacion_globos) {
 		switch (estado_globos) {
 		case 0:
@@ -900,34 +821,29 @@ void animate(void)
 		}
 	}
 
-	//Animación por keyframes
+	//Para cachetadas con keyframes (animación 5)
 	if (play)
 	{
-		if (i_curr_steps >= i_max_steps) //end of animation between frames?
+		if (i_curr_steps >= i_max_steps)
 		{
 			playIndex++;
-			if (playIndex > FrameIndex - 2)	//end of total animation?
+			if (playIndex > FrameIndex - 2)
 			{
-				std::cout << "Animation ended" << std::endl;
-				//printf("termina anim\n");
 				playIndex = 0;
 				play = false;
 			}
-			else //Next frame interpolations
+			else 
 			{
-				i_curr_steps = 0; //Reset counter
-								  //Interpolation
+				i_curr_steps = 0;
 				interpolation();
 			}
 		}
 		else
 		{
-			//Draw animation
 			giroCabezaJoker_y += incGiroCabezaJoker_y;
 			giroBrazoAkechi_x += incGiroBrazoAkechi_x;
 			giroBrazoDerechoAnn_x += incGiroBrazoDerechoAnn_x;
 			giroBrazoDerechoAnn_y += incGiroBrazoDerechoAnn_y;
-
 			i_curr_steps++;
 		}
 	}
@@ -936,7 +852,6 @@ void animate(void)
 void getResolution()
 {
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
 	SCR_WIDTH = mode->width;
 	SCR_HEIGHT = (mode->height) - 80;
 }
@@ -961,7 +876,7 @@ int main()
 	monitors = glfwGetPrimaryMonitor();
 	getResolution();
 
-	//Inicio de sound engine
+	//Inicio de música de fondo
 	irrklang::ISoundEngine* bg_music = irrklang::createIrrKlangDevice();
 
 	if (!bg_music)
@@ -1002,6 +917,7 @@ int main()
 	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");
 	Shader animShader("Shaders/anim.vs", "Shaders/anim.fs");
 
+	//Se cargan recursos del skybox
 	vector<std::string> faces
 	{
 		"resources/skybox/right.jpg",
@@ -1015,16 +931,14 @@ int main()
 	Skybox skybox = Skybox(faces);
 
 	//Reproducir música de fondo
-	//La apago porque sino vamos a enloquecer xD
 	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
 
 	// Shader configuration
-	// --------------------
 	skyboxShader.use();
 	skyboxShader.setInt("skybox", 0);
 
-	// load models
-	// -----------
+	// Carga de modelos
+	// Edificios
 	Model piso("resources/objects/piso/piso.obj");
 	Model qfront("resources/objects/qfront/qfront_chido.obj");
 	Model magnet("resources/objects/magnet/magnet.obj");
@@ -1038,8 +952,8 @@ int main()
 	Model ovni("resources/objects/ovni/ovni.obj");
 	Model vagon("resources/objects/tren/tren.obj");
 	Model cabina("resources/objects/tren/cabina.obj");
-	Model camion("resources/objects/camion_gato/magiccatbus.obj"); //Camión gato
-	Model rueda("resources/objects/camion_gato/llantita_no_lonja.obj"); //ruedas de camión gato
+	Model camion("resources/objects/camion_gato/magiccatbus.obj");
+	Model rueda("resources/objects/camion_gato/llantita_no_lonja.obj");
 
 	//Flora
 	Model arbol("resources/objects/flora/green_tree.obj");
@@ -1047,9 +961,9 @@ int main()
 	Model circulo("resources/objects/flora/circulo-para-arbol.obj");
 	Model planta("resources/objects/flora/planta_amarilla.obj");
 
-	//Para reloj
-	Model minutos("resources/objects/reloj/manecilla_minutos.obj"); //Manecilla de minutos
-	Model horas("resources/objects/reloj/manecilla_horas.obj"); //Manecilla de horas
+	//Reloj
+	Model minutos("resources/objects/reloj/manecilla_minutos.obj");
+	Model horas("resources/objects/reloj/manecilla_horas.obj");
 
 	//Morgana
 	Model cabezaMorgana("resources/objects/morgana/cabeza.obj");
@@ -1087,7 +1001,6 @@ int main()
 
 	//Globo de dialogo
 	Model globo("resources/objects/globo_dialogo/globo_con_dialogo.obj");
-
 
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
@@ -1142,6 +1055,7 @@ int main()
 		staticShader.setFloat("pointLight[0].linear", 0.0009f);
 		staticShader.setFloat("pointLight[0].quadratic", 0.000004f);
 
+		//Iluminación de fondo
 		staticShader.setVec3("pointLight[1].position", glm::vec3(150.0f, 5.0f, 0.0f));
 		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -1149,17 +1063,6 @@ int main()
 		staticShader.setFloat("pointLight[1].constant", 0.08f);
 		staticShader.setFloat("pointLight[1].linear", 0.009f);
 		staticShader.setFloat("pointLight[1].quadratic", 0.0032f);
-
-		//Luz que cambia de color
-		staticShader.setVec3("pointLight[2].position", glm::vec3(-80.0f, 5.0f, 10.0f));
-		staticShader.setVec3("pointLight[2].ambient", glm::vec3(colorR, colorG, colorB));
-		staticShader.setVec3("pointLight[2].diffuse", glm::vec3(colorR, colorG, colorB));
-		staticShader.setVec3("pointLight[2].specular", glm::vec3(colorR, colorG, colorB));
-		staticShader.setFloat("pointLight[2].constant", 0.08f);
-		staticShader.setFloat("pointLight[2].linear", 0.009f);
-		staticShader.setFloat("pointLight[2].quadratic", 0.0032f);
-
-		staticShader.setFloat("material_shininess", 32.0f);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
@@ -1175,10 +1078,7 @@ int main()
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
 		
 
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Personaje Animacion
-		// -------------------------------------------------------------------------------------------------------------------------
-		//Remember to activate the shader with the animation
+		// Personajes animados
 		animShader.use();
 		animShader.setMat4("projection", projection);
 		animShader.setMat4("view", view);
@@ -1191,33 +1091,31 @@ int main()
 		animShader.setVec3("light.direction", lightDirection);
 		animShader.setVec3("viewPos", camera.Position);
 
-		//Dibujo Futaba 1
+		// Dibujo Futaba 1
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, movFutaba_y, 85.0f));
 		model = glm::scale(model, glm::vec3(escalaFutaba1));
 		animShader.setMat4("model", model);
 		Futaba1.Draw(animShader);
 
-		//Dibujo Futaba 2
+		// Dibujo Futaba 2
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.0f, 85.0f));
 		model = glm::scale(model, glm::vec3(escalaFutaba2));
 		animShader.setMat4("model", model);
 		Futaba2.Draw(animShader);
 
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Escenario (Objetos estáticos)
-		// -------------------------------------------------------------------------------------------------------------------------
+		// Objetos estáticos
 		staticShader.use();
 		staticShader.setMat4("projection", projection);
 		staticShader.setMat4("view", view);
 
-		//Piso
+		// Piso
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.05f));
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
 
-		//Dibujo edificio QFront
+		//Q-Front
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(-92.0f, -1.0f, 40.0f));
 		model = glm::rotate(model, glm::radians(138.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1225,7 +1123,7 @@ int main()
 		staticShader.setMat4("model", model);
 		qfront.Draw(staticShader);
 
-		//Dibujo edificio Magnet
+		//Magnet
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(-65.0f, -0.7f, -38.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1233,21 +1131,21 @@ int main()
 		staticShader.setMat4("model", model);
 		magnet.Draw(staticShader);
 
-		//Dibujo torniquetes
+		//Torniquetes
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(55.0f, 2.3f, -2.0f));
 		model = glm::scale(model, glm::vec3(2.35f));
 		staticShader.setMat4("model", model);
 		torniquetes.Draw(staticShader);
 
-		//Dibujo estacion
+		//Estacion
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(55.0f, -1.0f, -37.0f));
 		model = glm::scale(model, glm::vec3(2.35f));
 		staticShader.setMat4("model", model);
 		estacion.Draw(staticShader);
 
-		//Dibujo espera
+		//Espera
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(55.0f, -1.0f, -72.0f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1255,7 +1153,7 @@ int main()
 		staticShader.setMat4("model", model);
 		espera.Draw(staticShader);
 
-		//Dibujo pirámide
+		//Pirámide
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(25.0f, -0.7f, 60.0f));
 		model = glm::scale(model, glm::vec3(3.5f));
@@ -1270,38 +1168,38 @@ int main()
 		staticShader.setMat4("model", model);
 		hachiko.Draw(staticShader);
 
-		//Circulos cerca de Hachiko
+		// Circulos cerca de Hachiko
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(15.0f, -0.9f, -5.0f));
-		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(70.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.2f));
 		staticShader.setMat4("model", model);
 		circulo.Draw(staticShader);
 
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(25.0f, -0.9f, -5.0f));
-		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.2f));
 		staticShader.setMat4("model", model);
 		circulo.Draw(staticShader);
 
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(25.0f, -0.9f, -35.0f));
-		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.2f));
 		staticShader.setMat4("model", model);
 		circulo.Draw(staticShader);
 
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(15.0f, -0.9f, -65.0f));
-		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(15.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.2f));
 		staticShader.setMat4("model", model);
 		circulo.Draw(staticShader);
 
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(25.0f, -0.9f, -65.0f));
-		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(40.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.2f));
 		staticShader.setMat4("model", model);
 		circulo.Draw(staticShader);
@@ -1346,10 +1244,10 @@ int main()
 		//staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 		ovni.Draw(staticShader);
 
-		//**********************Plantitas**********************************
+		//Plantitas, árboles y arbustos
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(65.0f, -0.7f, 95.0f));
-		//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.2f));
 		staticShader.setMat4("model", model);
 		arbol.Draw(staticShader);
@@ -1377,7 +1275,7 @@ int main()
 
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(90.0f, -0.7f, 92.0f));
-		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.2f));
 		staticShader.setMat4("model", model);
 		arbusto.Draw(staticShader);
@@ -1474,28 +1372,22 @@ int main()
 		arbusto.Draw(staticShader);
 
 
-		// -------------------------------------------------------------------------------------------------------------------------
 		// Camión gato
-		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(movCamion_x, movCamion_y, movCamion_z));
 		tmp = model = glm::rotate(model, glm::radians(orientaCamion), glm::vec3(0.0f, 1.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model", model);
-		//staticShader.setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 		camion.Draw(staticShader);
 
 		model = glm::translate(tmp, glm::vec3(1.7f, 0.0f, 2.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(0.0f, 0.0f, 1.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setMat4("model", model);
 		rueda.Draw(staticShader);	//delantera der
 
 		model = glm::translate(tmp, glm::vec3(-1.7f, 0.0f, 2.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(0.0f, 0.0f, 1.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		rueda.Draw(staticShader);	//delantera izq
@@ -1503,22 +1395,17 @@ int main()
 		model = glm::translate(tmp, glm::vec3(1.7f, 0.0f, -2.4f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(0.0f, 0.0f, 1.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setMat4("model", model);
 		rueda.Draw(staticShader);	//trasera der
 
 		model = glm::translate(tmp, glm::vec3(-1.7f, 0.0f, -2.4f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(giroLlanta), glm::vec3(0.0f, 0.0f, 1.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		rueda.Draw(staticShader);	//trasera izq
 
-		// -------------------------------------------------------------------------------------------------------------------------
 		// Morgana
-		// -------------------------------------------------------------------------------------------------------------------------
-
 		//Torso
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(13.0f, -1.0f, -30.0f));
@@ -1526,7 +1413,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		torsoMorgana.Draw(staticShader);
-
 		//Brazo derecho
 		model = glm::translate(tmp, glm::vec3(-0.2f, 0.2f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
@@ -1534,7 +1420,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		brazoMorgana.Draw(staticShader);
-
 		//Brazo izquierdo
 		model = glm::translate(tmp, glm::vec3(0.2f, 0.2f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
@@ -1543,7 +1428,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		brazoMorgana.Draw(staticShader);
-
 		//Cabeza
 		model = glm::translate(tmp, glm::vec3(0.0f, 0.35f, -0.05f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1551,7 +1435,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		cabezaMorgana.Draw(staticShader);
-
 		//Pierna Izq
 		model = glm::translate(tmp, glm::vec3(0.15f, -0.35f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1559,7 +1442,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		piernaMorgana.Draw(staticShader);
-
 		//Pierna Der
 		model = glm::translate(tmp, glm::vec3(-0.15f, -0.35f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1567,7 +1449,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		piernaMorgana.Draw(staticShader);
-
 		//Patas corriendo
 		model = glm::translate(tmp, glm::vec3(0.0f, -0.35f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1576,9 +1457,7 @@ int main()
 		staticShader.setMat4("model", model);
 		patasCorriendoMorgana.Draw(staticShader);
 
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Joker
-		// -------------------------------------------------------------------------------------------------------------------------
+		// -Joker
 		//Torso
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(15.0f, 0.0f, -29.8f));
@@ -1586,24 +1465,19 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		torsoJoker.Draw(staticShader);
-
 		//Brazo derecho
 		model = glm::translate(tmp, glm::vec3(-0.51f, 0.5f, 0.0f));
-		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoJoker.Draw(staticShader);
-
 		//Brazo izquierdo
 		model = glm::translate(tmp, glm::vec3(0.51f, 0.5f, 0.0f));
-		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoJoker.Draw(staticShader);
-
 		//Cabeza
 		model = glm::translate(tmp, glm::vec3(0.0f, 0.70f, 0.0f));
 		model = glm::rotate(model, glm::radians(giroCabezaJoker_y), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1611,7 +1485,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		cabezaJoker.Draw(staticShader);
-
 		//Pierna Der
 		model = glm::translate(tmp, glm::vec3(-0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1619,7 +1492,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaJoker.Draw(staticShader);
-
 		//Pierna Izq
 		model = glm::translate(tmp, glm::vec3(0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1628,36 +1500,29 @@ int main()
 		staticShader.setMat4("model", model);
 		piernaJoker.Draw(staticShader);
 
-		// -------------------------------------------------------------------------------------------------------------------------
 		// Akechi
-		// -------------------------------------------------------------------------------------------------------------------------
-
+		//Torso
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(20.0f, 0.0f, -30.0f));
 		tmp = model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		torsoAkechi.Draw(staticShader);
-
 		//Brazo derecho
 		model = glm::translate(tmp, glm::vec3(-0.51f, 0.5f, 0.0f));
-		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::rotate(model, glm::radians(giroBrazoAkechi_x), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAkechi.Draw(staticShader);
-
 		//Brazo izquierdo
 		model = glm::translate(tmp, glm::vec3(0.51f, 0.5f, 0.0f));
-		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::rotate(model, glm::radians(-giroBrazoAkechi_x), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAkechi.Draw(staticShader);
-
 		//Cabeza
 		model = glm::translate(tmp, glm::vec3(0.0f, 0.71f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1665,7 +1530,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		cabezaAkechi.Draw(staticShader);
-
 		//Pierna Der
 		model = glm::translate(tmp, glm::vec3(-0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1673,7 +1537,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		piernaAkechi.Draw(staticShader);
-
 		//Pierna Izq
 		model = glm::translate(tmp, glm::vec3(0.28f, -0.69f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1682,20 +1545,16 @@ int main()
 		staticShader.setMat4("model", model);
 		piernaAkechi.Draw(staticShader);
 
-		// -------------------------------------------------------------------------------------------------------------------------
 		// Ann
-		// -------------------------------------------------------------------------------------------------------------------------
-
+		//Torso
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(15.0f, 0.0f, -29.0f));
 		tmp = model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		torsoAnn.Draw(staticShader);
-
 		//Brazo derecho
 		model = glm::translate(tmp, glm::vec3(-0.51f, 0.5f, 0.0f));
-		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::rotate(model, glm::radians(giroBrazoDerechoAnn_x), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -1703,16 +1562,13 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAnn.Draw(staticShader);
-
 		//Brazo izquierdo
 		model = glm::translate(tmp, glm::vec3(0.51f, 0.5f, 0.0f));
-		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		brazoAnn.Draw(staticShader);
-
 		//Cabeza
 		model = glm::translate(tmp, glm::vec3(0.0f, 0.70f, 0.0f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1720,7 +1576,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		cabezaAnn.Draw(staticShader);
-
 		//Pierna Izq
 		model = glm::translate(tmp, glm::vec3(0.27f, -0.71f, 0.02f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1728,7 +1583,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.5f));
 		staticShader.setMat4("model", model);
 		pierna2Ann.Draw(staticShader);
-
 		//Pierna Der
 		model = glm::translate(tmp, glm::vec3(-0.27f, -0.71f, 0.07f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -1767,13 +1621,9 @@ int main()
 		staticShader.setMat4("model", model);
 		globo.Draw(staticShader);
 
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Termina Escenario
-		// -------------------------------------------------------------------------------------------------------------------------
+		// Fin elementos del escenario
 
-		//-------------------------------------------------------------------------------------
-		// draw skybox as last
-		// -------------------
+		// Se dibuja skybox
 		skyboxShader.use();
 		skybox.Draw(skyboxShader, view, projection, camera);
 
@@ -1799,8 +1649,7 @@ int main()
 	return 0;
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
+// Entrada de datos
 void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -1813,28 +1662,6 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		camera.ProcessKeyboard(LEFT, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
-	//To Configure Model
-	//Para keyframes
-	/*if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
-		giroCabezaJoker_y += 0.3;
-	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-		giroCabezaJoker_y -= 0.3;
-	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-		giroBrazoAkechi_x += 0.3;
-	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-		giroBrazoAkechi_x -= 0.3;
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-		giroBrazoDerechoAnn_y += 0.3;
-	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
-		giroBrazoDerechoAnn_y -= 0.3;
-	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
-		giroBrazoDerechoAnn_x += 0.3;
-	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
-		giroBrazoDerechoAnn_x -= 0.3;*/
-	/*if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
-		lightPosition.x++;
-	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
-		lightPosition.x--;*/
 
 	//Animación 0: Luz del sol
 	if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
@@ -1891,7 +1718,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 			contOvni = 0;
 	}
 
-	//To play KeyFrame animation 
+	//Animación 5: Cachetadas a Joker (Keyframes)
 	if (key == GLFW_KEY_5 && action == GLFW_PRESS)
 	{
 		if (play == false && (FrameIndex > 1))
@@ -1927,15 +1754,6 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		mov_globoXZ = 0.0f;
 		
 	}
-
-	//To Save a KeyFrame
-	/*if (key == GLFW_KEY_L && action == GLFW_PRESS)
-	{
-		if (FrameIndex < MAX_FRAMES)
-		{
-			saveFrame();
-		}
-	}*/
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
