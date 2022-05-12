@@ -143,6 +143,16 @@ float	colorR = 0.0f,
 //Para animación del sol
 bool	animacion_sol;
 
+//Para globos de dialogo
+float   eglobo_Joker = 0.0f,
+		eglobo_Ann = 0.0f,
+		eglobo_Akechi = 0.0f,
+		eglobo_Morgana = 0.0f;
+bool	animacion_globos;
+int		estado_globos=0;
+float	mov_globoY = 0.0f,
+		mov_globoXZ = 0.0f;
+
 //Keyframes (Manipulación y dibujo)
 //Para cachetadas
 //Joker
@@ -678,6 +688,218 @@ void animate(void)
 		colorB = 1.0f;
 	}
 
+	//Animación 6: Globos de dialogo
+	if (animacion_globos) {
+		switch (estado_globos) {
+		case 0:
+			if (eglobo_Akechi<1.5f) {
+				eglobo_Akechi+=0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 1;
+			}
+			break;
+		case 1:
+			if (eglobo_Akechi >0.0f) {
+				eglobo_Akechi-=0.05;
+			}
+			else {
+				estado_globos = 2;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		case 2:
+			if (eglobo_Joker < 1.5f) {
+				eglobo_Joker += 0.05;
+				eglobo_Morgana += 0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 3;
+			}
+			break;
+		case 3:
+			if (eglobo_Joker > 0.0f) {
+				eglobo_Joker -= 0.05;
+				eglobo_Morgana -= 0.05;
+			}
+			else {
+				estado_globos = 4;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		case 4:
+			if (eglobo_Ann < 1.5f) {
+				eglobo_Ann += 0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 5;
+			}
+			break;
+		case 5:
+			if (eglobo_Ann > 0.0f) {
+				eglobo_Ann -= 0.05;
+			}
+			else {
+				estado_globos = 6;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		case 6:
+			if (eglobo_Morgana < 1.5f) {
+				eglobo_Akechi += 0.05;
+				eglobo_Morgana += 0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 7;
+			}
+			break;
+		case 7:
+			if (eglobo_Morgana > 0.0f) {
+				eglobo_Morgana -= 0.05;
+				eglobo_Akechi -= 0.05;
+			}
+			else {
+				estado_globos = 8;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		case 8:
+			if (eglobo_Ann < 1.5f) {
+				eglobo_Ann += 0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 9;
+			}
+			break;
+		case 9:
+			if (eglobo_Ann > 0.0f) {
+				eglobo_Ann -= 0.05;
+			}
+			else {
+				estado_globos = 10;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		case 10:
+			if (eglobo_Akechi < 1.5f) {
+				eglobo_Akechi += 0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 11;
+			}
+			break;
+		case 11:
+			if (eglobo_Akechi > 0.0f) {
+				eglobo_Akechi -= 0.05;
+			}
+			else {
+				estado_globos = 12;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		case 12:
+			if (eglobo_Joker < 1.5f) {
+				eglobo_Joker += 0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 13;
+			}
+			break;
+		case 13:
+			if (eglobo_Joker > 0.0f) {
+				eglobo_Joker -= 0.05;
+			}
+			else {
+				estado_globos = 14;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		case 14:
+			if (eglobo_Ann < 1.5f) {
+				eglobo_Morgana += 0.05;
+				eglobo_Ann += 0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 15;
+			}
+			break;
+		case 15:
+			if (eglobo_Ann > 0.0f) {
+				eglobo_Morgana -= 0.05;
+				eglobo_Ann -= 0.05;
+			}
+			else {
+				estado_globos = 16;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		case 16:
+			if (eglobo_Akechi < 1.5f) {
+				eglobo_Akechi += 0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 17;
+			}
+			break;
+		case 17:
+			if (eglobo_Akechi > 0.0f) {
+				eglobo_Akechi -= 0.05;
+			}
+			else {
+				estado_globos = 18;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		case 18:
+			if (eglobo_Morgana < 1.5f) {
+				eglobo_Morgana += 0.05;
+				mov_globoY += 0.01;
+				mov_globoXZ += 0.01;
+			}
+			else {
+				estado_globos = 19;
+			}
+			break;
+		case 19:
+			if (eglobo_Morgana > 0.0f) {
+				eglobo_Morgana -= 0.05;
+			}
+			else {
+				estado_globos = 0;
+				mov_globoY = 0.0f;
+				mov_globoXZ = 0.0f;
+			}
+			break;
+		}
+	}
+
 	//Animación por keyframes
 	if (play)
 	{
@@ -864,7 +1086,7 @@ int main()
 	Futaba2.initShaders(animShader.ID);
 
 	//Globo de dialogo
-	Model globo("resources/objects/globo_dialogo/globo_dialogo.obj");
+	Model globo("resources/objects/globo_dialogo/globo_con_dialogo.obj");
 
 
 	//Inicialización de KeyFrames
@@ -1398,30 +1620,30 @@ int main()
 		//Globos de dialogo
 		//Globo Akechi
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(15.0f, 3.0f, -30.0f));
+		model = glm::translate(model, glm::vec3(20.0f, 3.0f + mov_globoY, -30.0f+mov_globoXZ));
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::scale(model, glm::vec3(1.5f));
+		model = glm::scale(model, glm::vec3(eglobo_Akechi));
 		staticShader.setMat4("model", model);
 		globo.Draw(staticShader);
 		//Globo Joker
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(10.0f, 3.0f, -23.8f));
+		model = glm::translate(model, glm::vec3(15.0+mov_globoXZ, 3.0+mov_globoY, -29.8f));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::scale(model, glm::vec3(1.5f));
+		model = glm::scale(model, glm::vec3(eglobo_Joker));
 		staticShader.setMat4("model", model);
 		globo.Draw(staticShader);
 		//Globo Ann
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(15.0f, 3.0f, -22.0f));
+		model = glm::translate(model, glm::vec3(15.0f+mov_globoXZ, 3.0f+mov_globoY, -29.0f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::scale(model, glm::vec3(1.5f));
+		model = glm::scale(model, glm::vec3(eglobo_Ann));
 		staticShader.setMat4("model", model);
 		globo.Draw(staticShader);
 		//Globo Morgana
 		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(14.0f, 3.0f, -30.0f));
+		model = glm::translate(model, glm::vec3(13.0f, 2.0f + mov_globoY, -30.0f + mov_globoXZ));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::scale(model, glm::vec3(1.5f));
+		model = glm::scale(model, glm::vec3(eglobo_Morgana));
 		staticShader.setMat4("model", model);
 		globo.Draw(staticShader);
 
@@ -1531,8 +1753,6 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		estado_camion = 1;
 	}
 
-
-
 	//Animación 4: Secuestro de Futaba
 	if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
 		animacion_ovni ^= true;	
@@ -1570,6 +1790,22 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 			play = false;
 			std::cout << "Not enough Key Frames" << std::endl;
 		}
+	}
+
+	if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
+		animacion_globos ^= true;
+	}
+	//Uso una tecla diferente para reiniciarlo
+	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+		animacion_globos= false;
+		eglobo_Joker = 0.0f;
+		eglobo_Ann = 0.0f;
+		eglobo_Akechi = 0.0f;
+		eglobo_Morgana = 0.0f;
+		estado_globos = 0;
+		mov_globoY = 0.0f;
+		mov_globoXZ = 0.0f;
+		
 	}
 
 	//To Save a KeyFrame
