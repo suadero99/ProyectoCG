@@ -1016,7 +1016,7 @@ int main()
 
 	//Reproducir música de fondo
 	//La apago porque sino vamos a enloquecer xD
-	//bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
+	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
 
 	// Shader configuration
 	// --------------------
@@ -1831,12 +1831,12 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		giroBrazoDerechoAnn_x += 0.3;
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
 		giroBrazoDerechoAnn_x -= 0.3;*/
-	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+	/*if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
 		lightPosition.x++;
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
-		lightPosition.x--;
+		lightPosition.x--;*/
 
-	//Animación 0: Luz del zol
+	//Animación 0: Luz del sol
 	if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
 		animacion_sol ^= true;
 	}
