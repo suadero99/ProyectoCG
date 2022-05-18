@@ -1055,14 +1055,23 @@ int main()
 		staticShader.setFloat("pointLight[0].linear", 0.0009f);
 		staticShader.setFloat("pointLight[0].quadratic", 0.000004f);
 
-		//Iluminación de fondo
-		staticShader.setVec3("pointLight[1].position", glm::vec3(150.0f, 5.0f, 0.0f));
-		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[1].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		//Luz para el gato camion 1
+		staticShader.setVec3("pointLight[1].position", glm::vec3(movCamion_x-3, movCamion_y+3, movCamion_z-6));
+		staticShader.setVec3("pointLight[1].ambient", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[1].specular", glm::vec3(1.0f, 1.0f, 1.0f));
 		staticShader.setFloat("pointLight[1].constant", 0.08f);
 		staticShader.setFloat("pointLight[1].linear", 0.009f);
-		staticShader.setFloat("pointLight[1].quadratic", 0.0032f);
+		staticShader.setFloat("pointLight[1].quadratic", 0.5f);
+
+		//Luz para el gato camion 2
+		staticShader.setVec3("pointLight[2].position", glm::vec3(movCamion_x + 3, movCamion_y + 3, movCamion_z - 6));
+		staticShader.setVec3("pointLight[2].ambient", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[2].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[2].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setFloat("pointLight[2].constant", 0.08f);
+		staticShader.setFloat("pointLight[2].linear", 0.009f);
+		staticShader.setFloat("pointLight[2].quadratic", 0.5f);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
