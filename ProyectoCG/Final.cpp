@@ -131,6 +131,8 @@ bool	animacion_globos;
 int		estado_globos=0;
 float	mov_globoY = 0.0f,
 		mov_globoXZ = 0.0f;
+//Inicio de morgana
+irrklang::ISoundEngine* morgana = irrklang::createIrrKlangDevice();
 
 // Keyframes (Manipulación y dibujo) (Animación 5)
 //Joker
@@ -946,6 +948,8 @@ int main()
 
 	if (!bg_music)
 		return 0; //Error con la música de fondo
+	if (!morgana)
+		return 0; //Error con morgana
 
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "CGeIHC", NULL, NULL);
 	if (window == NULL)
@@ -1141,17 +1145,16 @@ int main()
 		staticShader.setFloat("pointLight[2].quadratic", 0.5f);
 
 		//Luz de ovni
-		/*staticShader.setVec3("spotLight.position", glm::vec3(movOvni_x, movOvni_y, movOvni_z));
+		staticShader.setVec3("spotLight.position", glm::vec3(movOvni_x, movOvni_y, movOvni_z));
 		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
 		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 0.0f, 1.0f));
 		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 0.0f, 1.0f));
 		staticShader.setVec3("spotLight.specular", glm::vec3(1.0f, 0.0f, 1.0f));
 		staticShader.setFloat("spotLight.cutOff", 0.38f);
 		staticShader.setFloat("spotLight.outerCutOff", 0.09f);
+		staticShader.setFloat("spotLight.constant", 0.8f);
+		staticShader.setFloat("spotLight.linear", 0.09f);
 		staticShader.setFloat("spotLight.quadratic", 0.5f);
-		staticShader.setFloat("spotLight.constant", 0.08f);
-		staticShader.setFloat("spotLight.linear", 0.009f);
-		staticShader.setFloat("spotLight.quadratic", 0.5f);*/
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
@@ -1731,6 +1734,7 @@ int main()
 	}
 
 	bg_music->drop(); //Borrar música de fondo
+	morgana->drop(); //Borrar efecto de sonido de morgana
 
 	skybox.Terminate();
 
@@ -1837,6 +1841,8 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 
 	if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
 		animacion_globos ^= true;
+		//Reproducir sonido 3d
+		morgana->play3D("resources\\sounds\\efectos\\looking-cool-joker.mp3", irrklang::vec3df(0.0f, 0.0f, 0.0f), false, false, false);
 	}
 	//Uso una tecla diferente para reiniciarlo
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
@@ -1848,7 +1854,6 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		estado_globos = 0;
 		mov_globoY = 0.0f;
 		mov_globoXZ = 0.0f;
-		
 	}
 }
 
