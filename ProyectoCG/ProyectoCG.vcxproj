@@ -162,6 +162,9 @@
     <ClCompile Include="Final.cpp" />
     <ClCompile Include="glad.c" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\shader_Lights.fs" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
