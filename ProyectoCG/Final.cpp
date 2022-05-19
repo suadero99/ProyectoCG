@@ -77,6 +77,9 @@ float	movCamion_x = 118.0f,
 		orientaCamion = 180.0f;
 bool	animacion_camion;
 int		estado_camion=1;
+float	ilumCamionR = 1.0f,
+		ilumCamionG = 1.0f,
+		ilumCamionB = 1.0f;
 
 // Variables para ovni (Animación 4)
 float	orientaOvni = 0.0f,
@@ -397,6 +400,9 @@ void animate(void)
 				if (movCamion_z >= 70.0f) {
 					giroLlanta += 1.0f;
 					movCamion_z -= 1.0f;
+					ilumCamionR = 1.0f;
+					ilumCamionG = 1.0f;
+					ilumCamionB = 1.0f;
 				}
 				else {
 					estado_camion++;
@@ -407,6 +413,9 @@ void animate(void)
 					giroLlanta += 0.1f;
 					movCamion_z -= 1.3;
 					movCamion_y += 0.3f;
+					ilumCamionR = 0.0f;
+					ilumCamionG = 0.0f;
+					ilumCamionB = 0.0f;
 				}
 				else {
 					estado_camion++;
@@ -416,6 +425,9 @@ void animate(void)
 				if (movCamion_z >= -60.0f) {
 					giroLlanta += 1.0f;
 					movCamion_z -= 1.0f;
+					ilumCamionR = 1.0f;
+					ilumCamionG = 1.0f;
+					ilumCamionB = 1.0f;
 					if (movCamion_y > 0.0f)
 						movCamion_y -= 0.3f;
 					else
@@ -431,6 +443,9 @@ void animate(void)
 					giroLlanta += 0.1f;
 					movCamion_z -= 1.3;
 					movCamion_y += 0.3f;
+					ilumCamionR = 0.0f;
+					ilumCamionG = 0.0f;
+					ilumCamionB = 0.0f;
 				}
 				else {
 					estado_camion++;
@@ -440,6 +455,9 @@ void animate(void)
 				if (movCamion_z >= -107.0f) {
 					giroLlanta += 1.0f;
 					movCamion_z -= 1.0f;
+					ilumCamionR = 1.0f;
+					ilumCamionG = 1.0f;
+					ilumCamionB = 1.0f;
 					if (movCamion_y > 0.0f)
 						movCamion_y -= 0.3f;
 					else
@@ -456,6 +474,9 @@ void animate(void)
 				if (movCamion_x >= -7.0f) {
 					giroLlanta += 1.0f;
 					movCamion_x -= 1.0f;
+					ilumCamionR = 1.0f;
+					ilumCamionG = 1.0f;
+					ilumCamionB = 1.0f;
 				}
 				else {
 					estado_camion++;
@@ -467,6 +488,9 @@ void animate(void)
 				if (movCamion_z <= -70.0f) {
 					giroLlanta += 1.0f;
 					movCamion_z += 1.0f;
+					ilumCamionR = 1.0f;
+					ilumCamionG = 1.0f;
+					ilumCamionB = 1.0f;
 				}
 				else {
 					estado_camion++;
@@ -477,6 +501,9 @@ void animate(void)
 					giroLlanta += 0.1f;
 					movCamion_z += 1.3;
 					movCamion_y += 0.3f;
+					ilumCamionR = 0.0f;
+					ilumCamionG = 0.0f;
+					ilumCamionB = 0.0f;
 				}
 				else {
 					estado_camion++;
@@ -486,6 +513,9 @@ void animate(void)
 				if (movCamion_z <= 60.0f) {
 					giroLlanta += 1.0f;
 					movCamion_z += 1.0f;
+					ilumCamionR = 1.0f;
+					ilumCamionG = 1.0f;
+					ilumCamionB = 1.0f;
 					if (movCamion_y > 0.0f)
 						movCamion_y -= 0.3f;
 					else
@@ -501,6 +531,9 @@ void animate(void)
 					giroLlanta += 0.1f;
 					movCamion_z += 1.3;
 					movCamion_y += 0.3f;
+					ilumCamionR = 0.0f;
+					ilumCamionG = 0.0f;
+					ilumCamionB = 0.0f;
 				}
 				else {
 					estado_camion++;
@@ -510,6 +543,9 @@ void animate(void)
 				if (movCamion_z <= 115.0f) {
 					giroLlanta += 1.0f;
 					movCamion_z += 1.0f;
+					ilumCamionR = 1.0f;
+					ilumCamionG = 1.0f;
+					ilumCamionB = 1.0f;
 					if (movCamion_y > 0.0f)
 						movCamion_y -= 0.3f;
 					else
@@ -525,6 +561,9 @@ void animate(void)
 				if (movCamion_x <= 118.0f) {
 					giroLlanta += 1.0f;
 					movCamion_x += 1.0f;
+					ilumCamionR = 1.0f;
+					ilumCamionG = 1.0f;
+					ilumCamionB = 1.0f;
 				}
 				else {
 					estado_camion = 1;
@@ -1021,7 +1060,7 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 		skyboxShader.setInt("skybox", 0);
-		
+
 		// per-frame time logic
 		// --------------------
 		lastFrame = SDL_GetTicks();
@@ -1056,22 +1095,35 @@ int main()
 		staticShader.setFloat("pointLight[0].quadratic", 0.000004f);
 
 		//Luz para el gato camion 1
-		staticShader.setVec3("pointLight[1].position", glm::vec3(movCamion_x-3, movCamion_y+3, movCamion_z-6));
-		staticShader.setVec3("pointLight[1].ambient", glm::vec3(1.0f, 1.0f, 1.0f));
-		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
-		staticShader.setVec3("pointLight[1].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[1].position", glm::vec3(movCamion_x - 3, movCamion_y + 3, movCamion_z - 6));
+		staticShader.setVec3("pointLight[1].ambient", glm::vec3(ilumCamionR, ilumCamionG, ilumCamionB));
+		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(ilumCamionR, ilumCamionG, ilumCamionB));
+		staticShader.setVec3("pointLight[1].specular", glm::vec3(ilumCamionR, ilumCamionG, ilumCamionB));
 		staticShader.setFloat("pointLight[1].constant", 0.08f);
 		staticShader.setFloat("pointLight[1].linear", 0.009f);
 		staticShader.setFloat("pointLight[1].quadratic", 0.5f);
 
 		//Luz para el gato camion 2
 		staticShader.setVec3("pointLight[2].position", glm::vec3(movCamion_x + 3, movCamion_y + 3, movCamion_z - 6));
-		staticShader.setVec3("pointLight[2].ambient", glm::vec3(1.0f, 1.0f, 1.0f));
-		staticShader.setVec3("pointLight[2].diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
-		staticShader.setVec3("pointLight[2].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		staticShader.setVec3("pointLight[2].ambient", glm::vec3(ilumCamionR, ilumCamionG, ilumCamionB));
+		staticShader.setVec3("pointLight[2].diffuse", glm::vec3(ilumCamionR, ilumCamionG, ilumCamionB));
+		staticShader.setVec3("pointLight[2].specular", glm::vec3(ilumCamionR, ilumCamionG, ilumCamionB));
 		staticShader.setFloat("pointLight[2].constant", 0.08f);
 		staticShader.setFloat("pointLight[2].linear", 0.009f);
 		staticShader.setFloat("pointLight[2].quadratic", 0.5f);
+
+		//Luz de ovni
+		staticShader.setVec3("spotLight.position", glm::vec3(movOvni_x, movOvni_y, movOvni_z));
+		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
+		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 0.0f, 1.0f));
+		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 0.0f, 1.0f));
+		staticShader.setVec3("spotLight.specular", glm::vec3(1.0f, 0.0f, 1.0f));
+		staticShader.setFloat("spotLight.cutOff", 0.38f);
+		staticShader.setFloat("spotLight.outerCutOff", 0.09f);
+		staticShader.setFloat("spotLight.quadratic", 0.5f);
+		staticShader.setFloat("spotLight.constant", 0.08f);
+		staticShader.setFloat("spotLight.linear", 0.009f);
+		staticShader.setFloat("spotLight.quadratic", 0.5f);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
