@@ -134,7 +134,7 @@ int		estado_globos=0;
 float	mov_globoY = 0.0f,
 		mov_globoXZ = 0.0f;
 //Inicio de morgana
-irrklang::ISoundEngine* morgana = irrklang::createIrrKlangDevice();
+irrklang::ISoundEngine* morgana = irrklang::createIrrKlangDevice();	
 
 // Keyframes (Manipulación y dibujo) (Animación 5)
 //Joker
@@ -309,6 +309,7 @@ void animate(void)
 				movCabina_x -= 1.0f;
 			} else {
 				estadoCabina = 1;
+				orientaCabina = 45.0f;
 			}
 			break;
 		case 1:
@@ -318,6 +319,7 @@ void animate(void)
 			}
 			else {
 				estadoCabina = 2;
+				orientaCabina = 135.0f;
 			}
 			break;
 		case 2:
@@ -327,6 +329,7 @@ void animate(void)
 			}
 			else {
 				estadoCabina = 3;
+				orientaCabina = 192.615f;
 			}
 			break;
 		case 3:
@@ -338,6 +341,7 @@ void animate(void)
 			else {
 				movCabina_z = 65.0f;
 				estadoCabina = 4;
+				orientaCabina = 237.615;
 			}
 			break;
 		case 4:
@@ -347,6 +351,7 @@ void animate(void)
 			}
 			else {
 				estadoCabina = 0;
+				orientaCabina = 305.0f;
 			}
 			break;
 		}
@@ -358,6 +363,7 @@ void animate(void)
 			}
 			else {
 				estadoVagon = 1;
+				orientaVagon = 45.0f;
 			}
 			break;
 		case 1:
@@ -367,6 +373,7 @@ void animate(void)
 			}
 			else {
 				estadoVagon = 2;
+				orientaVagon = 135.0f;
 			}
 			break;
 		case 2:
@@ -376,6 +383,7 @@ void animate(void)
 			}
 			else {
 				estadoVagon = 3;
+				orientaVagon = 192.615f;
 			}
 			break;
 		case 3:
@@ -387,6 +395,7 @@ void animate(void)
 			else {
 				movVagon_z = 65.0f;
 				estadoVagon = 4;
+				orientaVagon = 237.615;
 			}
 			break;
 		case 4:
@@ -396,6 +405,7 @@ void animate(void)
 			}
 			else {
 				estadoVagon = 0;
+				orientaVagon = 305.0f;
 			}
 			break;
 		}
@@ -896,6 +906,11 @@ void animate(void)
 		if (i_curr_steps >= i_max_steps)
 		{
 			playIndex++;
+			if (playIndex == 3) {
+				//Reproducir sonido 3d
+				morgana->setListenerPosition(irrklang::vec3df(camera.Position.x, camera.Position.y, camera.Position.z), irrklang::vec3df(0, 0, 1));
+				morgana->play3D("resources\\sounds\\efectos\\looking-cool-joker.mp3", irrklang::vec3df(13.0f, 1.0f, -30.0f), false, false, false);
+			}
 			if (playIndex > FrameIndex - 2)
 			{
 				playIndex = 0;
@@ -1002,7 +1017,7 @@ int main()
 	Skybox skybox = Skybox(faces);
 
 	//Reproducir música de fondo
-	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
+	//bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
 
 	// Shader configuration
 	skyboxShader.use();
@@ -1852,7 +1867,8 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
 		animacion_globos ^= true;
 		//Reproducir sonido 3d
-		morgana->play3D("resources\\sounds\\efectos\\looking-cool-joker.mp3", irrklang::vec3df(0.0f, 0.0f, 0.0f), false, false, false);
+		morgana->setListenerPosition(irrklang::vec3df(camera.Position.x, camera.Position.y, camera.Position.z), irrklang::vec3df(0,0,1));
+		morgana->play3D("resources\\sounds\\efectos\\looking-cool-joker.mp3", irrklang::vec3df(13.0f, 1.0f, -30.0f), false, false, false);
 	}
 	//Uso una tecla diferente para reiniciarlo
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
