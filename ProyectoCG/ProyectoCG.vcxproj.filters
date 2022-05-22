@@ -25,4 +25,9 @@
   <ItemGroup>
     <None Include="Shaders\shader_Lights.fs" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\camera.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

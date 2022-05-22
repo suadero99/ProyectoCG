@@ -50,11 +50,13 @@ GLFWmonitor *monitors;
 void getResolution(void);
 
 // Cámara
-Camera camera(glm::vec3(0.0f, 10.0f, 100.0f));
+Camera camera(glm::vec3(0.0f, 10.0f, 100.0f)); //Cámara libre
+//Camera cameraxz(glm::vec3(0.0f, 0.5f, 100.0f)); //Cámara de piso
 float MovementSpeed = 5.0f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
+bool camaraPiso = false;
 
 // Timing
 const int FPS = 60;
@@ -1091,6 +1093,10 @@ int main()
 	{
 		skyboxShader.setInt("skybox", 0);
 
+		//Cámara en xz:
+		if(camaraPiso)
+			camera.Position.y = 0.0f;
+
 		// per-frame time logic
 		// --------------------
 		lastFrame = SDL_GetTicks();
@@ -1150,8 +1156,8 @@ int main()
 		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 0.0f, 1.0f));
 		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 0.0f, 1.0f));
 		staticShader.setVec3("spotLight.specular", glm::vec3(1.0f, 0.0f, 1.0f));
-		staticShader.setFloat("spotLight.cutOff", 0.38f);
-		staticShader.setFloat("spotLight.outerCutOff", 0.09f);
+		staticShader.setFloat("spotLight.cutOff", glm::radians(30.0f));
+		staticShader.setFloat("spotLight.outerCutOff", glm::radians(60.0f));
 		staticShader.setFloat("spotLight.constant", 0.8f);
 		staticShader.setFloat("spotLight.linear", 0.09f);
 		staticShader.setFloat("spotLight.quadratic", 0.5f);
@@ -1755,6 +1761,10 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		camera.ProcessKeyboard(LEFT, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
+
+	//Para activar cámara en xz
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+		camaraPiso = !camaraPiso;
 
 	//Animación 0: Luz del sol
 	if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
