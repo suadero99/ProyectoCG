@@ -133,6 +133,7 @@ bool	animacion_globos;
 int		estado_globos=0;
 float	mov_globoY = 0.0f,
 		mov_globoXZ = 0.0f;
+
 //Inicio de morgana
 irrklang::ISoundEngine* morgana = irrklang::createIrrKlangDevice();	
 
@@ -1017,7 +1018,7 @@ int main()
 	Skybox skybox = Skybox(faces);
 
 	//Reproducir música de fondo
-	//bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
+	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
 
 	// Shader configuration
 	skyboxShader.use();
@@ -1520,8 +1521,8 @@ int main()
 
 		// Morgana
 		//Torso
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(13.0f, -1.0f, -30.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(13.0f, 0.0f, -30.0f));
 		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
