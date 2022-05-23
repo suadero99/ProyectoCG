@@ -1,7 +1,11 @@
 #version 330 core
 out vec4 FragColor;
 
+//For PointLight
 #define NUMBER 3
+
+//For SpotLight
+#define NUM_SPOT 2
 
 in vec3 FragPos;
 in vec3 Normal;
@@ -56,7 +60,7 @@ struct SpotLight
 uniform vec3 viewPos;
 uniform DirLight dirLight;
 uniform PointLight pointLight[NUMBER];
-uniform SpotLight spotLight;
+uniform SpotLight spotLight[NUM_SPOT];
 //uniform Material material;
 
 uniform sampler2D material_diffuse;
@@ -84,7 +88,10 @@ void main()
     }
 
     // Spot light
-    result += CalcSpotLight( spotLight, norm, FragPos, viewDir );
+    for(int i = 0; i < NUM_SPOT; i++)
+    {
+        result += CalcSpotLight(spotLight[i], norm, FragPos, viewDir );
+    }
     
     vec4   texColor = vec4( result,texture( material_diffuse, TexCoords).a );
     if(texColor.a < 0.1)

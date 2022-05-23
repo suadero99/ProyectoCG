@@ -110,6 +110,9 @@ float	escalaFutaba1 = 0.0f,
 		escalaFutaba2 = 0.35f,
 		movFutaba_y=-0.1;
 int		contOvni = 0;
+	//Para iluminación
+float	ilumOvni = 0.0f;
+bool	ilumOvniOn = false;
 
 // Variables para tren (Animación 2)
 float	orientaCabina = 0.0f,
@@ -708,6 +711,7 @@ void animate(void)
 				escalaFutaba2 = 0.0f;
 				escalaFutaba1 = 0.35f;
 				estado_Ovni = 2;
+				ilumOvni = 1.0f; //Encendemos luz de ovni
 				break;
 			case 2:
 				//Futaba 1 viaja hacia arriba con escala, rotación y traslación en Y
@@ -746,6 +750,7 @@ void animate(void)
 				escalaFutaba2 = 0.35f;
 				escalaFutaba1 = 0.0f;
 				estado_Ovni = 6;
+				ilumOvni = 0.0f; //Apagamos luz
 				break;
 			case 6:
 				//Ovni regresa a posición de inicio
@@ -1259,16 +1264,16 @@ int main()
 		staticShader.setFloat("pointLight[2].quadratic", 0.5f);
 
 		//Luz de ovni
-		staticShader.setVec3("spotLight.position", glm::vec3(movOvni_x, movOvni_y, movOvni_z));
-		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
-		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 0.0f, 1.0f));
-		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 0.0f, 1.0f));
-		staticShader.setVec3("spotLight.specular", glm::vec3(1.0f, 0.0f, 1.0f));
-		staticShader.setFloat("spotLight.cutOff", glm::radians(30.0f));
-		staticShader.setFloat("spotLight.outerCutOff", glm::radians(60.0f));
-		staticShader.setFloat("spotLight.constant", 0.8f);
-		staticShader.setFloat("spotLight.linear", 0.09f);
-		staticShader.setFloat("spotLight.quadratic", 0.5f);
+		staticShader.setVec3("spotLight[0].position", glm::vec3(movOvni_x, movOvni_y - 20.0f, movOvni_z));
+		staticShader.setVec3("spotLight[0].direction", glm::vec3(0.0f, -1.0f, 0.0f));
+		staticShader.setVec3("spotLight[0].ambient", glm::vec3(0.0f, ilumOvni, 0.0f));
+		staticShader.setVec3("spotLight[0].diffuse", glm::vec3(0.0f, ilumOvni, 0.0f));
+		staticShader.setVec3("spotLight[0].specular", glm::vec3(0.0f, ilumOvni, 0.0f));
+		staticShader.setFloat("spotLight[0].cutOff", glm::radians(0.0f));
+		staticShader.setFloat("spotLight[0].outerCutOff", glm::radians(90.0f));
+		staticShader.setFloat("spotLight[0].constant", 0.008f);
+		staticShader.setFloat("spotLight[0].linear", 0.009f);
+		staticShader.setFloat("spotLight[0].quadratic", 0.05f);
 
 		/*staticShader.setVec3("spotLight.position", glm::vec3(0.0f, 20.0f, 0.0f));
 		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
@@ -1281,16 +1286,17 @@ int main()
 		staticShader.setFloat("spotLight.linear", 0.0009f);
 		staticShader.setFloat("spotLight.quadratic", 0.0005f);*/
 
-
-
 		//Luz del faro
-		staticShader.setVec3("pointLight[3].position", glm::vec3(-29.1f, 6.4f, 0.6f));
-		staticShader.setVec3("pointLight[3].ambient", glm::vec3(ilumFaro, ilumFaro, 0.0f));
-		staticShader.setVec3("pointLight[3].diffuse", glm::vec3(ilumFaro, ilumFaro, 0.0f));
-		staticShader.setVec3("pointLight[3].specular", glm::vec3(ilumFaro, ilumFaro, 0.0f));
-		staticShader.setFloat("pointLight[3].constant", 0.08f);
-		staticShader.setFloat("pointLight[3].linear", 0.09f);
-		staticShader.setFloat("pointLight[3].quadratic", 0.5f);
+		staticShader.setVec3("spotLight[1].position", glm::vec3(-29.1f, 3.5f, 0.6f));
+		staticShader.setVec3("spotLight[1].direction", glm::vec3(0.0f, -1.0f, -0.0f));
+		staticShader.setVec3("spotLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("spotLight[1].diffuse", glm::vec3(ilumFaro, ilumFaro, 0.0f));
+		staticShader.setVec3("spotLight[1].specular", glm::vec3(ilumFaro, ilumFaro, 0.0f));
+		staticShader.setFloat("spotLight[1].cutOff", glm::radians(0.0f));
+		staticShader.setFloat("spotLight[1].outerCutOff", glm::radians(90.0f));
+		staticShader.setFloat("spotLight[1].constant", 0.008f);
+		staticShader.setFloat("spotLight[1].linear", 0.009f);
+		staticShader.setFloat("spotLight[1].quadratic", 0.05f);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
@@ -2356,6 +2362,15 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		camaraPiso = !camaraPiso;
 
+	//Activar luz
+	if (key == GLFW_KEY_F && action == GLFW_PRESS) {
+		faroOn ^= true;
+		if (faroOn)
+			ilumFaro = 1.0f;
+		else
+			ilumFaro = 0.0f;
+	}
+
 	//Animación 0: Luz del sol
 	if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
 		animacion_sol ^= true;
@@ -2402,7 +2417,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 
 	//Animación 4: Secuestro de Futaba
 	if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-		animacion_ovni ^= true;	
+		animacion_ovni ^= true;
 	}
 	//Uso una tecla diferente para reiniciarlo
 	if (key == GLFW_KEY_O && action == GLFW_PRESS) {
@@ -2416,6 +2431,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 			escalaFutaba2 = 0.35f;
 			movFutaba_y = -0.1;
 			contOvni = 0;
+			ilumOvni = 0.0f;
 	}
 
 	//Animación 5: Cachetadas a Joker (Keyframes)
