@@ -30,6 +30,7 @@
 #include <iostream>
 
 //Bibliotecas
+#include "cone.h"
 
 //Librería de audio:
 #if defined(WIN32)
@@ -77,6 +78,9 @@ float cont = 0.0f;
 //Luz de faro por teclado
 bool faroOn = false;
 float ilumFaro = 0.0f;
+
+cone cone_1(0.5, 1.5);
+GLuint VBO, VAO;
 
 // Variables para Gato camión (Animación 3)
 float	giroLlanta = 0.0f;
@@ -182,6 +186,70 @@ FRAME KeyFrame[MAX_FRAMES];
 int FrameIndex = 0;
 bool play = false;
 int playIndex = 0;
+
+void drawElements(Shader shader) {
+
+	//GENERAL DECLARATIONS
+	shader.use();
+	// create transformations and Projection
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" in order to change how we see the information
+	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.01f, 500.0f);
+
+
+
+	//VIEW DECLARATIONS AND INSTANCE
+	float movY = -5.0f;
+	float movZ = -20.0f;
+	//view = glm::translate(view, glm::vec3(movX, movY, movZ));
+
+	//Auxiliares para revisar el modelo 
+	//view = glm::rotate(view, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
+	//view = glm::rotate(view, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	shader.setMat4("model", model);// pass them to the shaders
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+	glBindVertexArray(VAO);
+
+
+
+
+	//Color zone 
+	float	bodyR = 0.120f / 0.256f,
+		bodyG = 0.124f / 0.256f,
+		bodyB = 0.117f / 0.256f;
+
+	float	aspaR = 0.021f / 0.256f,
+		aspaG = 0.023f / 0.256f,
+		aspaB = 0.040f / 0.256f;
+
+	float	maderaR = 0.124f / 0.256f,
+		maderaG = 0.1003f / 0.256f,
+		maderaB = 0.066f / 0.256f;
+
+
+	//MODELADO JERARQUICO CON BASE EN LA CLASE 
+
+
+	//CILINDRO - CUERPO PRINCIPAL
+	glm::mat4 temporal = glm::mat4(1.0f);
+
+	//CONO - TECHO
+	model = glm::translate(temporal, glm::vec3(0.0f, 10.3f, 0.0f));
+	model = glm::scale(model, glm::vec3(4.75f, 3.0f, 4.75f));
+	shader.setMat4("model", model);
+	shader.setVec3("aColor", glm::vec3(aspaR, aspaG, aspaB));
+	cone_1.render();
+
+
+
+	glBindVertexArray(0);
+
+}
 
 void saveFrame(void)
 {
@@ -1001,15 +1069,19 @@ int main()
 		return -1;
 	}
 
+	//object instants (Using construct methods)
+	cone_1.init();
+
 	// configure global opengl state
 	// -----------------------------
 	glEnable(GL_DEPTH_TEST);
 
 	// build and compile shaders
 	// -------------------------
-	Shader staticShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights.fs");
+	Shader staticShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights_mod.fs");
 	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");
 	Shader animShader("Shaders/anim.vs", "Shaders/anim.fs");
+	Shader projectionShader("shaders/shader_projection.vs", "shaders/shader_projection.fs");
 
 	//Se cargan recursos del skybox
 	vector<std::string> faces
@@ -1187,7 +1259,7 @@ int main()
 		staticShader.setFloat("pointLight[2].quadratic", 0.5f);
 
 		//Luz de ovni
-		/*staticShader.setVec3("spotLight.position", glm::vec3(movOvni_x, movOvni_y, movOvni_z));
+		staticShader.setVec3("spotLight.position", glm::vec3(movOvni_x, movOvni_y, movOvni_z));
 		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
 		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 0.0f, 1.0f));
 		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 0.0f, 1.0f));
@@ -1196,7 +1268,20 @@ int main()
 		staticShader.setFloat("spotLight.outerCutOff", glm::radians(60.0f));
 		staticShader.setFloat("spotLight.constant", 0.8f);
 		staticShader.setFloat("spotLight.linear", 0.09f);
-		staticShader.setFloat("spotLight.quadratic", 0.5f);*/
+		staticShader.setFloat("spotLight.quadratic", 0.5f);
+
+		/*staticShader.setVec3("spotLight.position", glm::vec3(0.0f, 20.0f, 0.0f));
+		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
+		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setVec3("spotLight.specular", glm::vec3(1.0f, 0.0f, 0.0f));
+		staticShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(20.0f)));
+		staticShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(60.0f)));
+		staticShader.setFloat("spotLight.constant", 1.0f);
+		staticShader.setFloat("spotLight.linear", 0.0009f);
+		staticShader.setFloat("spotLight.quadratic", 0.0005f);*/
+
+
 
 		//Luz del faro
 		staticShader.setVec3("pointLight[3].position", glm::vec3(-29.1f, 6.4f, 0.6f));
@@ -2221,6 +2306,8 @@ int main()
 		model = glm::scale(model, glm::vec3(5.0f));
 		staticShader.setMat4("model", model);
 		via.Draw(staticShader);
+
+		//drawElements(projectionShader);
 
 		// Fin elementos del escenario
 
