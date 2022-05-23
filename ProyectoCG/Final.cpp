@@ -29,6 +29,8 @@
 #include <Skybox.h>
 #include <iostream>
 
+//Bibliotecas
+
 //Librería de audio:
 #if defined(WIN32)
 #include <conio.h>
@@ -50,13 +52,14 @@ GLFWmonitor *monitors;
 void getResolution(void);
 
 // Cámara
-Camera camera(glm::vec3(0.0f, 10.0f, 100.0f)); //Cámara libre
+Camera camera(glm::vec3(0.0f, 7.0f, 100.0f)); //Cámara libre
 //Camera cameraxz(glm::vec3(0.0f, 0.5f, 100.0f)); //Cámara de piso
 float MovementSpeed = 5.0f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 bool camaraPiso = false;
+bool camaraAerea = false;
 
 // Timing
 const int FPS = 60;
@@ -1115,6 +1118,13 @@ int main()
 		//Cámara en xz:
 		if (camaraPiso)
 			camera.Position.y = 2.0f;
+
+		if (camaraAerea) {
+			camera.Position.y = 325.0f;
+			camera.Position.x = 0.0f;
+			camera.Position.z = 0.0f;
+		}
+			
 
 		// per-frame time logic
 		// --------------------
@@ -2234,6 +2244,10 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	//Para activar cámara en xz
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		camaraPiso = !camaraPiso;
+
+	//Para activar cámara aerea
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+		camaraAerea = !camaraAerea;
 
 	//Animación 0: Luz del sol
 	if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
