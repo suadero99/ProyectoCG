@@ -51,7 +51,6 @@ void getResolution(void);
 
 // Cámara
 Camera camera(glm::vec3(0.0f, 10.0f, 100.0f)); //Cámara libre
-//Camera cameraxz(glm::vec3(0.0f, 0.5f, 100.0f)); //Cámara de piso
 float MovementSpeed = 5.0f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -70,6 +69,10 @@ glm::vec3 lightDirection(0.0f, -1.0f, -1.0f);
 glm::vec3 lightPositionSun(0.0f, 550.0f, 0.0f);
 glm::vec3 luzColor(0.0f, 0.0f, 0.0f);
 float cont = 0.0f;
+
+//Luz de faro por teclado
+bool faroOn = false;
+float ilumFaro = 0.0f;
 
 // Variables para Gato camión (Animación 3)
 float	giroLlanta = 0.0f;
@@ -304,7 +307,7 @@ void animate(void)
 	//Para tren (Animación 2)
 	if (animacion_tren) {
 		switch (estadoCabina) {
-		case 0:
+		case 0: //Estado inicial hacia izquierda
 			orientaCabina = 0.0f;
 			if (movCabina_x>=-115.0f) {
 				movCabina_x -= 1.0f;
@@ -313,7 +316,7 @@ void animate(void)
 				orientaCabina = 45.0f;
 			}
 			break;
-		case 1:
+		case 1: //Hacia abajo
 			orientaCabina = 90.0f;
 			if (movCabina_z <= 115.0f) {
 				movCabina_z += 1.0f;
@@ -323,7 +326,7 @@ void animate(void)
 				orientaCabina = 135.0f;
 			}
 			break;
-		case 2:
+		case 2: //Hacia la derecha
 			orientaCabina = 180.0f;
 			if (movCabina_x <= -15.0f) {
 				movCabina_x += 1.0f;
@@ -333,7 +336,7 @@ void animate(void)
 				orientaCabina = 192.615f;
 			}
 			break;
-		case 3:
+		case 3: //Giro raro
 			orientaCabina = 205.23f;
 			if (movCabina_x <= 90.0f) {
 				movCabina_x += 1.0;
@@ -345,7 +348,7 @@ void animate(void)
 				orientaCabina = 237.615;
 			}
 			break;
-		case 4:
+		case 4: //Hacia arriba
 			orientaCabina = 270.0f;
 			if (movCabina_z >= -90.0f) {
 				movCabina_z -= 1.0f;
@@ -357,7 +360,7 @@ void animate(void)
 			break;
 		}
 		switch (estadoVagon) {
-		case 0:
+		case 0: //Hacia la izquierdaa
 			orientaVagon = 0.0f;
 			if (movVagon_x >= -115.0f) {
 				movVagon_x -= 1.0f;
@@ -367,7 +370,7 @@ void animate(void)
 				orientaVagon = 45.0f;
 			}
 			break;
-		case 1:
+		case 1: //Hacia abajo
 			orientaVagon = 90.0f;
 			if (movVagon_z <= 115.0f) {
 				movVagon_z += 1.0f;
@@ -377,7 +380,7 @@ void animate(void)
 				orientaVagon = 135.0f;
 			}
 			break;
-		case 2:
+		case 2: //Hacia la derecha
 			orientaVagon = 180.0f;
 			if (movVagon_x <= -15.0f) {
 				movVagon_x += 1.0f;
@@ -387,7 +390,7 @@ void animate(void)
 				orientaVagon = 192.615f;
 			}
 			break;
-		case 3:
+		case 3: //Giro raro
 			orientaVagon = 205.23f; 
 			if (movVagon_x <= 90.0f) {
 				movVagon_x += 1.0;
@@ -399,7 +402,7 @@ void animate(void)
 				orientaVagon = 237.615;
 			}
 			break;
-		case 4:
+		case 4: //Hacia arriba
 			orientaVagon = 270.0f;
 			if (movVagon_z >= -90.0f) {
 				movVagon_z -= 1.0f;
@@ -1117,7 +1120,7 @@ int main()
 
 		//Cámara en xz:
 		if (camaraPiso)
-			camera.Position.y = 2.0f;
+			camera.Position.y = 1.0f;
 
 		// per-frame time logic
 		// --------------------
@@ -1185,16 +1188,13 @@ int main()
 		staticShader.setFloat("spotLight.quadratic", 0.5f);*/
 
 		//Luz del faro
-		staticShader.setVec3("spotLight.position", glm::vec3(-29.7f, 10.0f, 0.3f));
-		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
-		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 1.0f, 0.0f));
-		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 1.0f, 0.0f));
-		staticShader.setVec3("spotLight.specular", glm::vec3(1.0f, 1.0f, 0.0f));
-		staticShader.setFloat("spotLight.cutOff", glm::radians(60.0f));
-		staticShader.setFloat("spotLight.outerCutOff", glm::radians(65.0f));
-		staticShader.setFloat("spotLight.constant", 0.8f);
-		staticShader.setFloat("spotLight.linear", 0.09f);
-		staticShader.setFloat("spotLight.quadratic", 0.5f);
+		staticShader.setVec3("pointLight[3].position", glm::vec3(-29.1f, 6.4f, 0.6f));
+		staticShader.setVec3("pointLight[3].ambient", glm::vec3(ilumFaro, ilumFaro, 0.0f));
+		staticShader.setVec3("pointLight[3].diffuse", glm::vec3(ilumFaro, ilumFaro, 0.0f));
+		staticShader.setVec3("pointLight[3].specular", glm::vec3(ilumFaro, ilumFaro, 0.0f));
+		staticShader.setFloat("pointLight[3].constant", 0.08f);
+		staticShader.setFloat("pointLight[3].linear", 0.09f);
+		staticShader.setFloat("pointLight[3].quadratic", 0.5f);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
@@ -2257,6 +2257,15 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	//Para activar cámara en xz
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		camaraPiso = !camaraPiso;
+
+	//Para activar/desactivar luz del faro
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+		faroOn = !faroOn;
+		if (faroOn)
+			ilumFaro = 1.0f;
+		else
+			ilumFaro = 0.0f;
+	}
 
 	//Animación 0: Luz del sol
 	if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
