@@ -1092,6 +1092,9 @@ int main()
 	//Vía del tren
 	Model via("resources/objects/via/via.obj");
 
+	//Faro de iluminación spotlight
+	Model faro("resources/objects/faro_ilum/faro.obj");
+
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
 	{
@@ -1170,13 +1173,25 @@ int main()
 		staticShader.setFloat("pointLight[2].quadratic", 0.5f);
 
 		//Luz de ovni
-		staticShader.setVec3("spotLight.position", glm::vec3(movOvni_x, movOvni_y, movOvni_z));
+		/*staticShader.setVec3("spotLight.position", glm::vec3(movOvni_x, movOvni_y, movOvni_z));
 		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
 		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 0.0f, 1.0f));
 		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 0.0f, 1.0f));
 		staticShader.setVec3("spotLight.specular", glm::vec3(1.0f, 0.0f, 1.0f));
 		staticShader.setFloat("spotLight.cutOff", glm::radians(30.0f));
 		staticShader.setFloat("spotLight.outerCutOff", glm::radians(60.0f));
+		staticShader.setFloat("spotLight.constant", 0.8f);
+		staticShader.setFloat("spotLight.linear", 0.09f);
+		staticShader.setFloat("spotLight.quadratic", 0.5f);*/
+
+		//Luz del faro
+		staticShader.setVec3("spotLight.position", glm::vec3(-29.7f, 10.0f, 0.3f));
+		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
+		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 1.0f, 0.0f));
+		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 1.0f, 0.0f));
+		staticShader.setVec3("spotLight.specular", glm::vec3(1.0f, 1.0f, 0.0f));
+		staticShader.setFloat("spotLight.cutOff", glm::radians(60.0f));
+		staticShader.setFloat("spotLight.outerCutOff", glm::radians(65.0f));
 		staticShader.setFloat("spotLight.constant", 0.8f);
 		staticShader.setFloat("spotLight.linear", 0.09f);
 		staticShader.setFloat("spotLight.quadratic", 0.5f);
@@ -1247,6 +1262,14 @@ int main()
 		model = glm::scale(model, glm::vec3(2.7f));
 		staticShader.setMat4("model", model);
 		magnet.Draw(staticShader);
+
+		//Faro iluminación
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-30.0f, -0.8f, 0.0f));
+		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.3f));
+		staticShader.setMat4("model", model);
+		faro.Draw(staticShader);
 
 		//Torniquetes
 		model = glm::mat4(1.0f);
