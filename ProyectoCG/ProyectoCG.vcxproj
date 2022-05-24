@@ -165,6 +165,7 @@
   <ItemGroup>
     <None Include="Shaders\shader_Lights.fs" />
     <None Include="Shaders\shader_Lights.vs" />
+    <None Include="Shaders\shader_Lights_mod.fs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\camera.h" />
