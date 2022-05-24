@@ -142,7 +142,17 @@ int		estado_globos = 0;
 float	mov_globoY = 0.0f,
 mov_globoXZ = 0.0f;
 
-//Inicio de morgana
+//Variables de morgana corriendo
+float	posMorgana_x = 0.0f,
+		posMorgana_y = 0.0f,
+		posMorgana_z = 0.0f;
+float	escMorgana = 1.0f;
+float	giroTorso_y = 0.0f,
+		giroBrazoMorgana_x = 30.0f,
+		giroBrazoMorgana_z = 45.0f;
+bool	giroBrazoMorganaPositivo = true;
+
+//Inicio de audio morgana
 irrklang::ISoundEngine* morgana = irrklang::createIrrKlangDevice();
 
 // Keyframes (Manipulación y dibujo) (Animación 5)
@@ -1615,6 +1625,48 @@ int main()
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.3f));
+		staticShader.setMat4("model", model);
+		patasCorriendoMorgana.Draw(staticShader);
+
+		//Morgana corriendo
+		//Torso
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(posMorgana_x, posMorgana_y - 0.3f, posMorgana_z));
+		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::scale(model, glm::vec3(0.3f));
+		staticShader.setMat4("model", model);
+		torsoMorgana.Draw(staticShader);
+
+		//Brazo derecho
+		model = glm::translate(tmp, glm::vec3(-0.2f, 0.2f, 0.0f));
+		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
+		model = glm::rotate(model, glm::radians(giroBrazoMorgana_z), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(0.3f));
+		staticShader.setMat4("model", model);
+		brazoMorgana.Draw(staticShader);
+
+		//Brazo izquierdo
+		model = glm::translate(tmp, glm::vec3(0.2f, 0.2f, 0.0f));
+		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroBrazoMorgana_z), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(0.3f));
+		staticShader.setMat4("model", model);
+		brazoMorgana.Draw(staticShader);
+
+		//Cabeza
+		model = glm::translate(tmp, glm::vec3(0.0f, 0.35f, -0.05f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0));
+		model = glm::scale(model, glm::vec3(0.3f));
+		staticShader.setMat4("model", model);
+		cabezaMorgana.Draw(staticShader);
+		
+		//Patas corriendo
+		model = glm::translate(tmp, glm::vec3(0.0f, -0.5f, 0.0f));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.35f));
 		staticShader.setMat4("model", model);
 		patasCorriendoMorgana.Draw(staticShader);
 
