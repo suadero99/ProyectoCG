@@ -110,6 +110,9 @@ float	escalaFutaba1 = 0.0f,
 escalaFutaba2 = 0.35f,
 movFutaba_y = -0.1;
 int		contOvni = 0;
+//Para iluminación
+float	ilumOvni = 0.0f;
+bool	ilumOvniOn = false;
 
 // Variables para tren (Animación 2)
 float	orientaCabina = 0.0f,
@@ -695,69 +698,71 @@ void animate(void)
 	if (animacion_ovni) {
 		orientaOvni -= 1.0f;
 		switch (estado_Ovni) {
-			case 0:
-				if (movOvni_z>=85) {
-					estado_Ovni = 1;
-				}
-				else {
-					movOvni_x += 0.02;
-					movOvni_z += 0.1;
-				}
-				break;
-			case 1:
-				//Desaparece Futaba 2 y aparece Futaba 1
-				escalaFutaba2 = 0.0f;
-				escalaFutaba1 = 0.35f;
-				estado_Ovni = 2;
-				break;
-			case 2:
-				//Futaba 1 viaja hacia arriba con escala, rotación y traslación en Y
-				if (escalaFutaba1>=0) {
-					//Movimiento y decremeneto
-					escalaFutaba1 -= 0.001;
-					movFutaba_y += 0.1;
-				}
-				else {
-					estado_Ovni = 3;
-				}
-				break;
-			case 3:
-				//Pequeño delay xD
-				if (contOvni<=120) {
-					contOvni++;
-				}
-				else {
-					estado_Ovni = 4;
-					contOvni = 0;
-				}
-				break;
-			case 4:
-				//Futaba hacia abajo con escala, rotación y traslación en Y 
-				if (escalaFutaba1 < 0.35) {
-					//Movimiento y decremeneto
-					escalaFutaba1 += 0.001;
-					movFutaba_y -= 0.1;
-				}
-				else {
-					estado_Ovni = 5;
-				}
-				break;
-			case 5:
-				//Futaba 1 desaparece y aparece Futaba 1
-				escalaFutaba2 = 0.35f;
-				escalaFutaba1 = 0.0f;
-				estado_Ovni = 6;
-				break;
-			case 6:
-				//Ovni regresa a posición de inicio
-				if (movOvni_z <= 60) {
-					estado_Ovni = 7;
-				}
-				else {
-					movOvni_x -= 0.02;
-					movOvni_z -= 0.1;
-				}
-				break;
+		case 0:
+			if (movOvni_z >= 85) {
+				estado_Ovni = 1;
+			}
+			else {
+				movOvni_x += 0.02;
+				movOvni_z += 0.1;
+			}
+			break;
+		case 1:
+			//Desaparece Futaba 2 y aparece Futaba 1
+			escalaFutaba2 = 0.0f;
+			escalaFutaba1 = 0.35f;
+			estado_Ovni = 2;
+			ilumOvni = 1.0f; //Encendemos luz de ovni
+			break;
+		case 2:
+			//Futaba 1 viaja hacia arriba con escala, rotación y traslación en Y
+			if (escalaFutaba1 >= 0) {
+				//Movimiento y decremeneto
+				escalaFutaba1 -= 0.001;
+				movFutaba_y += 0.1;
+			}
+			else {
+				estado_Ovni = 3;
+			}
+			break;
+		case 3:
+			//Pequeño delay xD
+			if (contOvni <= 120) {
+				contOvni++;
+			}
+			else {
+				estado_Ovni = 4;
+				contOvni = 0;
+			}
+			break;
+		case 4:
+			//Futaba hacia abajo con escala, rotación y traslación en Y 
+			if (escalaFutaba1 < 0.35) {
+				//Movimiento y decremeneto
+				escalaFutaba1 += 0.001;
+				movFutaba_y -= 0.1;
+			}
+			else {
+				estado_Ovni = 5;
+			}
+			break;
+		case 5:
+			//Futaba 1 desaparece y aparece Futaba 1
+			escalaFutaba2 = 0.35f;
+			escalaFutaba1 = 0.0f;
+			estado_Ovni = 6;
+			ilumOvni = 0.0f; //Apagamos luz
+			break;
+		case 6:
+			//Ovni regresa a posición de inicio
+			if (movOvni_z <= 60) {
+				estado_Ovni = 7;
+			}
+			else {
+				movOvni_x -= 0.02;
+				movOvni_z -= 0.1;
+			}
+			break;
 
 		}
 	}
@@ -2417,16 +2422,17 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 	}
 	//Uso una tecla diferente para reiniciarlo
 	if (key == GLFW_KEY_O && action == GLFW_PRESS) {
-			animacion_ovni = false;
-			orientaOvni = 0.0f;
-			movOvni_x = 10.0f;
-			movOvni_y = 30.0f; 
-			movOvni_z = 60.0f;
-			estado_Ovni = 0;
-			escalaFutaba1 = 0.0f;
-			escalaFutaba2 = 0.35f;
-			movFutaba_y = -0.1;
-			contOvni = 0;
+		animacion_ovni = false;
+		orientaOvni = 0.0f;
+		movOvni_x = 10.0f;
+		movOvni_y = 30.0f;
+		movOvni_z = 60.0f;
+		estado_Ovni = 0;
+		escalaFutaba1 = 0.0f;
+		escalaFutaba2 = 0.35f;
+		movFutaba_y = -0.1;
+		contOvni = 0;
+		ilumOvni = 0.0f;
 	}
 
 	//Animación 5: Cachetadas a Joker (Keyframes)
