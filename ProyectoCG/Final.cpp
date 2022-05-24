@@ -142,7 +142,7 @@ int		estado_globos = 0;
 float	mov_globoY = 0.0f,
 mov_globoXZ = 0.0f;
 
-//Variables de morgana corriendo
+//Variables de morgana corriendo (Animación 7)
 float	posMorgana_x = 0.0f,
 		posMorgana_y = 0.0f,
 		posMorgana_z = 0.0f;
@@ -151,6 +151,7 @@ float	giroTorso_y = 0.0f,
 		giroBrazoMorgana_x = 30.0f,
 		giroBrazoMorgana_z = 45.0f;
 bool	giroBrazoMorganaPositivo = true;
+bool	animacion_morgana_corriendo = true;
 
 //Inicio de audio morgana
 irrklang::ISoundEngine* morgana = irrklang::createIrrKlangDevice();
@@ -953,6 +954,25 @@ void animate(void)
 			i_curr_steps++;
 		}
 	}
+
+	//Animación de morgana corriendo (Animación 6)
+	if (animacion_morgana_corriendo) {
+		posMorgana_x = 20.0f * cos(glm::radians(giroTorso_y));
+		posMorgana_z = 20.0f * sin(glm::radians(giroTorso_y));
+		giroTorso_y += 1.0f;
+		
+		if (giroBrazoMorganaPositivo) {
+			giroBrazoMorgana_z += 3.0f;
+			if (giroBrazoMorgana_z >= 90.0f)
+				giroBrazoMorganaPositivo = false;
+		}
+		else {
+			giroBrazoMorgana_z -= 3.0f;
+			if (giroBrazoMorgana_z <= 45.0f)
+				giroBrazoMorganaPositivo = true;
+		}
+
+	}
 }
 
 void getResolution()
@@ -1631,8 +1651,8 @@ int main()
 		//Morgana corriendo
 		//Torso
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(posMorgana_x, posMorgana_y - 0.3f, posMorgana_z));
-		tmp = model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::translate(model, glm::vec3(-18.0f + posMorgana_x, -0.3f, 35.0f + posMorgana_z));
+		tmp = model = glm::rotate(model, glm::radians(-giroTorso_y), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		torsoMorgana.Draw(staticShader);
@@ -1640,7 +1660,7 @@ int main()
 		//Brazo derecho
 		model = glm::translate(tmp, glm::vec3(-0.2f, 0.2f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
-		model = glm::rotate(model, glm::radians(giroBrazoMorgana_z), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(-75.0f + giroBrazoMorgana_z), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		brazoMorgana.Draw(staticShader);
@@ -1649,7 +1669,7 @@ int main()
 		model = glm::translate(tmp, glm::vec3(0.2f, 0.2f, 0.0f));
 		//model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(giroBrazoMorgana_z), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(-75.0f + giroBrazoMorgana_z), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		brazoMorgana.Draw(staticShader);
@@ -2430,11 +2450,31 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 		}
 	}
 
+	//Animacón de globos
 	if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
 		animacion_globos ^= true;
 		//Reproducir sonido 3d
 		morgana->play3D("resources\\sounds\\efectos\\looking-cool-joker.mp3", irrklang::vec3df(13.0f, 1.0f, -30.0f), false, false, false);
 	}
+
+	//Pausa de animación de morgana corriendo
+	if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
+		animacion_morgana_corriendo = !animacion_morgana_corriendo;
+	}
+
+	//Usamos L para reiniciar la animación
+	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
+		animacion_morgana_corriendo = false;
+		posMorgana_x = 0.0f;
+		posMorgana_y = 0.0f;
+		posMorgana_z = 0.0f;
+		escMorgana = 1.0f;
+		giroTorso_y = 0.0f;
+		giroBrazoMorgana_x = 30.0f;
+		giroBrazoMorgana_z = 45.0f;
+		giroBrazoMorganaPositivo = true;
+	}
+
 	//Uso una tecla diferente para reiniciarlo
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
 		animacion_globos = false;
