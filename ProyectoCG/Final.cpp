@@ -29,9 +29,6 @@
 #include <Skybox.h>
 #include <iostream>
 
-//Bibliotecas
-#include "cone.h"
-
 //Librería de audio:
 #if defined(WIN32)
 #include <conio.h>
@@ -49,7 +46,7 @@ void animate(void);
 // Configuración
 unsigned int SCR_WIDTH = 800;
 unsigned int SCR_HEIGHT = 600;
-GLFWmonitor *monitors;
+GLFWmonitor* monitors;
 void getResolution(void);
 
 // Cámara
@@ -66,7 +63,7 @@ bool camaraAerea = false;
 const int FPS = 60;
 const int LOOP_TIME = 1000 / FPS; // = 16 milisec // 1000 millisec == 1 sec
 double	deltaTime = 0.0f,
-		lastFrame = 0.0f;
+lastFrame = 0.0f;
 
 // Iluminación
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
@@ -79,57 +76,54 @@ float cont = 0.0f;
 bool faroOn = false;
 float ilumFaro = 0.0f;
 
-cone cone_1(0.5, 1.5);
-GLuint VBO, VAO;
-
 // Variables para Gato camión (Animación 3)
 float	giroLlanta = 0.0f;
 float	movCamion_x = 118.0f,
-		movCamion_y = 0.0f,
-		movCamion_z = 115.0f,
-		orientaCamion = 180.0f;
+movCamion_y = 0.0f,
+movCamion_z = 115.0f,
+orientaCamion = 180.0f;
 bool	animacion_camion;
-int		estado_camion=1;
+int		estado_camion = 1;
 float	ilumCamionR = 0.0f,
-		ilumCamionG = 0.0f,
-		ilumCamionB = 0.0f;
+ilumCamionG = 0.0f,
+ilumCamionB = 0.0f;
 float	movCamionLuz_x = -3.0f,
-		movCamionLuz2_x = 3.0f,
-		movCamionLuz_y = 3.0f,
-		movCamionLuz_z = -6.0f,
-		movCamionLuz2_z = -6.0f;
+movCamionLuz2_x = 3.0f,
+movCamionLuz_y = 3.0f,
+movCamionLuz_z = -6.0f,
+movCamionLuz2_z = -6.0f;
 
 // Variables para ovni (Animación 4)
 float	orientaOvni = 0.0f,
-		movOvni_x = 10.0f,
-		movOvni_y = 30.0f,
-		movOvni_z = 60.0f;
+movOvni_x = 10.0f,
+movOvni_y = 30.0f,
+movOvni_z = 60.0f;
 bool    animacion_ovni;
-int     estado_Ovni=0;
+int     estado_Ovni = 0;
 float	escalaFutaba1 = 0.0f,
-		escalaFutaba2 = 0.35f,
-		movFutaba_y=-0.1;
+escalaFutaba2 = 0.35f,
+movFutaba_y = -0.1;
 int		contOvni = 0;
-	//Para iluminación
+//Para iluminación
 float	ilumOvni = 0.0f;
 bool	ilumOvniOn = false;
 
 // Variables para tren (Animación 2)
 float	orientaCabina = 0.0f,
-		movCabina_x = 51.0f,
-		movCabina_y = -0.5f,
-		movCabina_z = -90.0f,
-		orientaVagon = 0.0f,
-		movVagon_x = 70.0f,
-		movVagon_y = 0.2f,
-		movVagon_z = -90.0f;
+movCabina_x = 51.0f,
+movCabina_y = -0.5f,
+movCabina_z = -90.0f,
+orientaVagon = 0.0f,
+movVagon_x = 70.0f,
+movVagon_y = 0.2f,
+movVagon_z = -90.0f;
 int		estadoCabina = 0,
-		estadoVagon = 0;
+estadoVagon = 0;
 bool	animacion_tren;
 
 // Variables para animación de reloj (Animación 1)
 float	giroMins = 0.0f,
-		giroHoras = 0.0f;
+giroHoras = 0.0f;
 int		estado_reloj = 0;
 bool	animacion_reloj;
 
@@ -140,16 +134,16 @@ float	movSol = 0.0f;
 
 // Variables para globos de dialogo (Animación 6)
 float   eglobo_Joker = 0.0f,
-		eglobo_Ann = 0.0f,
-		eglobo_Akechi = 0.0f,
-		eglobo_Morgana = 0.0f;
+eglobo_Ann = 0.0f,
+eglobo_Akechi = 0.0f,
+eglobo_Morgana = 0.0f;
 bool	animacion_globos;
-int		estado_globos=0;
+int		estado_globos = 0;
 float	mov_globoY = 0.0f,
-		mov_globoXZ = 0.0f;
+mov_globoXZ = 0.0f;
 
 //Inicio de morgana
-irrklang::ISoundEngine* morgana = irrklang::createIrrKlangDevice();	
+irrklang::ISoundEngine* morgana = irrklang::createIrrKlangDevice();
 
 // Keyframes (Manipulación y dibujo) (Animación 5)
 //Joker
@@ -189,70 +183,6 @@ FRAME KeyFrame[MAX_FRAMES];
 int FrameIndex = 0;
 bool play = false;
 int playIndex = 0;
-
-void drawElements(Shader shader) {
-
-	//GENERAL DECLARATIONS
-	shader.use();
-	// create transformations and Projection
-	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
-	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
-	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
-
-	//Use "projection" in order to change how we see the information
-	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.01f, 500.0f);
-
-
-
-	//VIEW DECLARATIONS AND INSTANCE
-	float movY = -5.0f;
-	float movZ = -20.0f;
-	//view = glm::translate(view, glm::vec3(movX, movY, movZ));
-
-	//Auxiliares para revisar el modelo 
-	//view = glm::rotate(view, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
-	//view = glm::rotate(view, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-
-	shader.setMat4("model", model);// pass them to the shaders
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
-	glBindVertexArray(VAO);
-
-
-
-
-	//Color zone 
-	float	bodyR = 0.120f / 0.256f,
-		bodyG = 0.124f / 0.256f,
-		bodyB = 0.117f / 0.256f;
-
-	float	aspaR = 0.021f / 0.256f,
-		aspaG = 0.023f / 0.256f,
-		aspaB = 0.040f / 0.256f;
-
-	float	maderaR = 0.124f / 0.256f,
-		maderaG = 0.1003f / 0.256f,
-		maderaB = 0.066f / 0.256f;
-
-
-	//MODELADO JERARQUICO CON BASE EN LA CLASE 
-
-
-	//CILINDRO - CUERPO PRINCIPAL
-	glm::mat4 temporal = glm::mat4(1.0f);
-
-	//CONO - TECHO
-	model = glm::translate(temporal, glm::vec3(0.0f, 10.3f, 0.0f));
-	model = glm::scale(model, glm::vec3(4.75f, 3.0f, 4.75f));
-	shader.setMat4("model", model);
-	shader.setVec3("aColor", glm::vec3(aspaR, aspaG, aspaB));
-	cone_1.render();
-
-
-
-	glBindVertexArray(0);
-
-}
 
 void saveFrame(void)
 {
@@ -368,14 +298,14 @@ void animate(void)
 			movSol += 0.0025f;
 		}
 	}
-	
+
 	//Para reloj: (Animación 1)
 	if (animacion_reloj) {
 		giroMins += 0.3f;
-		if (giroMins >=360.0f) {
+		if (giroMins >= 360.0f) {
 			giroHoras += 30.0f;
 			giroMins = 0.0f;
-			
+
 		}
 	}
 
@@ -384,9 +314,10 @@ void animate(void)
 		switch (estadoCabina) {
 		case 0: //Estado inicial hacia izquierda
 			orientaCabina = 0.0f;
-			if (movCabina_x>=-115.0f) {
+			if (movCabina_x >= -115.0f) {
 				movCabina_x -= 1.0f;
-			} else {
+			}
+			else {
 				estadoCabina = 1;
 				orientaCabina = 45.0f;
 			}
@@ -466,7 +397,7 @@ void animate(void)
 			}
 			break;
 		case 3: //Giro raro
-			orientaVagon = 205.23f; 
+			orientaVagon = 205.23f;
 			if (movVagon_x <= 90.0f) {
 				movVagon_x += 1.0;
 				movVagon_z -= 0.47116f;
@@ -494,202 +425,202 @@ void animate(void)
 	if (animacion_camion) {
 		giroLlanta += 0.2f;
 		switch (estado_camion) {
-			case 1:
-				if (movCamion_z >= 70.0f) {
-					giroLlanta += 1.0f;
-					movCamion_z -= 1.0f;
-					movCamionLuz_z = -6.0f;
-					movCamionLuz2_z = -6.0f;
-					ilumCamionR = 1.0f;
-					ilumCamionG = 1.0f;
-					ilumCamionB = 1.0f;
-				}
-				else {
-					estado_camion++;
-				}
-				break;
-			case 2: //Salto 1
-				if (movCamion_z >= 60.0f) {
-					giroLlanta += 0.1f;
-					movCamion_z -= 1.3;
-					movCamion_y += 0.3f;
-					ilumCamionR = 0.0f;
-					ilumCamionG = 0.0f;
-					ilumCamionB = 0.0f;
-				}
-				else {
-					estado_camion++;
-				}
-				break;
-			case 3:
-				if (movCamion_z >= -60.0f) {
-					giroLlanta += 1.0f;
-					movCamion_z -= 1.0f;
-					ilumCamionR = 1.0f;
-					ilumCamionG = 1.0f;
-					ilumCamionB = 1.0f;
-					if (movCamion_y > 0.0f)
-						movCamion_y -= 0.3f;
-					else
-						movCamion_y = 0.0f;
-				}
-				else {
-					estado_camion++;
+		case 1:
+			if (movCamion_z >= 70.0f) {
+				giroLlanta += 1.0f;
+				movCamion_z -= 1.0f;
+				movCamionLuz_z = -6.0f;
+				movCamionLuz2_z = -6.0f;
+				ilumCamionR = 1.0f;
+				ilumCamionG = 1.0f;
+				ilumCamionB = 1.0f;
+			}
+			else {
+				estado_camion++;
+			}
+			break;
+		case 2: //Salto 1
+			if (movCamion_z >= 60.0f) {
+				giroLlanta += 0.1f;
+				movCamion_z -= 1.3;
+				movCamion_y += 0.3f;
+				ilumCamionR = 0.0f;
+				ilumCamionG = 0.0f;
+				ilumCamionB = 0.0f;
+			}
+			else {
+				estado_camion++;
+			}
+			break;
+		case 3:
+			if (movCamion_z >= -60.0f) {
+				giroLlanta += 1.0f;
+				movCamion_z -= 1.0f;
+				ilumCamionR = 1.0f;
+				ilumCamionG = 1.0f;
+				ilumCamionB = 1.0f;
+				if (movCamion_y > 0.0f)
+					movCamion_y -= 0.3f;
+				else
 					movCamion_y = 0.0f;
-				}
-				break;
-			case 4: //Salto 2
-				if (movCamion_z >= -70.0f) {
-					giroLlanta += 0.1f;
-					movCamion_z -= 1.3;
-					movCamion_y += 0.3f;
-					ilumCamionR = 0.0f;
-					ilumCamionG = 0.0f;
-					ilumCamionB = 0.0f;
-				}
-				else {
-					estado_camion++;
-				}
-				break;
-			case 5:
-				if (movCamion_z >= -107.0f) {
-					giroLlanta += 1.0f;
-					movCamion_z -= 1.0f;
-					movCamionLuz_z = - 6.0f;
-					ilumCamionR = 1.0f;
-					ilumCamionG = 1.0f;
-					ilumCamionB = 1.0f;
-					if (movCamion_y > 0.0f)
-						movCamion_y -= 0.3f;
-					else
-						movCamion_y = 0.0f;
-				}
-				else {
-					estado_camion++;
+			}
+			else {
+				estado_camion++;
+				movCamion_y = 0.0f;
+			}
+			break;
+		case 4: //Salto 2
+			if (movCamion_z >= -70.0f) {
+				giroLlanta += 0.1f;
+				movCamion_z -= 1.3;
+				movCamion_y += 0.3f;
+				ilumCamionR = 0.0f;
+				ilumCamionG = 0.0f;
+				ilumCamionB = 0.0f;
+			}
+			else {
+				estado_camion++;
+			}
+			break;
+		case 5:
+			if (movCamion_z >= -107.0f) {
+				giroLlanta += 1.0f;
+				movCamion_z -= 1.0f;
+				movCamionLuz_z = -6.0f;
+				ilumCamionR = 1.0f;
+				ilumCamionG = 1.0f;
+				ilumCamionB = 1.0f;
+				if (movCamion_y > 0.0f)
+					movCamion_y -= 0.3f;
+				else
 					movCamion_y = 0.0f;
-					orientaCamion = -90.0f;
-					movCamion_z = -107.0f;
-				}
-				break;
-			case 6: //Arriba de estación
-				if (movCamion_x >= -7.0f) {
-					giroLlanta += 1.0f;
-					movCamion_x -= 1.0f;
-					movCamionLuz_x = -6.0f;
-					movCamionLuz2_x = -6.0f;
-					movCamionLuz_z = -3.0f;
-					movCamionLuz2_z = 3.0f;
-					ilumCamionR = 1.0f;
-					ilumCamionG = 1.0f;
-					ilumCamionB = 1.0f;
-				}
-				else {
-					estado_camion++;
-					orientaCamion = 0.0f;
-					movCamion_x = -7.0f;
-					movCamionLuz_x = -3.0f;
-					movCamionLuz2_x = 3.0f;
-				}
-				break;
-			case 7:
-				if (movCamion_z <= -70.0f) {
-					giroLlanta += 1.0f;
-					movCamion_z += 1.0f;
-					movCamionLuz_z = 6.0f;
-					movCamionLuz2_z = 6.0f;
-					ilumCamionR = 1.0f;
-					ilumCamionG = 1.0f;
-					ilumCamionB = 1.0f;
-				}
-				else {
-					estado_camion++;
-				}
-				break;
-			case 8: //Salto 3
-				if (movCamion_z <= -60.0f) {
-					giroLlanta += 0.1f;
-					movCamion_z += 1.3;
-					movCamion_y += 0.3f;
-					ilumCamionR = 0.0f;
-					ilumCamionG = 0.0f;
-					ilumCamionB = 0.0f;
-				}
-				else {
-					estado_camion++;
-				}
-				break;
-			case 9:
-				if (movCamion_z <= 60.0f) {
-					giroLlanta += 1.0f;
-					movCamion_z += 1.0f;
-					movCamionLuz_z = 6.0f;
-					movCamionLuz2_z = 6.0f;
-					ilumCamionR = 1.0f;
-					ilumCamionG = 1.0f;
-					ilumCamionB = 1.0f;
-					if (movCamion_y > 0.0f)
-						movCamion_y -= 0.3f;
-					else
-						movCamion_y = 0.0f;
-				}
-				else {
-					estado_camion++;
+			}
+			else {
+				estado_camion++;
+				movCamion_y = 0.0f;
+				orientaCamion = -90.0f;
+				movCamion_z = -107.0f;
+			}
+			break;
+		case 6: //Arriba de estación
+			if (movCamion_x >= -7.0f) {
+				giroLlanta += 1.0f;
+				movCamion_x -= 1.0f;
+				movCamionLuz_x = -6.0f;
+				movCamionLuz2_x = -6.0f;
+				movCamionLuz_z = -3.0f;
+				movCamionLuz2_z = 3.0f;
+				ilumCamionR = 1.0f;
+				ilumCamionG = 1.0f;
+				ilumCamionB = 1.0f;
+			}
+			else {
+				estado_camion++;
+				orientaCamion = 0.0f;
+				movCamion_x = -7.0f;
+				movCamionLuz_x = -3.0f;
+				movCamionLuz2_x = 3.0f;
+			}
+			break;
+		case 7:
+			if (movCamion_z <= -70.0f) {
+				giroLlanta += 1.0f;
+				movCamion_z += 1.0f;
+				movCamionLuz_z = 6.0f;
+				movCamionLuz2_z = 6.0f;
+				ilumCamionR = 1.0f;
+				ilumCamionG = 1.0f;
+				ilumCamionB = 1.0f;
+			}
+			else {
+				estado_camion++;
+			}
+			break;
+		case 8: //Salto 3
+			if (movCamion_z <= -60.0f) {
+				giroLlanta += 0.1f;
+				movCamion_z += 1.3;
+				movCamion_y += 0.3f;
+				ilumCamionR = 0.0f;
+				ilumCamionG = 0.0f;
+				ilumCamionB = 0.0f;
+			}
+			else {
+				estado_camion++;
+			}
+			break;
+		case 9:
+			if (movCamion_z <= 60.0f) {
+				giroLlanta += 1.0f;
+				movCamion_z += 1.0f;
+				movCamionLuz_z = 6.0f;
+				movCamionLuz2_z = 6.0f;
+				ilumCamionR = 1.0f;
+				ilumCamionG = 1.0f;
+				ilumCamionB = 1.0f;
+				if (movCamion_y > 0.0f)
+					movCamion_y -= 0.3f;
+				else
 					movCamion_y = 0.0f;
-				}
-				break;
-			case 10: //Salto 4
-				if (movCamion_z <= 70.0f) {
-					giroLlanta += 0.1f;
-					movCamion_z += 1.3;
-					movCamion_y += 0.3f;
-					ilumCamionR = 0.0f;
-					ilumCamionG = 0.0f;
-					ilumCamionB = 0.0f;
-				}
-				else {
-					estado_camion++;
-				}
-				break;
-			case 11:
-				if (movCamion_z <= 115.0f) {
-					giroLlanta += 1.0f;
-					movCamion_z += 1.0f;
-					movCamionLuz_z = 6.0f;
-					movCamionLuz2_z = 6.0f;
-					ilumCamionR = 1.0f;
-					ilumCamionG = 1.0f;
-					ilumCamionB = 1.0f;
-					if (movCamion_y > 0.0f)
-						movCamion_y -= 0.3f;
-					else
-						movCamion_y = 0.0f;
-				}
-				else {
-					estado_camion++;
+			}
+			else {
+				estado_camion++;
+				movCamion_y = 0.0f;
+			}
+			break;
+		case 10: //Salto 4
+			if (movCamion_z <= 70.0f) {
+				giroLlanta += 0.1f;
+				movCamion_z += 1.3;
+				movCamion_y += 0.3f;
+				ilumCamionR = 0.0f;
+				ilumCamionG = 0.0f;
+				ilumCamionB = 0.0f;
+			}
+			else {
+				estado_camion++;
+			}
+			break;
+		case 11:
+			if (movCamion_z <= 115.0f) {
+				giroLlanta += 1.0f;
+				movCamion_z += 1.0f;
+				movCamionLuz_z = 6.0f;
+				movCamionLuz2_z = 6.0f;
+				ilumCamionR = 1.0f;
+				ilumCamionG = 1.0f;
+				ilumCamionB = 1.0f;
+				if (movCamion_y > 0.0f)
+					movCamion_y -= 0.3f;
+				else
 					movCamion_y = 0.0f;
-					orientaCamion = 90.0f;
-				}
-				break;
-			case 12: //Hacia la derecha
-				if (movCamion_x <= 118.0f) {
-					giroLlanta += 1.0f;
-					movCamion_x += 1.0f;
-					movCamionLuz_z = -3.0f;
-					movCamionLuz2_z = 3.0f;
-					movCamionLuz_x = 6.0f;
-					movCamionLuz2_x = 6.0f;
-					ilumCamionR = 1.0f;
-					ilumCamionG = 1.0f;
-					ilumCamionB = 1.0f;
-				}
-				else {
-					estado_camion = 1;
-					orientaCamion = 180.0f;
-					movCamion_x = 118.0f;
-					movCamionLuz_x = -3.0f;
-					movCamionLuz2_x = 3.0f;
-				}
-				break;
+			}
+			else {
+				estado_camion++;
+				movCamion_y = 0.0f;
+				orientaCamion = 90.0f;
+			}
+			break;
+		case 12: //Hacia la derecha
+			if (movCamion_x <= 118.0f) {
+				giroLlanta += 1.0f;
+				movCamion_x += 1.0f;
+				movCamionLuz_z = -3.0f;
+				movCamionLuz2_z = 3.0f;
+				movCamionLuz_x = 6.0f;
+				movCamionLuz2_x = 6.0f;
+				ilumCamionR = 1.0f;
+				ilumCamionG = 1.0f;
+				ilumCamionB = 1.0f;
+			}
+			else {
+				estado_camion = 1;
+				orientaCamion = 180.0f;
+				movCamion_x = 118.0f;
+				movCamionLuz_x = -3.0f;
+				movCamionLuz2_x = 3.0f;
+			}
+			break;
 		}
 	}
 
@@ -697,71 +628,71 @@ void animate(void)
 	if (animacion_ovni) {
 		orientaOvni -= 1.0f;
 		switch (estado_Ovni) {
-			case 0:
-				if (movOvni_z>=85) {
-					estado_Ovni = 1;
-				}
-				else {
-					movOvni_x += 0.02;
-					movOvni_z += 0.1;
-				}
-				break;
-			case 1:
-				//Desaparece Futaba 2 y aparece Futaba 1
-				escalaFutaba2 = 0.0f;
-				escalaFutaba1 = 0.35f;
-				estado_Ovni = 2;
-				ilumOvni = 1.0f; //Encendemos luz de ovni
-				break;
-			case 2:
-				//Futaba 1 viaja hacia arriba con escala, rotación y traslación en Y
-				if (escalaFutaba1>=0) {
-					//Movimiento y decremeneto
-					escalaFutaba1 -= 0.001;
-					movFutaba_y += 0.1;
-				}
-				else {
-					estado_Ovni = 3;
-				}
-				break;
-			case 3:
-				//Pequeño delay xD
-				if (contOvni<=120) {
-					contOvni++;
-				}
-				else {
-					estado_Ovni = 4;
-					contOvni = 0;
-				}
-				break;
-			case 4:
-				//Futaba hacia abajo con escala, rotación y traslación en Y 
-				if (escalaFutaba1 < 0.35) {
-					//Movimiento y decremeneto
-					escalaFutaba1 += 0.001;
-					movFutaba_y -= 0.1;
-				}
-				else {
-					estado_Ovni = 5;
-				}
-				break;
-			case 5:
-				//Futaba 1 desaparece y aparece Futaba 1
-				escalaFutaba2 = 0.35f;
-				escalaFutaba1 = 0.0f;
-				estado_Ovni = 6;
-				ilumOvni = 0.0f; //Apagamos luz
-				break;
-			case 6:
-				//Ovni regresa a posición de inicio
-				if (movOvni_z <= 60) {
-					estado_Ovni = 7;
-				}
-				else {
-					movOvni_x -= 0.02;
-					movOvni_z -= 0.1;
-				}
-				break;
+		case 0:
+			if (movOvni_z >= 85) {
+				estado_Ovni = 1;
+			}
+			else {
+				movOvni_x += 0.02;
+				movOvni_z += 0.1;
+			}
+			break;
+		case 1:
+			//Desaparece Futaba 2 y aparece Futaba 1
+			escalaFutaba2 = 0.0f;
+			escalaFutaba1 = 0.35f;
+			estado_Ovni = 2;
+			ilumOvni = 1.0f; //Encendemos luz de ovni
+			break;
+		case 2:
+			//Futaba 1 viaja hacia arriba con escala, rotación y traslación en Y
+			if (escalaFutaba1 >= 0) {
+				//Movimiento y decremeneto
+				escalaFutaba1 -= 0.001;
+				movFutaba_y += 0.1;
+			}
+			else {
+				estado_Ovni = 3;
+			}
+			break;
+		case 3:
+			//Pequeño delay xD
+			if (contOvni <= 120) {
+				contOvni++;
+			}
+			else {
+				estado_Ovni = 4;
+				contOvni = 0;
+			}
+			break;
+		case 4:
+			//Futaba hacia abajo con escala, rotación y traslación en Y 
+			if (escalaFutaba1 < 0.35) {
+				//Movimiento y decremeneto
+				escalaFutaba1 += 0.001;
+				movFutaba_y -= 0.1;
+			}
+			else {
+				estado_Ovni = 5;
+			}
+			break;
+		case 5:
+			//Futaba 1 desaparece y aparece Futaba 1
+			escalaFutaba2 = 0.35f;
+			escalaFutaba1 = 0.0f;
+			estado_Ovni = 6;
+			ilumOvni = 0.0f; //Apagamos luz
+			break;
+		case 6:
+			//Ovni regresa a posición de inicio
+			if (movOvni_z <= 60) {
+				estado_Ovni = 7;
+			}
+			else {
+				movOvni_x -= 0.02;
+				movOvni_z -= 0.1;
+			}
+			break;
 
 		}
 	}
@@ -773,8 +704,8 @@ void animate(void)
 	if (animacion_globos) {
 		switch (estado_globos) {
 		case 0:
-			if (eglobo_Akechi<1.5f) {
-				eglobo_Akechi+=0.05;
+			if (eglobo_Akechi < 1.5f) {
+				eglobo_Akechi += 0.05;
 				mov_globoY += 0.01;
 				mov_globoXZ += 0.01;
 			}
@@ -783,8 +714,8 @@ void animate(void)
 			}
 			break;
 		case 1:
-			if (eglobo_Akechi >0.0f) {
-				eglobo_Akechi-=0.05;
+			if (eglobo_Akechi > 0.0f) {
+				eglobo_Akechi -= 0.05;
 			}
 			else {
 				estado_globos = 2;
@@ -997,7 +928,7 @@ void animate(void)
 				playIndex = 0;
 				play = false;
 			}
-			else 
+			else
 			{
 				i_curr_steps = 0;
 				interpolation();
@@ -1016,7 +947,7 @@ void animate(void)
 
 void getResolution()
 {
-	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	SCR_WIDTH = mode->width;
 	SCR_HEIGHT = (mode->height) - 80;
 }
@@ -1073,9 +1004,6 @@ int main()
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
-
-	//object instants (Using construct methods)
-	cone_1.init();
 
 	// configure global opengl state
 	// -----------------------------
@@ -1876,7 +1804,7 @@ int main()
 		model = glm::scale(model, glm::vec3(3.5f));
 		staticShader.setMat4("model", model);
 		via.Draw(staticShader);
-		
+
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(-114.5f, -0.5f, -36.0f));
 		//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -1897,7 +1825,7 @@ int main()
 		model = glm::scale(model, glm::vec3(3.5f));
 		staticShader.setMat4("model", model);
 		via.Draw(staticShader);
-		
+
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(-114.5f, -0.5f, 0.0f));
 		//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -2336,7 +2264,7 @@ int main()
 }
 
 // Entrada de datos
-void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
+void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -2412,17 +2340,17 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	}
 	//Uso una tecla diferente para reiniciarlo
 	if (key == GLFW_KEY_O && action == GLFW_PRESS) {
-			animacion_ovni = false;
-			orientaOvni = 0.0f;
-			movOvni_x = 10.0f;
-			movOvni_y = 30.0f; 
-			movOvni_z = 60.0f;
-			estado_Ovni = 0;
-			escalaFutaba1 = 0.0f;
-			escalaFutaba2 = 0.35f;
-			movFutaba_y = -0.1;
-			contOvni = 0;
-			ilumOvni = 0.0f;
+		animacion_ovni = false;
+		orientaOvni = 0.0f;
+		movOvni_x = 10.0f;
+		movOvni_y = 30.0f;
+		movOvni_z = 60.0f;
+		estado_Ovni = 0;
+		escalaFutaba1 = 0.0f;
+		escalaFutaba2 = 0.35f;
+		movFutaba_y = -0.1;
+		contOvni = 0;
+		ilumOvni = 0.0f;
 	}
 
 	//Animación 5: Cachetadas a Joker (Keyframes)
@@ -2453,7 +2381,7 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	}
 	//Uso una tecla diferente para reiniciarlo
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
-		animacion_globos= false;
+		animacion_globos = false;
 		eglobo_Joker = 0.0f;
 		eglobo_Ann = 0.0f;
 		eglobo_Akechi = 0.0f;
