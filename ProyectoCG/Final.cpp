@@ -2333,6 +2333,10 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		camaraPiso = !camaraPiso;
 
+	//Para activar cámara aerea
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+		camaraAerea = !camaraAerea;
+
 	//Activar luz
 	if (key == GLFW_KEY_F && action == GLFW_PRESS) {
 		faroOn ^= true;
