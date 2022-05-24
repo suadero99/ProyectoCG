@@ -920,7 +920,7 @@ void animate(void)
 			playIndex++;
 			if (playIndex == 3) {
 				//Reproducir sonido 3d
-				morgana->setListenerPosition(irrklang::vec3df(camera.Position.x, camera.Position.y, camera.Position.z), irrklang::vec3df(0, 0, 1));
+				//morgana->setListenerPosition(irrklang::vec3df(camera.Position.x, camera.Position.y, camera.Position.z), irrklang::vec3df(0, 0, 1));
 				morgana->play3D("resources\\sounds\\efectos\\looking-cool-joker.mp3", irrklang::vec3df(13.0f, 1.0f, -30.0f), false, false, false);
 			}
 			if (playIndex > FrameIndex - 2)
@@ -1137,6 +1137,8 @@ int main()
 			camera.Position.z = 0.0f;
 		}
 
+		morgana->setListenerPosition(irrklang::vec3df(camera.Position.x, camera.Position.y, camera.Position.z), irrklang::vec3df(0, 0, 1));
+			
 
 		// per-frame time logic
 		// --------------------
@@ -1197,34 +1199,23 @@ int main()
 		staticShader.setVec3("spotLight[0].ambient", glm::vec3(0.0f, ilumOvni, 0.0f));
 		staticShader.setVec3("spotLight[0].diffuse", glm::vec3(0.0f, ilumOvni, 0.0f));
 		staticShader.setVec3("spotLight[0].specular", glm::vec3(0.0f, ilumOvni, 0.0f));
-		staticShader.setFloat("spotLight[0].cutOff", glm::radians(0.0f));
-		staticShader.setFloat("spotLight[0].outerCutOff", glm::radians(90.0f));
-		staticShader.setFloat("spotLight[0].constant", 0.008f);
-		staticShader.setFloat("spotLight[0].linear", 0.009f);
-		staticShader.setFloat("spotLight[0].quadratic", 0.05f);
-
-		/*staticShader.setVec3("spotLight.position", glm::vec3(0.0f, 20.0f, 0.0f));
-		staticShader.setVec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
-		staticShader.setVec3("spotLight.ambient", glm::vec3(1.0f, 0.0f, 0.0f));
-		staticShader.setVec3("spotLight.diffuse", glm::vec3(1.0f, 0.0f, 0.0f));
-		staticShader.setVec3("spotLight.specular", glm::vec3(1.0f, 0.0f, 0.0f));
-		staticShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(20.0f)));
-		staticShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(60.0f)));
-		staticShader.setFloat("spotLight.constant", 1.0f);
-		staticShader.setFloat("spotLight.linear", 0.0009f);
-		staticShader.setFloat("spotLight.quadratic", 0.0005f);*/
+		staticShader.setFloat("spotLight[0].cutOff", glm::cos(glm::radians(20.0f)));
+		staticShader.setFloat("spotLight[0].outerCutOff", glm::cos(glm::radians(60.0f)));
+		staticShader.setFloat("spotLight[0].constant", 1.0f);
+		staticShader.setFloat("spotLight[0].linear", 0.0009f);
+		staticShader.setFloat("spotLight[0].quadratic", 0.0005f);
 
 		//Luz del faro
-		staticShader.setVec3("spotLight[1].position", glm::vec3(-29.1f, 3.5f, 0.6f));
+		staticShader.setVec3("spotLight[1].position", glm::vec3(-29.0f, 9.0f, 0.5f));
 		staticShader.setVec3("spotLight[1].direction", glm::vec3(0.0f, -1.0f, -0.0f));
 		staticShader.setVec3("spotLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setVec3("spotLight[1].diffuse", glm::vec3(ilumFaro, ilumFaro, 0.0f));
 		staticShader.setVec3("spotLight[1].specular", glm::vec3(ilumFaro, ilumFaro, 0.0f));
-		staticShader.setFloat("spotLight[1].cutOff", glm::radians(0.0f));
-		staticShader.setFloat("spotLight[1].outerCutOff", glm::radians(90.0f));
-		staticShader.setFloat("spotLight[1].constant", 0.008f);
-		staticShader.setFloat("spotLight[1].linear", 0.009f);
-		staticShader.setFloat("spotLight[1].quadratic", 0.05f);
+		staticShader.setFloat("spotLight[1].cutOff", glm::cos(glm::radians(20.0f)));
+		staticShader.setFloat("spotLight[1].outerCutOff", glm::cos(glm::radians(60.0f)));
+		staticShader.setFloat("spotLight[1].constant", 1.0f);
+		staticShader.setFloat("spotLight[1].linear", 0.0009f);
+		staticShader.setFloat("spotLight[1].quadratic", 0.005f);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 tmp = glm::mat4(1.0f);
@@ -2386,7 +2377,6 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 	if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
 		animacion_globos ^= true;
 		//Reproducir sonido 3d
-		morgana->setListenerPosition(irrklang::vec3df(camera.Position.x, camera.Position.y, camera.Position.z), irrklang::vec3df(0, 0, 1));
 		morgana->play3D("resources\\sounds\\efectos\\looking-cool-joker.mp3", irrklang::vec3df(13.0f, 1.0f, -30.0f), false, false, false);
 	}
 	//Uso una tecla diferente para reiniciarlo
