@@ -313,11 +313,12 @@ void animate(void)
 	//Para reloj: (Animación 1)
 	if (animacion_reloj) {
 		giroMins += 0.3f;
-		if (giroMins >= 360.0f) {
+		giroHoras += 0.025f;
+		/*if (giroMins >= 360.0f) {
 			giroHoras += 30.0f;
 			giroMins = 0.0f;
 
-		}
+		}*/
 	}
 
 	//Para tren (Animación 2)
