@@ -1076,7 +1076,7 @@ int main()
 	Skybox skybox2 = Skybox(facesalt);
 
 	//Reproducir música de fondo
-	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
+	bg_music->play2D("resources\\sounds\\bg_music\\BeneathTheMask-rain-.flac", true);
 
 	// Shader configuration
 	skyboxShader.use();
