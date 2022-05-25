@@ -106,7 +106,7 @@ bool    animacion_ovni;
 int     estado_Ovni = 0;
 float	escalaFutaba1 = 0.0f,
 escalaFutaba2 = 0.35f,
-movFutaba_y = -0.1;
+movFutaba_y = -0.5;
 int		contOvni = 0;
 //Para iluminación
 float	ilumOvni = 0.0f;
@@ -1321,7 +1321,7 @@ int main()
 		Futaba1.Draw(animShader);
 
 		// Dibujo Futaba 2
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, 0.0f, 85.0f));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, -0.5f, 85.0f));
 		model = glm::scale(model, glm::vec3(escalaFutaba2));
 		animShader.setMat4("model", model);
 		Futaba2.Draw(animShader);
@@ -2476,7 +2476,7 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 		estado_Ovni = 0;
 		escalaFutaba1 = 0.0f;
 		escalaFutaba2 = 0.35f;
-		movFutaba_y = -0.1;
+		movFutaba_y = -0.5;
 		contOvni = 0;
 		ilumOvni = 0.0f;
 	}
