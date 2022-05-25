@@ -195,6 +195,8 @@ int FrameIndex = 0;
 bool play = false;
 int playIndex = 0;
 
+bool skyboxtipe = false;
+
 void saveFrame(void)
 {
 	KeyFrame[FrameIndex].giroCabezaJoker_y = giroCabezaJoker_y;
@@ -1057,14 +1059,25 @@ int main()
 		"resources/skybox/back.jpg"
 	};
 
-	Skybox skybox = Skybox(faces);
+	vector<std::string> facesalt
+	{
+		"resources/skybox/alt/right.png",
+		"resources/skybox/alt/left.png",
+		"resources/skybox/alt/top.png",
+		"resources/skybox/alt/bottom.png",
+		"resources/skybox/alt/front.png",
+		"resources/skybox/alt/back.png"
+	};
+
+	Skybox skybox1 = Skybox(faces);
+	Skybox skybox2 = Skybox(facesalt);
 
 	//Reproducir música de fondo
-	//bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
+	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
 
 	// Shader configuration
 	skyboxShader.use();
-	skyboxShader.setInt("skybox", 0);
+	skyboxShader.setInt("skybox1", 0);
 
 	// Carga de modelos
 	// Edificios
@@ -2310,7 +2323,10 @@ int main()
 
 		// Se dibuja skybox
 		skyboxShader.use();
-		skybox.Draw(skyboxShader, view, projection, camera);
+		if(skyboxtipe)
+			skybox1.Draw(skyboxShader, view, projection, camera);
+		else 
+			skybox2.Draw(skyboxShader, view, projection, camera);
 
 		// Limitar el framerate a 60
 		deltaTime = SDL_GetTicks() - lastFrame; // time for full 1 loop
@@ -2329,7 +2345,12 @@ int main()
 	bg_music->drop(); //Borrar música de fondo
 	morgana->drop(); //Borrar efecto de sonido de morgana
 
-	skybox.Terminate();
+	if (skyboxtipe)
+		skybox1.Terminate();
+	else
+		skybox2.Terminate();
+
+	
 
 	glfwTerminate();
 	return 0;
@@ -2349,6 +2370,10 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 
+	//Skybox
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+		skyboxtipe ^= true;
+	
 	//Para activar cámara en xz
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
 		camaraPiso = !camaraPiso;
