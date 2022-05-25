@@ -51,14 +51,17 @@ GLFWmonitor* monitors;
 void getResolution(void);
 
 // Cámara
-Camera camera(glm::vec3(0.0f, 10.0f, 100.0f)); //Cámara libre
-//Camera cameraxz(glm::vec3(0.0f, 0.5f, 100.0f)); //Cámara de piso
+float auxx = 0.0f, auxy = 10.0f, auxz = 100.0f, auxpitch=0.0f;
+Camera camera(glm::vec3(auxx, auxy, auxz)); //Cámara libre
 float MovementSpeed = 5.0f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 bool camaraPiso = false;
 bool camaraAerea = false;
+bool camaraLibre2 = false;
+bool camaraLibre1 = false;
+
 
 // Timing
 const int FPS = 60;
@@ -196,7 +199,7 @@ int FrameIndex = 0;
 bool play = false;
 int playIndex = 0;
 
-bool skyboxtipe = false;
+bool skyboxtipe = true;
 
 void saveFrame(void)
 {
@@ -1076,7 +1079,7 @@ int main()
 	Skybox skybox2 = Skybox(facesalt);
 
 	//Reproducir música de fondo
-	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.flac", true);
+	bg_music->play2D("resources\\sounds\\bg_music\\The_Whims_of_Fate.mp3", true);
 
 	// Shader configuration
 	skyboxShader.use();
@@ -1174,13 +1177,32 @@ int main()
 		skyboxShader.setInt("skybox", 0);
 
 		//Cámara en xz:
-		if (camaraPiso)
+		if (camaraPiso) {
 			camera.Position.y = 1.0f;
+			camaraLibre1 = true;
+		}
+		else {
+			if (camaraLibre1) {
+				camera.Position.y = auxy;
+				camaraLibre1 = false;
+			}
+		}
+
 
 		if (camaraAerea) {
 			camera.Position.y = 325.0f;
 			camera.Position.x = 0.0f;
 			camera.Position.z = 0.0f;
+			camera.Pitch=-90.0f;
+			camera.ProcessMouseMovement(0, 0);
+			camaraLibre2 = true;
+		}
+		else {
+			if (camaraLibre2) {
+				Camera camera2(glm::vec3(auxx, auxy, auxz));
+				camera = camera2;
+				camaraLibre2 = false;
+			}
 		}
 
 		morgana->setListenerPosition(irrklang::vec3df(camera.Position.x, camera.Position.y, camera.Position.z), irrklang::vec3df(0, 0, 1));
