@@ -26,6 +26,7 @@
 #include <camera.h>
 #include <modelAnim.h>
 #include <model.h>
+#include <model.h>
 #include <Skybox.h>
 #include <iostream>
 
@@ -205,6 +206,7 @@ void saveFrame(void)
 	KeyFrame[FrameIndex].giroBrazoDerechoAnn_y = giroBrazoDerechoAnn_y;
 	FrameIndex++;
 }
+
 
 //Valores para nuestra animación por KeyFrames
 void insertarFrames(void) {
