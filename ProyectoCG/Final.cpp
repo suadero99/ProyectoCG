@@ -678,8 +678,10 @@ void animate(void)
 			//Pequeño delay xD
 			if (contOvni <= 120) {
 				contOvni++;
+				ilumOvni = 0.0f; //Apagamos luz de ovni
 			}
 			else {
+				ilumOvni = 1.0f; //Encendemos luz de ovni
 				estado_Ovni = 4;
 				contOvni = 0;
 			}
@@ -1262,16 +1264,16 @@ int main()
 		staticShader.setFloat("pointLight[2].quadratic", 0.5f);
 
 		//Luz de ovni
-		staticShader.setVec3("spotLight[0].position", glm::vec3(movOvni_x, movOvni_y - 20.0f, movOvni_z));
+		staticShader.setVec3("spotLight[0].position", glm::vec3(movOvni_x, movOvni_y+5.0f, movOvni_z));
 		staticShader.setVec3("spotLight[0].direction", glm::vec3(0.0f, -1.0f, 0.0f));
 		staticShader.setVec3("spotLight[0].ambient", glm::vec3(0.0f, ilumOvni, 0.0f));
 		staticShader.setVec3("spotLight[0].diffuse", glm::vec3(0.0f, ilumOvni, 0.0f));
 		staticShader.setVec3("spotLight[0].specular", glm::vec3(0.0f, ilumOvni, 0.0f));
 		staticShader.setFloat("spotLight[0].cutOff", glm::cos(glm::radians(20.0f)));
-		staticShader.setFloat("spotLight[0].outerCutOff", glm::cos(glm::radians(60.0f)));
+		staticShader.setFloat("spotLight[0].outerCutOff", glm::cos(glm::radians(40.0f)));
 		staticShader.setFloat("spotLight[0].constant", 1.0f);
-		staticShader.setFloat("spotLight[0].linear", 0.0009f);
-		staticShader.setFloat("spotLight[0].quadratic", 0.0005f);
+		staticShader.setFloat("spotLight[0].linear", 0.009f);
+		staticShader.setFloat("spotLight[0].quadratic", 0.005f);
 
 		//Luz del faro
 		staticShader.setVec3("spotLight[1].position", glm::vec3(-29.0f, 9.0f, 0.5f));
