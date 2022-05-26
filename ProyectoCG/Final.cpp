@@ -26,7 +26,6 @@
 #include <camera.h>
 #include <modelAnim.h>
 #include <model.h>
-#include <model.h>
 #include <Skybox.h>
 #include <iostream>
 
@@ -321,11 +320,6 @@ void animate(void)
 	if (animacion_reloj) {
 		giroMins += 0.3f;
 		giroHoras += 0.025f;
-		/*if (giroMins >= 360.0f) {
-			giroHoras += 30.0f;
-			giroMins = 0.0f;
-
-		}*/
 	}
 
 	//Para tren (Animación 2)
@@ -941,7 +935,6 @@ void animate(void)
 			playIndex++;
 			if (playIndex == 3) {
 				//Reproducir sonido 3d
-				//morgana->setListenerPosition(irrklang::vec3df(camera.Position.x, camera.Position.y, camera.Position.z), irrklang::vec3df(0, 0, 1));
 				morgana->play3D("resources\\sounds\\efectos\\looking-cool-joker.mp3", irrklang::vec3df(13.0f, 1.0f, -30.0f), false, false, false);
 			}
 			if (playIndex > FrameIndex - 2)
@@ -965,7 +958,7 @@ void animate(void)
 		}
 	}
 
-	//Animación de morgana corriendo (Animación 6)
+	//Animación de morgana corriendo (Animación 7)
 	if (animacion_morgana_corriendo) {
 		posMorgana_x = 20.0f * cos(glm::radians(giroTorso_y));
 		posMorgana_z = 20.0f * sin(glm::radians(giroTorso_y));
@@ -1680,13 +1673,6 @@ int main()
 		model = glm::scale(model, glm::vec3(0.3f));
 		staticShader.setMat4("model", model);
 		piernaMorgana.Draw(staticShader);
-		//Patas corriendo
-		model = glm::translate(tmp, glm::vec3(0.0f, -0.35f, 0.0f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.3f));
-		staticShader.setMat4("model", model);
-		patasCorriendoMorgana.Draw(staticShader);
 
 		//Morgana corriendo
 		//Torso
@@ -2509,6 +2495,18 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 		morgana->play3D("resources\\sounds\\efectos\\looking-cool-joker.mp3", irrklang::vec3df(13.0f, 1.0f, -30.0f), false, false, false);
 	}
 
+	//Uso una tecla diferente para reiniciarlo
+	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+		animacion_globos = false;
+		eglobo_Joker = 0.0f;
+		eglobo_Ann = 0.0f;
+		eglobo_Akechi = 0.0f;
+		eglobo_Morgana = 0.0f;
+		estado_globos = 0;
+		mov_globoY = 0.0f;
+		mov_globoXZ = 0.0f;
+	}
+
 	//Pausa de animación de morgana corriendo
 	if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
 		animacion_morgana_corriendo = !animacion_morgana_corriendo;
@@ -2525,18 +2523,6 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode)
 		giroBrazoMorgana_x = 30.0f;
 		giroBrazoMorgana_z = 45.0f;
 		giroBrazoMorganaPositivo = true;
-	}
-
-	//Uso una tecla diferente para reiniciarlo
-	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
-		animacion_globos = false;
-		eglobo_Joker = 0.0f;
-		eglobo_Ann = 0.0f;
-		eglobo_Akechi = 0.0f;
-		eglobo_Morgana = 0.0f;
-		estado_globos = 0;
-		mov_globoY = 0.0f;
-		mov_globoXZ = 0.0f;
 	}
 }
 
