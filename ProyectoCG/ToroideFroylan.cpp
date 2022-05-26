@@ -5,38 +5,37 @@
 #include <glfw3.h>
 
 /*
-r = torus ring radius
-c = torus tube radius
-rSeg, cSeg = number of segments/detail
+r = radio externo
+c = radio interno
+rSeg, cSeg = resolución externa/interna
+A mayor resolución, mayor detalle
 */
 
-void drawTorus(double, double, int, int, int);
+void drawTorus(float, float, int, int, int);
 
-void drawTorus(double r = 0.07, double c = 0.15,
-    int rSeg = 16, int cSeg = 8,
-    int texture = 0)
+void drawTorus(float r = 0.07f, float c = 0.15f, int rSeg = 16, int cSeg = 16, int texture = 0)
 {
     glFrontFace(GL_CW);
 
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    const double PI = 3.1415926535897932384626433832795;
-    const double TAU = 2 * PI;
+    const float PI = 3.14159f;
+    const float TAU = 2.0f * PI;
 
     for (int i = 0; i < rSeg; i++) {
-        glBegin(GL_QUAD_STRIP);
+        glBegin(GL_LINE_STRIP);
         for (int j = 0; j <= cSeg; j++) {
             for (int k = 0; k <= 1; k++) {
-                double s = (i + k) % rSeg + 0.5;
-                double t = j % (cSeg + 1);
+                float s = (i + k) % rSeg + 0.5f;
+                float t = j % (cSeg + 1);
 
-                double x = (c + r * cos(s * TAU / rSeg)) * cos(t * TAU / cSeg);
-                double y = (c + r * cos(s * TAU / rSeg)) * sin(t * TAU / cSeg);
-                double z = r * sin(s * TAU / rSeg);
+                float x = (c + r * cos(s * TAU / rSeg)) * cos(t * TAU / cSeg);
+                float y = (c + r * cos(s * TAU / rSeg)) * sin(t * TAU / cSeg);
+                float z = r * sin(s * TAU / rSeg);
 
-                double u = (i + k) / (float)rSeg;
-                double v = t / (float)cSeg;
+                float u = (i + k) / (float)rSeg;
+                float v = t / (float)cSeg;
 
                 glTexCoord2d(u, v);
                 glNormal3f(2 * x, 2 * y, 2 * z);
@@ -63,7 +62,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
     //Create Window
-    window = glfwCreateWindow(1000, 600, "OpenGL with GLFW", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Toroide", NULL, NULL);
     if (!window) {
         fprintf(stderr, "Failed to make window\n");
         glfwTerminate();
@@ -86,7 +85,7 @@ int main()
         ratio = (float)fbWidth / (float)winWidth;
         glViewport(0, 0, fbWidth, fbHeight);
 
-        glClearColor(0.3, 0.3, 0.3, 1.0f);
+        glClearColor(0.5f, 0.4f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         drawTorus();
