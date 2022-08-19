@@ -1,11 +1,11 @@
-﻿#include <stdlib.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 #include <glfw3.h>
 #include <iostream>
 
-//For Keyboard
+//For Keyboard rgrrwq
 float movX = -15.0f;
 float movY = 20.0f;
 float movZ = -50.0f;
